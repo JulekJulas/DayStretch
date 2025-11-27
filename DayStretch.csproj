@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="TODO.cs" />
     <Compile Include="VanillaReplace.cs" />
     <Compile Include="DayChange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
