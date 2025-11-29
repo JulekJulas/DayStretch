@@ -163,7 +163,114 @@ namespace DayStretched
                 yield return instr; // yeah gotta fix the uh, bleeding thing
             } // fully possible that we have to do this manually 
         }
+        [StaticConstructorOnStartup]
+        [HarmonyPatch(typeof(HealthUtility))]
+        [HarmonyPatch(nameof(HealthUtility.TicksUntilDeathDueToBloodLoss))]
+        public static class DeathInFixer
+        {
+            static void Postfix(ref int __result)
+            {
+                __result = Mathf.RoundToInt(__result * Settings.Instance.TimeMultiplier);
+            }
+        }
+        [StaticConstructorOnStartup]
+        [HarmonyPatch(typeof(HediffGiver_Bleeding))]
+        [HarmonyPatch(nameof(HediffGiver_Bleeding.OnIntervalPassed))]
+        public static class BloodStatusFixer
+        {
+            static bool Prefix(HediffGiver_Bleeding __instance, Pawn pawn, Hediff cause)
+            {
+                HediffSet hediffSet = pawn.health.hediffSet;
+                if (hediffSet.BleedRateTotal >= 0.1f)
+                {
+                    float amount = hediffSet.BleedRateTotal * 0.001f * (1f / Settings.Instance.TimeMultiplier);
+                    HealthUtility.AdjustSeverity(pawn, __instance.hediff, amount);
+                    return false;
+                }
+
+                float negativeAmount = -0.00033333333f * (1f / Settings.Instance.TimeMultiplier);
+                HealthUtility.AdjustSeverity(pawn, __instance.hediff, negativeAmount);
+                return false;
+            }
+        }
+    } // heat patches below
+    [HarmonyPatch(typeof(HediffGiver_Hypothermia))]
+    [HarmonyPatch("OnIntervalPassed")]
+    static class HypothermiaPatch
+    {
+        static float SpeedGain = 0.00075f * (1f / Settings.Instance.TimeMultiplier);
+        static float SpeedLoss = 0.027f * (1f / Settings.Instance.TimeMultiplier);
+
+
+        static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            foreach (var instr in instructions)
+            {
+                if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float intVal && intVal == 0.00075f)
+                {
+                    yield return new CodeInstruction(OpCodes.Ldc_R4, SpeedGain);
+                    continue;
+                }
+                yield return instr; 
+            }
+            foreach (var instr in instructions)
+            {
+                if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float intVal && intVal == 0.027f)
+                {
+                    yield return new CodeInstruction(OpCodes.Ldc_R4, SpeedLoss);
+                    continue;
+                }
+                yield return instr;
+            }// straight up floating
+        }
     }
+    [HarmonyPatch(typeof(HediffGiver_Heat))]
+    [HarmonyPatch("OnIntervalPassed")]
+    static class HyperthermiaaPatch
+    {
+        static float SpeedGain = 0.000375f * (1f / Settings.Instance.TimeMultiplier);
+        static float SpeedLoss = 0.027f * (1f / Settings.Instance.TimeMultiplier);
+
+
+        static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            foreach (var instr in instructions)
+            {
+                if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float intVal && intVal == 0.000375f)
+                {
+                    yield return new CodeInstruction(OpCodes.Ldc_R4, SpeedGain);
+                    continue;
+                }
+                yield return instr;
+            }
+            foreach (var instr in instructions)
+            {
+                if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float intVal && intVal == 0.027f)
+                {
+                    yield return new CodeInstruction(OpCodes.Ldc_R4, SpeedLoss);
+                    continue;
+                }
+                yield return instr;
+            }// straight up floating again
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     [HarmonyPatch(typeof(Pawn_InfectionVectorTracker))]
     [HarmonyPatch("InfectionTickInterval")]
     static class InfectionVectorTrackeTickIntervalPatch
