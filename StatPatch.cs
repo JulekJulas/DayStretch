@@ -226,7 +226,7 @@ namespace DayStretched
     }
     [HarmonyPatch(typeof(HediffGiver_Heat))]
     [HarmonyPatch("OnIntervalPassed")]
-    static class HyperthermiaaPatch
+    static class HyperthermiaPatch
     {
         static float SpeedGain = 0.000375f * (1f / Settings.Instance.TimeMultiplier);
         static float SpeedLoss = 0.027f * (1f / Settings.Instance.TimeMultiplier);
@@ -254,21 +254,107 @@ namespace DayStretched
             }// straight up floating again
         }
     }
+    /* [HarmonyPatch(typeof(HediffComp_HealPermanentWounds))]
+     [HarmonyPatch("ResetTicksToHeal")]
+     static class HealPWoundsPatch
+     {
+
+         static int Speed = Mathf.RoundToInt(60000 * Settings.Instance.TimeMultiplier);
 
 
+         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+         {
+             foreach (var instr in instructions)
+             {
+                 if (instr.opcode == OpCodes.Ldc_I4 && instr.operand is int intVal && intVal == 60000)
+                 {
+                     yield return new CodeInstruction(OpCodes.Ldc_I4, Speed);
+                     continue;
+                 }
+                 yield return instr;
+             }
+         }
+     }
+     [HarmonyPatch(typeof(HediffComp_KillAfterDays))]
+     [HarmonyPatch("CompPostPostAdd")]
+     static class KillAfterDaysPatch
+     {
+
+         static int Days = Mathf.RoundToInt(60000 * Settings.Instance.TimeMultiplier);
 
 
+         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+         {
+             foreach (var instr in instructions)
+             {
+                 if (instr.opcode == OpCodes.Ldc_I4 && instr.operand is int intVal && intVal == 60000)
+                 {
+                     yield return new CodeInstruction(OpCodes.Ldc_I4, Days);
+                     continue;
+                 }
+                 yield return instr;
+             }
+         }
+     }*/
 
+    // it seems to work which makes the top code redundant but i will leave it for now
+    [StaticConstructorOnStartup]
+    public static class Namespace60000Patcher
+    {
+        static Namespace60000Patcher()
+        {
+            PatchNamespace("Verse");
+        }
 
+        static void PatchNamespace(string ns)
+        {
+            int scaledTime = Mathf.RoundToInt(60000 * Settings.Instance.TimeMultiplier);
+            float scaledFloatTime = 60000f * Settings.Instance.TimeMultiplier;
+            int number1 = 0;
+            int number2 = 0;
 
+            var asm = typeof(Verse.TickManager).Assembly;
+            var harmony = new Harmony("com.julekjulas.experimental60kpatch");
 
+            foreach (var type in asm.GetTypes().Where(t => t.Namespace != null && t.Namespace.StartsWith(ns)))
+            {
+                foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
 
-
-
-
-
-
-
+                    try
+                    {
+                        var transpiler = new HarmonyMethod(typeof(Namespace60000Patcher).GetMethod(nameof(Transpile60000), BindingFlags.Static | BindingFlags.NonPublic));
+                        harmony.Patch(method, transpiler: transpiler);
+                        number1++;
+                    }
+                    catch (Exception)
+                    {
+                        number2++;
+                    }
+                }
+            }
+            Log.Message($"[DayStretched] 60000 not found in {number2} methods in namespace {ns}.");
+            Log.Message($"[DayStretched] Patched 60000 in {number1} methods in namespace {ns}.");
+        }
+        static IEnumerable<CodeInstruction> Transpile60000(IEnumerable<CodeInstruction> instructions)
+        {
+            int scaledTime = Mathf.RoundToInt(60000 * Settings.Instance.TimeMultiplier);
+            float scaledFloatTime = 60000f * Settings.Instance.TimeMultiplier;
+            foreach (var instr in instructions)
+            {
+                if (instr.opcode == OpCodes.Ldc_I4 && instr.operand is int val && val == 60000)
+                {
+                    instr.operand = scaledTime;
+                }
+                else if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float f && Mathf.Approximately(f, 60000f))
+                {
+                    instr.operand = scaledFloatTime;
+                }
+                yield return instr;
+            }
+        }
+    } //40k reference
 
 
     [HarmonyPatch(typeof(Pawn_InfectionVectorTracker))]
@@ -291,7 +377,26 @@ namespace DayStretched
             }
         }
     }
+    [HarmonyPatch(typeof(HediffComp_SeverityModifierBase))]
+    [HarmonyPatch("CompPostTickInterval")]
+    static class SeveritySecondPatch
+    {
+        static int Speed = Mathf.RoundToInt(200 * Settings.Instance.TimeMultiplier);
 
+
+        static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            foreach (var instr in instructions)
+            {
+                if (instr.opcode == OpCodes.Ldc_I4 && instr.operand is int intVal && intVal == 200)
+                {
+                    yield return new CodeInstruction(OpCodes.Ldc_I4, Speed);
+                    continue;
+                }
+                yield return instr;
+            }
+        }
+    }
 
 
 
