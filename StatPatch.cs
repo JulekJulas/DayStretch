@@ -82,11 +82,11 @@ public class StatPatch
         }
         if (pdef > 0)
         {
-            Log.Message($"[DayStretched] Patched {pdef} defs.");
+            Log.Message($"[DayStretch] Patched {pdef} defs.");
         }
         if (wpdef > 0)
         {
-            Log.Message($"[DayStretched] Patched {wpdef} work defs.");
+            Log.Message($"[DayStretch] Patched {wpdef} work defs.");
         }
 
 
@@ -96,6 +96,8 @@ public class StatPatch
 // super secret needs patch
 
 // if you change the namespace the entire program breaks, this is literally the tf2 coconut
+// 2 days later i still dont know why but ok
+// 3
 namespace DayStretched
 {
     [HarmonyPatch(typeof(Pawn_NeedsTracker))]
@@ -211,7 +213,7 @@ namespace DayStretched
                     continue;
                 }
                 yield return instr;
-            }// straight up floating
+            }
         }
     }
     [HarmonyPatch(typeof(HediffGiver_Heat))]
@@ -241,53 +243,9 @@ namespace DayStretched
                     continue;
                 }
                 yield return instr;
-            }// straight up floating again
+            }
         }
     }
-    /* [HarmonyPatch(typeof(HediffComp_HealPermanentWounds))]
-     [HarmonyPatch("ResetTicksToHeal")]
-     static class HealPWoundsPatch
-     {
-
-         static int Speed = Mathf.RoundToInt(60000 * Settings.Instance.TimeMultiplier);
-
-
-         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-         {
-             foreach (var instr in instructions)
-             {
-                 if (instr.opcode == OpCodes.Ldc_I4 && instr.operand is int intVal && intVal == 60000)
-                 {
-                     yield return new CodeInstruction(OpCodes.Ldc_I4, Speed);
-                     continue;
-                 }
-                 yield return instr;
-             }
-         }
-     }
-     [HarmonyPatch(typeof(HediffComp_KillAfterDays))]
-     [HarmonyPatch("CompPostPostAdd")]
-     static class KillAfterDaysPatch
-     {
-
-         static int Days = Mathf.RoundToInt(60000 * Settings.Instance.TimeMultiplier);
-
-
-         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-         {
-             foreach (var instr in instructions)
-             {
-                 if (instr.opcode == OpCodes.Ldc_I4 && instr.operand is int intVal && intVal == 60000)
-                 {
-                     yield return new CodeInstruction(OpCodes.Ldc_I4, Days);
-                     continue;
-                 }
-                 yield return instr;
-             }
-         }
-     }*/
-
-    // it seems to work which makes the top code redundant but i will leave it for now
     [StaticConstructorOnStartup]
     public static class Namespace60000Patcher
     {
@@ -324,8 +282,8 @@ namespace DayStretched
                     }
                 }
             }
-            Log.Message($"[DayStretched] 60000 not found in {number2} methods in namespace {ns}.");
-            Log.Message($"[DayStretched] Patched 60000 in {number1} methods in namespace {ns}.");
+            int number3 = number1 + number2;
+            Log.Message($"[DayStretch] 60000 float or int found in {number1} methods in namespace {ns} out of the total of {number3}.");
         }
         static IEnumerable<CodeInstruction> Transpile60000(IEnumerable<CodeInstruction> instructions)
         {
@@ -345,6 +303,7 @@ namespace DayStretched
             }
         }
     } //40k reference
+
 
 
     [HarmonyPatch(typeof(Pawn_InfectionVectorTracker))]
@@ -369,7 +328,7 @@ namespace DayStretched
     }
     [HarmonyPatch(typeof(HediffComp_SeverityModifierBase))]
     [HarmonyPatch("CompPostTickInterval")]
-    static class SeveritySecondPatch
+    static class SeveritySecondPatch // the design is very human
     {
         static int Speed = Mathf.RoundToInt(200 * Settings.Instance.TimeMultiplier);
 

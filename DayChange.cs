@@ -18,7 +18,7 @@ namespace DayStretched
             PatchGenDateMethods(harmony);
         }
 
-        static void PatchGenDateMethods(Harmony harmony)
+        static void PatchGenDateMethods(Harmony harmony)    
         {
             var genDateType = AccessTools.TypeByName("GenDate");
             if (genDateType == null)

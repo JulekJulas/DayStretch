@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Verse;
 
 namespace DayStretched
 {
+
     public class DayStretch : ModSettings
     {
-
+        
         public float TimeMultiplier = 1f;
         public bool WorkRelated = true;
 
@@ -32,18 +34,21 @@ namespace DayStretched
         }
         public override void DoSettingsWindowContents(Rect inRect)
         {
+
             Listing_Standard listingStandard = new Listing_Standard();
             listingStandard.Begin(inRect);
             listingStandard.CheckboxLabeled("Should work be scaled ", ref settings.WorkRelated, "If ticked on, work will be x times slower or faster");
-            listingStandard.Label("Time Multiplier: " + settings.TimeMultiplier.ToString("0.00"));
+            listingStandard.Label("Time Multiplier: " + settings.TimeMultiplier.ToString("0.0"));
             settings.TimeMultiplier = listingStandard.Slider(settings.TimeMultiplier, 0.1f, 20f);
+            settings.TimeMultiplier = (float)Math.Round(settings.TimeMultiplier, 1);
+            listingStandard.Label("The game MUST to be restarted every time the time multiplier is changed or else the code cannot update.");
             listingStandard.Gap();
             listingStandard.End();
             base.DoSettingsWindowContents(inRect);
         }
         public override string SettingsCategory()
         {
-            return "DayStretch".Translate();
+            return "DayStretch";
         }
     }
 }
