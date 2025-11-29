@@ -44,12 +44,7 @@ public class StatPatch
                     StatDef statDef = DefDatabase<StatDef>.GetNamed(statName, true);
                     if (statDef != null)
                     {
-                        if (Settings.Instance.ShouldUseIndividual == true)
-                        {
-                            statDef.defaultBaseValue /= Settings.Instance.IndividualTimeMultiplier;
-                        }
-                        else
-                            statDef.defaultBaseValue /= Settings.Instance.TimeMultiplier;
+                        statDef.defaultBaseValue /= Settings.Instance.TimeMultiplier;
                         pdef++;
                     }
                     else
@@ -74,12 +69,7 @@ public class StatPatch
                         StatDef statDef = DefDatabase<StatDef>.GetNamed(statName, true);
                         if (statDef != null)
                         {
-                            if (Settings.Instance.ShouldUseIndividual == true)
-                            {
-                                statDef.defaultBaseValue /= Settings.Instance.IndividualTimeMultiplier;
-                            }
-                            else
-                                statDef.defaultBaseValue /= Settings.Instance.TimeMultiplier;
+                            statDef.defaultBaseValue /= Settings.Instance.TimeMultiplier;
                             wpdef++;
                         }
                         else
@@ -409,7 +399,6 @@ namespace DayStretched
         {
             var harmony = new Harmony("julekjulas.daystretch");
             harmony.PatchAll();
-            Log.Message($"[DayStretched]PatchAll ran");
         }
     }
 }

@@ -13,15 +13,11 @@ namespace DayStretched
 
         public float TimeMultiplier = 1f;
         public bool WorkRelated = true;
-        public float IndividualTimeMultiplier = 1f;
-        public bool ShouldUseIndividual = false;
 
         public override void ExposeData()
         {
             Scribe_Values.Look(ref TimeMultiplier, "TimeMultiplier", 1f);
-            Scribe_Values.Look(ref IndividualTimeMultiplier, "IndividualTimeMultiplier", 1f);
             Scribe_Values.Look(ref WorkRelated, "WorkRelated", true);
-            Scribe_Values.Look(ref ShouldUseIndividual, "ShouldUseIndividual", true);
             base.ExposeData();
         }
     }
@@ -42,9 +38,6 @@ namespace DayStretched
             listingStandard.Label("Time Multiplier: " + settings.TimeMultiplier.ToString("0.00"));
             settings.TimeMultiplier = listingStandard.Slider(settings.TimeMultiplier, 0.1f, 20f);
             listingStandard.Gap();
-            listingStandard.CheckboxLabeled("Should Needs be scaled individually ", ref settings.ShouldUseIndividual, "If ticked on, needs and work will be x times slower or faster ignoring main time modifier");
-            listingStandard.Label("Multiplier: " + settings.IndividualTimeMultiplier.ToString("0.00"));
-            settings.IndividualTimeMultiplier = listingStandard.Slider(settings.IndividualTimeMultiplier, 0.1f, 20f);
             listingStandard.End();
             base.DoSettingsWindowContents(inRect);
         }
