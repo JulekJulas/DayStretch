@@ -23,14 +23,13 @@ namespace DayStretched
             var genDateType = AccessTools.TypeByName("GenDate");
             if (genDateType == null)
             {
-                Log.Error("Could not find GenDate type to patch.");
+                Log.Error("Could not find GenDate type to patch."); // I guess we wont need it till 1.7+, im just gonna leave it here anyway
                 return;
             }
 
             var methods = genDateType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
             foreach (var m in methods)
             {
-                // Skip methods with no body
                 if (m.IsAbstract || m.IsGenericMethod) continue;
                 try
                 {
@@ -39,7 +38,6 @@ namespace DayStretched
                 }
                 catch (Exception ex)
                 {
-                    // Some methods may not be patchable (e.g. extern). Log and continue.
                     Log.Warning($"Failed to patch {m.Name}: {ex.Message}");
                 }
             }
@@ -78,8 +76,9 @@ namespace DayStretched
                 // Replace integer constants (ldc.i4)
                 if (ci.opcode == OpCodes.Ldc_I4 && ci.operand is int ival)
                 {
-                    switch (ival)
-                    {
+                    switch (ival) // like geniuinely i want to change this but i fear i might break something and not notice till i release it on steam
+                    { // like i dont think we need a few of these but ehhhhhhh
+                        // no point in removing it if it works ey?
                         case DaySettings.VanillaTicksPerDay:
                             codes[i] = new CodeInstruction(OpCodes.Call, m_TicksPerDayInt);
                             break;

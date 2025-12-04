@@ -37,7 +37,8 @@ namespace DayStretched
                 string text = $"The saved time multiplier for this save is {savedTimeMultiplier}.\n" +
                               $"Your current multiplier is {Settings.Instance.TimeMultiplier}.\n" +
                               $"Continuing with the current multiplier may cause save corruption and many bugs.\n\n" +
-                              $"Do you want to switch to the saved multiplier?";
+                              $"Do you want to switch to the saved multiplier?\n\n" +
+                              $"Though also note that the mod cannot be added midgame.";
                 string text2 = $"Are you absolutely sure?";
 
 

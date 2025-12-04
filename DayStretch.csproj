@@ -172,7 +172,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvancedPatcher.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="ResultPatcher.cs" />
     <Compile Include="SaveValueStore.cs" />
     <Compile Include="TODO.cs" />
     <Compile Include="VanillaReplace.cs" />
