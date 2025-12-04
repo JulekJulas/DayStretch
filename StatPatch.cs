@@ -26,16 +26,11 @@ public class StatPatchListWorkDef : Def
 
 namespace DayStretched
 {
-
-
-
-
     [StaticConstructorOnStartup]
     public class StatPatch
     {
         static StatPatch()
         {
-            // temu ass code holy shit
             int pdef = 0;
             int wpdef = 0;
             foreach (StatPatchListDef def in DefDatabase<StatPatchListDef>.AllDefsListForReading)
@@ -53,7 +48,6 @@ namespace DayStretched
                         {
                             statDef.defaultBaseValue /= Settings.Instance.TimeMultiplier;
                             pdef++;
-
                         }
                         else
                         {
@@ -96,19 +90,14 @@ namespace DayStretched
             {
                 Log.Message($"[DayStretch] Patched {wpdef} work defs.");
             }
-
-
         }
     }
-
-    // super secret needs patch
-
-    // if you change the namespace the entire program breaks, this is literally the tf2 coconut
-    // 2 days later i still dont know why but ok
-    // 3
     namespace DayStretched
     {
-        [HarmonyPatch(typeof(Pawn_NeedsTracker))]
+
+
+        // moved these to NonAutomatablePatches but gonna leave them here just in case
+      /*  [HarmonyPatch(typeof(Pawn_NeedsTracker))]
         [HarmonyPatch("NeedsTrackerTickInterval")]
         static class NeedsTrackerTickIntervalPatch
         {
@@ -165,16 +154,6 @@ namespace DayStretched
                   // note to self: we did
             }
             [StaticConstructorOnStartup]
-            [HarmonyPatch(typeof(HealthUtility))]
-            [HarmonyPatch(nameof(HealthUtility.TicksUntilDeathDueToBloodLoss))]
-            public static class DeathInFixer
-            {
-                static void Postfix(ref int __result)
-                {
-                    __result = Mathf.RoundToInt(__result * Settings.Instance.TimeMultiplier);
-                }
-            }
-            [StaticConstructorOnStartup]
             [HarmonyPatch(typeof(HediffGiver_Bleeding))]
             [HarmonyPatch(nameof(HediffGiver_Bleeding.OnIntervalPassed))]
             public static class BloodStatusFixer
@@ -194,115 +173,7 @@ namespace DayStretched
                     return false;
                 }
             }
-        } // heat patches below
-        [HarmonyPatch(typeof(HediffGiver_Hypothermia))]
-        [HarmonyPatch("OnIntervalPassed")]
-        static class HypothermiaPatch
-        {
-            static float SpeedGain = 0.00075f * (1f / Settings.Instance.TimeMultiplier);
-            static float SpeedLoss = 0.027f * (1f / Settings.Instance.TimeMultiplier);
-
-
-            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-            {
-                foreach (var instr in instructions)
-                {
-                    if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float intVal && intVal == 0.00075f)
-                    {
-                        yield return new CodeInstruction(OpCodes.Ldc_R4, SpeedGain);
-                        continue;
-                    }
-                    yield return instr;
-                }
-                foreach (var instr in instructions)
-                {
-                    if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float intVal && intVal == 0.027f)
-                    {
-                        yield return new CodeInstruction(OpCodes.Ldc_R4, SpeedLoss);
-                        continue;
-                    }
-                    yield return instr;
-                }
-            }
-        }
-        /*[HarmonyPatch(typeof(HediffGiver_Heat))]
-        [HarmonyPatch("OnIntervalPassed")]
-        static class HyperthermiaPatch
-        {
-            static float SpeedGain = 0.000375f * (1f / Settings.Instance.TimeMultiplier);
-            static float SpeedLoss = 0.027f * (1f / Settings.Instance.TimeMultiplier);
-
-
-            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-            {
-                foreach (var instr in instructions)
-                {
-                    if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float intVal && intVal == 0.000375f)
-                    {
-                        yield return new CodeInstruction(OpCodes.Ldc_R4, SpeedGain);
-                        continue;
-                    }
-                    yield return instr;
-                }
-                foreach (var instr in instructions)
-                {
-                    if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float intVal && intVal == 0.027f)
-                    {
-                        yield return new CodeInstruction(OpCodes.Ldc_R4, SpeedLoss);
-                        continue;
-                    }
-                    yield return instr;
-                }
-            }
         }*/
-
-
-        /*[HarmonyPatch(typeof(Pawn_InfectionVectorTracker))]
-        [HarmonyPatch("InfectionTickInterval")]
-        static class InfectionVectorTrackeTickIntervalPatch
-        {
-            static int TickIntervalInt = Mathf.RoundToInt(600 * Settings.Instance.TimeMultiplier);
-
-
-            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-            {
-                foreach (var instr in instructions)
-                {
-                    if (instr.opcode == OpCodes.Ldc_I4 && instr.operand is int intVal && intVal == 600)
-                    {
-                        yield return new CodeInstruction(OpCodes.Ldc_I4, TickIntervalInt);
-                        continue;
-                    }
-                    yield return instr; // seems to work
-                }
-            }
-        }*/
-        /*[HarmonyPatch(typeof(HediffComp_SeverityModifierBase))]
-        [HarmonyPatch("CompPostTickInterval")]
-        static class SeveritySecondPatch // the design is very human
-        {
-            static int Speed = Mathf.RoundToInt(200 * Settings.Instance.TimeMultiplier);
-
-
-            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-            {
-                foreach (var instr in instructions)
-                {
-                    if (instr.opcode == OpCodes.Ldc_I4 && instr.operand is int intVal && intVal == 200)
-                    {
-                        yield return new CodeInstruction(OpCodes.Ldc_I4, Speed);
-                        continue;
-                    }
-                    yield return instr;
-                }
-            }
-        }*/
-
-
-
-
-
-
         public class DayStretched : Mod
         {
             public DayStretched(ModContentPack content) : base(content)

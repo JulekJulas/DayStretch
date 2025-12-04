@@ -142,6 +142,8 @@ public static class AdvancedPatcher
                     Log.Error($"[DayStretch] Variable {value} nor variable {secondValue} not found in {typeOf} and {name}.");
                 }
             }
+            numbersPatched++;
+            Log.Message($"Patched {typeOf}");
         }
 
     }
@@ -159,7 +161,6 @@ public static class AdvancedPatcher
                     }
                     yield return instr;
                 }
-                numbersPatched++;
             }
             else
             {
@@ -175,7 +176,6 @@ public static class AdvancedPatcher
                     }
                     yield return instr;
                 }
-                numbersPatched++;
             }
         }
         else
@@ -190,7 +190,6 @@ public static class AdvancedPatcher
                     }
                     yield return instr;
                 }
-                numbersPatched++;
             }
             else
             {
@@ -206,7 +205,6 @@ public static class AdvancedPatcher
                     }
                     yield return instr;
                 }
-                numbersPatched++;
             }
         }
     }

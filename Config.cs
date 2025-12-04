@@ -41,7 +41,7 @@ namespace DayStretched
             listingStandard.Label("Time Multiplier: " + settings.TimeMultiplier.ToString("0.0"));
             settings.TimeMultiplier = listingStandard.Slider(settings.TimeMultiplier, 0.1f, 20f);
             settings.TimeMultiplier = (float)Math.Round(settings.TimeMultiplier, 1);
-            listingStandard.Label("The game MUST to be restarted every time the time multiplier is changed or else the code cannot update.");
+            listingStandard.Label("The game MUST be restarted every time the time multiplier is changed or else the code cannot update.");
             listingStandard.Gap();
             listingStandard.End();
             base.DoSettingsWindowContents(inRect);
