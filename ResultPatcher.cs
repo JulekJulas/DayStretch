@@ -33,7 +33,7 @@ public static class ResultPatcher
         if (!logShown)
         {
             logShown = true;
-            Log.Message($"[DayStretch] Patched {resultsPatched} results");
+            Log.Message($"[DayStretch]-(ResultPatch) Patched {resultsPatched} results");
         }
     }
 
@@ -41,7 +41,7 @@ public static class ResultPatcher
     {
         currentReverse = reverse;
 
-        // making string a type so .GetMethods doesnt scream
+        // making the string a type so .GetMethods doesnt scream
         Type type = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a =>
         {
             try
@@ -67,32 +67,16 @@ public static class ResultPatcher
         {
             if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
             if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
-            if (isInt == true)
+            try
             {
-                try
-                {
-                    var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(IntResultPostfix), BindingFlags.Static | BindingFlags.NonPublic));
-                    harmony.Patch(method, postfix: postfix);
-                }
-                catch (Exception)
-                {
-                    Log.Error($"[DayStretch] Result not found.");
-                }
+                var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(isInt? nameof(IntResultPostfix) : nameof(FloatResultPostfix), BindingFlags.Static | BindingFlags.NonPublic));
+                harmony.Patch(method, postfix: postfix);
                 resultsPatched++;
-
+                Log.Message($"Patched {typeOf}");
             }
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(FloatResultPostfix), BindingFlags.Static | BindingFlags.NonPublic));
-                    harmony.Patch(method, postfix: postfix);
-                }
-                catch (Exception)
-                {
-                    Log.Error($"[DayStretch] Result not found.");
-                }
-                resultsPatched++;
+                Log.Error($"[DayStretch]-(ResultPatch) {e} Result not found.");
             }
 
 

@@ -43,7 +43,7 @@ public static class AdvancedPatcher
         if (!logShown)
         {
             logShown = true;
-            Log.Message($"[DayStretch] Patched {numbersPatched} variables");
+            Log.Message($"[DayStretch]-(AdvancedPatch) Patched {numbersPatched} variables");
         }
     }
 
@@ -57,22 +57,18 @@ public static class AdvancedPatcher
         {
             if (reverse == true)
             {
-                int scaledTime = Mathf.RoundToInt(value * (1f / Settings.Instance.TimeMultiplier));
-                currentScaledInt = scaledTime;
+                currentScaledInt = Mathf.RoundToInt(value * (1f / Settings.Instance.TimeMultiplier));
                 if (Mathf.Approximately(secondValue, -1) is false) 
                 {
-                    int secondScaledTime = Mathf.RoundToInt(secondValue * (1f / Settings.Instance.TimeMultiplier));
-                    currentSecondScaledInt = scaledTime;
+                    currentSecondScaledInt = Mathf.RoundToInt(secondValue * (1f / Settings.Instance.TimeMultiplier));
                 }
             }
             else
             {
-                int scaledTime = Mathf.RoundToInt(value * Settings.Instance.TimeMultiplier);
-                currentScaledInt = scaledTime;
+                currentScaledInt = Mathf.RoundToInt(value * Settings.Instance.TimeMultiplier);
                 if (Mathf.Approximately(secondValue, -1) is false)
                 {
-                    int secondScaledTime = Mathf.RoundToInt(secondValue * Settings.Instance.TimeMultiplier);
-                    currentSecondScaledInt = secondScaledTime;
+                    currentSecondScaledInt = Mathf.RoundToInt(secondValue * Settings.Instance.TimeMultiplier);
                 }
             }
         }
@@ -80,22 +76,18 @@ public static class AdvancedPatcher
         {
             if (reverse == true)
             {
-                float scaledTime = (value * (1f / Settings.Instance.TimeMultiplier));
-                currentScaledFloat = scaledTime;
+                currentScaledFloat = (value * (1f / Settings.Instance.TimeMultiplier));
                 if (Mathf.Approximately(secondValue, -1) is false)
                 {
-                    float secondScaledTime = (secondValue * (1f / Settings.Instance.TimeMultiplier));
-                    currentSecondScaledFloat = scaledTime;
+                    currentSecondScaledFloat = (secondValue * (1f / Settings.Instance.TimeMultiplier));
                 }
             }
             else
             {
-                float scaledTime = (value * Settings.Instance.TimeMultiplier);
-                currentScaledFloat = scaledTime;
+                currentScaledFloat = (value * Settings.Instance.TimeMultiplier);
                 if (Mathf.Approximately(secondValue, -1) is false)
                 {
-                    float secondScaledTime = (secondValue * Settings.Instance.TimeMultiplier);
-                    currentSecondScaledFloat = scaledTime;
+                    currentSecondScaledFloat = (secondValue * Settings.Instance.TimeMultiplier);
                 }
             }
         }// is there any point in making this a method?
@@ -135,11 +127,11 @@ public static class AdvancedPatcher
             {
                 if (Mathf.Approximately(secondValue, -1))
                 {
-                    Log.Error($"[DayStretch] Variable {value} not found in {typeOf} and {name}.");
+                    Log.Error($"[DayStretch]-(AdvancedPatch) Variable {value} not found in {typeOf} and {name}.");
                 }
                 else
                 {
-                    Log.Error($"[DayStretch] Variable {value} nor variable {secondValue} not found in {typeOf} and {name}.");
+                    Log.Error($"[DayStretch]-(AdvancedPatch) Variable {value} nor variable {secondValue} not found in {typeOf} and {name}.");
                 }
             }
             numbersPatched++;

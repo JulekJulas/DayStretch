@@ -76,4 +76,19 @@ namespace DayStretched
             }
         }
     }
+    // getter
+    // TODO AUTOMATE GETTERS
+
+    // tried two times, i have no idea how it works
+    // I will leave this to someone more experienced with harmony
+    [HarmonyPatch(typeof(Plant), "GrowthPerTick", MethodType.Getter)]
+    public static class Patch_GrowthRateForDay
+    {
+        [HarmonyPostfix]
+        public static void Postfix(ref float __result)
+        {
+            __result *= Settings.Instance.TimeMultiplier;
+        }
+    }
+
 }
