@@ -1,0 +1,9 @@
+<Defs>
+	<ResultPatchDef>
+		<defName>DeathInPatch</defName>
+		<typeOf>HealthUtility</typeOf>
+		<name>TicksUntilDeathDueToBloodLoss</name>
+		<isInt>true</isInt>
+		<reverse>false</reverse>
+	</ResultPatchDef>
+</Defs>
