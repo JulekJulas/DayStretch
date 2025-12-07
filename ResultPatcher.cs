@@ -16,19 +16,19 @@ public class ResultPatchDef : Def
     public string name;
     public bool isInt;
     public bool reverse;
+    public bool isGetter;
 } // mostly just a heavily edited copy of Advanced patcher, i did want to add this functionality to it but honestly, this will be simpler and maybe more performant
 // note: it was much simpler and its much easier for the user to use
 [StaticConstructorOnStartup]
 public static class ResultPatcher
 {
-    static bool currentReverse;
     static int resultsPatched;
     static bool logShown = false;
     static ResultPatcher()
     {
         foreach (ResultPatchDef def in DefDatabase<ResultPatchDef>.AllDefsListForReading)
         {
-            ResultDefPatcher(def.typeOf, def.name, def.isInt, def.reverse);
+            ResultDefPatcher(def.typeOf, def.name, def.isInt, def.reverse, def.isGetter);
         }
         if (!logShown)
         {
@@ -37,22 +37,12 @@ public static class ResultPatcher
         }
     }
 
-    static void ResultDefPatcher(string typeOf, string name, bool isInt, bool reverse)
+    static void ResultDefPatcher(string typeOf, string name, bool isInt, bool reverse, bool isGetter)
     {
-        currentReverse = reverse;
+
 
         // making the string a type so .GetMethods doesnt scream
-        Type type = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a =>
-        {
-            try
-            {
-                return a.GetTypes();
-            }
-            catch
-            {
-                return Type.EmptyTypes;
-            }
-        }).FirstOrDefault(t => t.FullName == typeOf || t.Name == typeOf);
+        Type type = GenTypes.GetTypeInAnyAssembly(typeOf);
         // i wanted to include this in the top code but i dont think i can?
         // correct me if i'm wrong though
         if (type == null)
@@ -61,16 +51,57 @@ public static class ResultPatcher
             return;
         }
 
+
         var harmony = new Harmony("com.julekjulas.resultpatch");
 
         foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
         {
+            if (isGetter)
+            {
+                foreach (var prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    if (!string.IsNullOrEmpty(name) && prop.Name != name) continue;
+
+                    var getter = prop.GetGetMethod(true);
+                    if (getter == null) continue;
+                    if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
+
+                    try
+                    {
+                        if (reverse)
+                        {
+                            var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(isInt ? nameof(ReverseIntResultPostfix) : nameof(ReverseFloatResultPostfix), BindingFlags.Static | BindingFlags.NonPublic));
+                            harmony.Patch(getter, postfix: postfix);
+                        }
+                        else
+                        {
+                            var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(isInt ? nameof(IntResultPostfix) : nameof(FloatResultPostfix), BindingFlags.Static | BindingFlags.NonPublic));
+                            harmony.Patch(getter, postfix: postfix);
+                        }
+                        resultsPatched++;
+                        Log.Message($"[DayStretch]-(ResultPatch) Patched getter {typeOf}.{prop.Name}");
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[DayStretch]-(ResultPatch) Failed patching getter {typeOf}.{prop.Name}: {e}");
+                    }
+                }
+                return;
+            }
             if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
             if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
             try
             {
-                var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(isInt? nameof(IntResultPostfix) : nameof(FloatResultPostfix), BindingFlags.Static | BindingFlags.NonPublic));
-                harmony.Patch(method, postfix: postfix);
+                if (reverse)
+                {
+                    var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(isInt ? nameof(ReverseIntResultPostfix) : nameof(ReverseFloatResultPostfix), BindingFlags.Static | BindingFlags.NonPublic));
+                    harmony.Patch(method, postfix: postfix);
+                }
+                else
+                {
+                    var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(isInt ? nameof(IntResultPostfix) : nameof(FloatResultPostfix), BindingFlags.Static | BindingFlags.NonPublic));
+                    harmony.Patch(method, postfix: postfix);
+                }
                 resultsPatched++;
                 Log.Message($"Patched {typeOf}");
             }
@@ -78,31 +109,22 @@ public static class ResultPatcher
             {
                 Log.Error($"[DayStretch]-(ResultPatch) {e} Result not found.");
             }
-
-
         }
-
     }
     static void IntResultPostfix(ref int __result)
     {
-        if (currentReverse == true)
-        {
-            __result = Mathf.RoundToInt(__result * (1f / Settings.Instance.TimeMultiplier));
-        }
-        else
-        {
-            __result = Mathf.RoundToInt(__result * Settings.Instance.TimeMultiplier);
-        }
+        __result = Mathf.RoundToInt(__result * Settings.Instance.TimeMultiplier);
+    }
+    static void ReverseIntResultPostfix(ref int __result)
+    {
+        __result = Mathf.RoundToInt(__result * (1f / Settings.Instance.TimeMultiplier));
     }
     static void FloatResultPostfix(ref float __result)
     {
-        if (currentReverse == true)
-        {
-            __result /= Settings.Instance.TimeMultiplier;
-        }
-        else
-        {
-            __result *= Settings.Instance.TimeMultiplier;
-        }
+        __result *= Settings.Instance.TimeMultiplier;
+    }
+    static void ReverseFloatResultPostfix(ref float __result)
+    {
+        __result /= Settings.Instance.TimeMultiplier;
     }
 }

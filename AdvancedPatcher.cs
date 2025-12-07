@@ -17,27 +17,37 @@ public class AdvancedPatchDef : Def
     public bool isInt;
     public float value;
     public float secondValue;
+    public float thirdValue;
     public bool reverse;
+    public bool isGetter;
 }
 
 [StaticConstructorOnStartup]
 public static class AdvancedPatcher
 {
     static bool currentIsInt;
+    static bool currentReverse;
+    static bool logShown = false;
+
     static float currentValue;
     static float currentSecondValue;
-    static bool currentReverse;
+    static float currentThirdValue;
+
     static int currentScaledInt;
     static int currentSecondScaledInt;
+    static int currentThirdScaledInt;
+
     static float currentScaledFloat;
     static float currentSecondScaledFloat;
+    static float currentThirdScaledFloat;
+
     static int numbersPatched;
-    static bool logShown = false;
+
     static AdvancedPatcher()
     {
         foreach (AdvancedPatchDef def in DefDatabase<AdvancedPatchDef>.AllDefsListForReading)
         {
-            AdvancedDefPatcher(def.typeOf, def.name, def.isInt, def.value, def.secondValue, def.reverse);
+            AdvancedDefPatcher(def.typeOf, def.name, def.isInt, def.value, def.secondValue, def.thirdValue, def.reverse, def.isGetter);
         }
         // makes so the log only shows the amount of numbers patched exactly one time
         if (!logShown)
@@ -47,29 +57,39 @@ public static class AdvancedPatcher
         }
     }
 
-    static void AdvancedDefPatcher(string typeOf, string name, bool isInt, float value, float secondValue, bool reverse)
+    static void AdvancedDefPatcher(string typeOf, string name, bool isInt, float value, float secondValue, float thirdValue, bool reverse, bool isGetter)
     {
         currentIsInt = isInt;
         currentValue = value;
         currentSecondValue = secondValue;
+        currentThirdValue = thirdValue;
         currentReverse = reverse;
         if (isInt == true)
         {
             if (reverse == true)
             {
                 currentScaledInt = Mathf.RoundToInt(value * (1f / Settings.Instance.TimeMultiplier));
-                if (Mathf.Approximately(secondValue, -1) is false) 
+                if (secondValue != 0f) 
                 {
                     currentSecondScaledInt = Mathf.RoundToInt(secondValue * (1f / Settings.Instance.TimeMultiplier));
+                }
+                if (thirdValue != 0f)
+                {
+                    currentThirdScaledInt = Mathf.RoundToInt(thirdValue * (1f / Settings.Instance.TimeMultiplier));
                 }
             }
             else
             {
                 currentScaledInt = Mathf.RoundToInt(value * Settings.Instance.TimeMultiplier);
-                if (Mathf.Approximately(secondValue, -1) is false)
+                if (secondValue != 0f)
                 {
                     currentSecondScaledInt = Mathf.RoundToInt(secondValue * Settings.Instance.TimeMultiplier);
                 }
+                if (thirdValue != 0f)
+                {
+                    currentThirdScaledInt = Mathf.RoundToInt(thirdValue * Settings.Instance.TimeMultiplier);
+                }
+
             }
         }
         else
@@ -77,34 +97,30 @@ public static class AdvancedPatcher
             if (reverse == true)
             {
                 currentScaledFloat = (value * (1f / Settings.Instance.TimeMultiplier));
-                if (Mathf.Approximately(secondValue, -1) is false)
+                if (secondValue != 0f)
                 {
                     currentSecondScaledFloat = (secondValue * (1f / Settings.Instance.TimeMultiplier));
+                }
+                if (thirdValue != 0f)
+                {
+                    currentThirdScaledFloat = (thirdValue * (1f / Settings.Instance.TimeMultiplier));
                 }
             }
             else
             {
                 currentScaledFloat = (value * Settings.Instance.TimeMultiplier);
-                if (Mathf.Approximately(secondValue, -1) is false)
+                if (secondValue != 0f)
                 {
                     currentSecondScaledFloat = (secondValue * Settings.Instance.TimeMultiplier);
                 }
+                if (secondValue != 0f)
+                {
+                    currentThirdScaledFloat = (thirdValue * Settings.Instance.TimeMultiplier);
+                }
             }
-        }// is there any point in making this a method?
-
-
+        }
         // making string a type so .GetMethods doesnt scream
-        Type type = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a =>
-        {
-            try
-            {
-                return a.GetTypes();
-            }
-            catch
-            {
-                return Type.EmptyTypes;
-            }
-        }).FirstOrDefault(t => t.FullName == typeOf || t.Name == typeOf);
+        Type type = GenTypes.GetTypeInAnyAssembly(typeOf);
         // i wanted to include this in the top code but i dont think i can?
         // correct me if i'm wrong though
         if (type == null)
@@ -116,12 +132,34 @@ public static class AdvancedPatcher
         var harmony = new Harmony("com.julekjulas.advancedpatch");
         foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
         {
+            if (isGetter)
+            {
+                foreach (var prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    if (!string.IsNullOrEmpty(name) && prop.Name != name) continue;
+                    var getter = prop.GetGetMethod(true);
+                    if (getter == null) continue;
+                    if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
+                    try
+                    {
+                        var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(isInt ? nameof(TranspileIntVariables) : nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic));
+                        harmony.Patch(getter, transpiler: transpiler);
+                        numbersPatched++;
+                        Log.Message($"[DayStretch]-(AdvancedPatch) Patched getter {typeOf}.{prop.Name}");
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[DayStretch]-(AdvancedPatch) Failed patching getter {typeOf}.{prop.Name}: {e}");
+                    }
+                }
+            }
             if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
             if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
             try
             {
-                var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileVariables), BindingFlags.Static | BindingFlags.NonPublic));
+                var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(isInt ? nameof(TranspileIntVariables) : nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic));
                 harmony.Patch(method, transpiler: transpiler);
+                numbersPatched++;
             }
             catch (Exception)
             {
@@ -135,69 +173,35 @@ public static class AdvancedPatcher
                 }
             }
             numbersPatched++;
-            Log.Message($"Patched {typeOf}");
+            Log.Message($"[DayStretch]-(AdvancedPatch) Patched {typeOf}");
         }
 
     }
-    static IEnumerable<CodeInstruction> TranspileVariables(IEnumerable<CodeInstruction> instructions)
+
+    static IEnumerable<CodeInstruction> TranspileIntVariables(IEnumerable<CodeInstruction> instructions)
     {
-        if (currentIsInt == true)
+        foreach (var instr in instructions)
         {
-            if (Mathf.Approximately(currentSecondValue, -1))
+            if ((instr.opcode == OpCodes.Ldc_I4 || instr.opcode == OpCodes.Ldc_I4_S) && instr.operand is int val)
             {
-                foreach (var instr in instructions)
-                {
-                    if (instr.opcode == OpCodes.Ldc_I4 && instr.operand is int val && val == (int)currentValue)
-                    {
-                        instr.operand = currentScaledInt;
-                    }
-                    yield return instr;
-                }
+                if (val == (int)currentValue) instr.operand = currentScaledInt;
+                else if ((val == (int)currentSecondValue) && (currentSecondValue != 0)) instr.operand = currentSecondScaledInt;
+                else if ((val == (int)currentThirdValue) && (currentThirdValue != 0)) instr.operand = currentThirdScaledInt;
             }
-            else
-            {
-                foreach (var instr in instructions)
-                {
-                    if (instr.opcode == OpCodes.Ldc_I4 && instr.operand is int val && val == currentValue)
-                    {
-                        instr.operand = currentScaledInt;
-                    }
-                    else if (instr.opcode == OpCodes.Ldc_I4 && instr.operand is int f && Mathf.Approximately(f, currentSecondValue))
-                    {
-                        instr.operand = currentSecondScaledInt;
-                    }
-                    yield return instr;
-                }
-            }
+            yield return instr;
         }
-        else
+    }
+    static IEnumerable<CodeInstruction> TranspileFloatVariables(IEnumerable<CodeInstruction> instructions)
+    {
+        foreach (var instr in instructions)
         {
-            if (Mathf.Approximately(currentSecondValue, -1))
+            if ((instr.opcode == OpCodes.Ldc_R4) && instr.operand is float val)
             {
-                foreach (var instr in instructions)
-                {
-                    if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float val && val == currentValue)
-                    {
-                        instr.operand = currentScaledFloat;
-                    }
-                    yield return instr;
-                }
+                if (val == (float)currentValue) instr.operand = currentScaledFloat;
+                else if ((val == (float)currentSecondValue) && (currentSecondValue != 0)) instr.operand = currentSecondScaledFloat;
+                else if ((val == (float)currentThirdValue) && (currentThirdValue != 0)) instr.operand = currentThirdScaledFloat;
             }
-            else
-            {
-                foreach (var instr in instructions)
-                {
-                    if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float val && val == currentValue)
-                    {
-                        instr.operand = currentScaledFloat;
-                    }
-                    else if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float f && Mathf.Approximately(f, currentSecondValue))
-                    {
-                        instr.operand = currentSecondScaledFloat;
-                    }
-                    yield return instr;
-                }
-            }
+            yield return instr;
         }
     }
 }   

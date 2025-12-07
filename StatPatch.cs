@@ -177,7 +177,7 @@ namespace DayStretched
         public class DayStretched : Mod
         {
             public DayStretched(ModContentPack content) : base(content)
-            {
+            {   
                 var harmony = new Harmony("julekjulas.daystretch");
                 harmony.PatchAll();
             }

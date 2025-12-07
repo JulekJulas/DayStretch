@@ -12,7 +12,6 @@ For now
 the whole day is wonked, gotta fix that
 -Add more settings
 
-Add getter support for Advanced and Result patcher
 
 
 - try automating as many NonAutomatablePatches as it is possible
