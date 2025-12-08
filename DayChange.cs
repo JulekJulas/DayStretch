@@ -9,7 +9,20 @@ using Verse;
 
 namespace DayStretched
 {
-    [StaticConstructorOnStartup]
+    // this is not very needed anymore since its been rewritten in def form but i will leave it here since it worked so well
+    // this IS AI code that I used at the very beginning of my programming journey
+    // it will not be missed
+
+
+
+
+   
+
+
+
+
+
+    /*[StaticConstructorOnStartup]
     public static class GenDateConstantsPatcher
     {
         static GenDateConstantsPatcher()
@@ -155,5 +168,5 @@ namespace DayStretched
 
             return codes.AsEnumerable();
         }
-    }
+    }*/
 }

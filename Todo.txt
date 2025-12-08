@@ -1,0 +1,22 @@
+﻿
+
+
+
+
+
+
+
+
+
+
+
+
+
+-Make sure mod compatibility is solid
+-Already spotted an issue with this https://steamcommunity.com/sharedfiles/filedetails/?id=3520836521&searchtext=weather
+the whole day is wonked, gotta fix that
+-Add more settings
+
+
+
+- try automating as many NonAutomatablePatches as it is possible

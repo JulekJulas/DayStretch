@@ -177,13 +177,13 @@
     <Compile Include="NonAutomatablePatches.cs" />
     <Compile Include="ResultPatcher.cs" />
     <Compile Include="SaveValueStore.cs" />
-    <Compile Include="TODO.cs" />
     <Compile Include="VanillaReplace.cs" />
     <Compile Include="DayChange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatPatch.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Todo.txt" />
     <Content Include="time_imresizer.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

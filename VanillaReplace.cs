@@ -5,7 +5,15 @@ using Verse;
 
 namespace DayStretched
 {
-    public static class DaySettings
+    // read the comment in DayChange.cs
+    // this also applies
+
+
+
+
+
+
+    /*public static class DaySettings
     {
 
         public const int VanillaTicksPerDay = 60000;
@@ -37,7 +45,7 @@ namespace DayStretched
         public static float TicksPerYearFloat() => (float)TicksPerYearInt();
 
         public static long TicksPerDecadeLong() => (long)TicksPerYearInt() * 10L;
-    }
+    }*/
 
 }
 
