@@ -1,0 +1,127 @@
+<Defs>
+<!-- template for patches 
+	<AdvancedPatchDef>
+		<defName>Here can be anything, not very important</defName>
+		<typeOf>Class</typeOf>
+		<name>The bit of code you want to modify</name>
+		<type>type of the number, possible options: int, float, short, long, double</isInt>
+		<value>Necessary</value>
+		<secondValue>Optional, if not filled will be skipped</secondValue>
+		<thirdValue>Optional, if not filled will be skipped, mostly an option due to HealthTracker</thirdValue>
+		<isGetter>If the method is a getter, default: false</isGetter>
+		<isReverse>If you want to divide the values instead of multiplying default: false (multiply)</isReverse>
+	<AdvancedPatchDef>
+
+-->
+
+<!-- important one, all needs -->
+	<AdvancedPatchDef>	
+		<defName>AllNeedsPatch</defName>
+		<typeOf>Pawn_NeedsTracker</typeOf>
+		<name>NeedsTrackerTickInterval</name>
+		<type>int</type>
+		<value>150</value>
+	</AdvancedPatchDef>
+	
+<!-- All health-->
+	<AdvancedPatchDef>
+		<defName>AllHealthPatch</defName>
+		<typeOf>Pawn_HealthTracker</typeOf>
+		<name>HealthTrackerTickIntervalPatchl</name>
+		<type>int</type>
+		<value>600</value>
+		<secondValue>15</secondValue>
+		<thirdValue>60</thirdValue>
+	</AdvancedPatchDef>
+
+
+
+	<AdvancedPatchDef>
+		<defName>SeverityPatch</defName>
+		<typeOf>HediffComp_SeverityModifierBase</typeOf>
+		<name>CompPostTickInterval</name>
+		<type>int</type>
+		<value>200</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>InfectionPatch</defName>
+		<typeOf>Pawn_InfectionVectorTracker</typeOf>
+		<name>InfectionTickInterval</name>
+		<type>int</type>
+		<value>600</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>HyperthermiaPatch</defName>
+		<typeOf>HediffGiver_Heat</typeOf>
+		<name>OnIntervalPassed</name>
+		<type>float</type>
+		<value>0.000375</value>
+		<secondValue>0.027</secondValue>
+		<reverse>true</reverse>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>HypothermiaPatch</defName>
+		<typeOf>HediffGiver_Hypothermia</typeOf>
+		<name>OnIntervalPassed</name>
+		<type>float</type>
+		<value>0.00075</value>
+		<secondValue>0.027</secondValue>
+		<reverse>true</reverse>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>ThoughtTimePatch</defName>
+		<typeOf>ThoughtDef</typeOf>
+		<name>DurationTicks</name>
+		<type>int</type>
+		<value>60000</value>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>QuestTraderChancePatch</defName>
+		<typeOf>Storyteller</typeOf>
+		<name>QuestGiverTraderChanceNow</name>
+		<type>int</type>
+		<value>600000</value>
+		<secondValue>3600000</secondValue>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>IncidentTooSoonPatch</defName>
+		<typeOf>IncidentWorker</typeOf>
+		<name>FiredTooRecently</name>
+		<type>float</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>IncidentSpreadPatch</defName>
+		<typeOf>IncidentCycleUtility</typeOf>
+		<name>DaysToIntervals</name>
+		<type>float</type>
+		<value>60</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>ThreatStartPatch</defName>
+		<typeOf>ThreatsGenerator</typeOf>
+		<name>MakeIntervalIncidents</name>
+		<type>float</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<defName>BossCooldownPatch</defName>
+		<typeOf>BossgroupWorker</typeOf>
+		<name>CanResolve</name>
+		<type>int</type>
+		<value>120000</value>
+	</AdvancedPatchDef>
+	
+
+</Defs> 

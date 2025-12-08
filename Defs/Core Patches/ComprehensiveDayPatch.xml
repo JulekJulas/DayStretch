@@ -1,0 +1,203 @@
+<Defs>
+	<AdvancedPatchDef>
+		<defName>DaysPassedPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>DaysPassedFloat</name>
+		<type>float</type>
+		<value>60000</value>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>DaysPassedSinceSettlePatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>DaysPassedSinceSettleFloat</name>
+		<type>float</type>
+		<value>60000</value>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>TwelfthsPassedPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>TwelfthsPassedFloat</name>
+		<type>float</type>
+		<value>300000</value>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>YearsPassedPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>YearsPassedFloat</name>
+		<type>float</type>
+		<value>3600000</value>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>DaysPassedAtPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>DaysPassedAt</name>
+		<type>int</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>TwelfthsPassedAtPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>TwelfthsPassedAt</name>
+		<type>int</type>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>YearsPassedAtPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>YearsPassedAt</name>
+		<type>int</type>
+		<value>3600000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>LocalTicksOffsetFromLongitudePatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>LocalTicksOffsetFromLongitude</name>
+		<type>long</type>
+		<value>2500</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>HourOfDayPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>HourOfDay</name>
+		<type>int</type>
+		<value>2500</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>DayOfTwelfthPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>DayOfTwelfth</name>
+		<type>int</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>TwelfthPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>Twelfth</name>
+		<type>int</type>
+		<value>300000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>YearPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>Year</name>
+		<type>float</type>
+		<value>3600000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>DayPercentPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>DayPercent</name>
+		<type>float</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>YearPercentFloatPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>YearPercent</name>
+		<type>float</type>
+		<value>3600000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>YearPercentLongPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>YearPercent</name>
+		<type>long</type>
+		<value>3600000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>HourIntegerPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>HourInteger</name>
+		<type>int</type>
+		<value>2500</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>SeasonDateStringAtPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>SeasonDateStringAt</name>
+		<type>int</type>
+		<value>300000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>TicksToDaysPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>TicksToDays</name>
+		<type>float</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>DaysToTicksPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>DaysToTicks</name>
+		<type>float</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>ToStringTicksToPeriodPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>ToStringTicksToPeriod</name>
+		<type>int</type>
+		<value>2500</value>
+		<secondValue>60000</secondValue>
+		<thirdValue>3600000</thirdValue>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>ToStringTicksToPeriodFloatPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>ToStringTicksToPeriod</name>
+		<type>float</type>
+		<value>2500</value>
+		<secondValue>60000</secondValue>
+		<thirdValue>3600000</thirdValue>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>ToStringTicksToPeriodVaguePatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>ToStringTicksToPeriodVague</name>
+		<type>int</type>
+		<value>36000000</value>
+		<secondValue>60000</secondValue>
+	</AdvancedPatchDef>
+	<!-- skipping TicksToPeriod because for some reason it only works when not scaled-->
+	<AdvancedPatchDef>
+		<defName>ToStringApproxAgePatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>ToStringApproxAge</name>
+		<type>float</type>
+		<value>3600000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>ToStringApproxAgeIntPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>ToStringApproxAge</name>
+		<type>int</type>
+		<value>3599999</value>
+	</AdvancedPatchDef>
+	
+	
+</Defs>

@@ -1,0 +1,43 @@
+<Defs>
+	<ResultPatchDef>
+		<defName>DeathInPatch</defName>
+		<typeOf>HealthUtility</typeOf>
+		<name>TicksUntilDeathDueToBloodLoss</name>
+		<type>int</type>
+	</ResultPatchDef>
+	
+	<ResultPatchDef>
+		<defName>PlantGrowthPatch</defName>
+		<typeOf>Plant</typeOf>
+		<name>GrowthPerTick</name>
+		<type>float</type>
+		<reverse>true</reverse>
+		<isGetter>true</isGetter>
+	</ResultPatchDef>
+	
+	<ResultPatchDef>
+		<defName>PlantDeathPatch</defName>
+		<typeOf>Plant</typeOf>
+		<name>CurrentDyingDamagePerTick</name>
+		<type>float</type>
+		<reverse>true</reverse>
+		<isGetter>true</isGetter>
+	</ResultPatchDef>
+	
+	<ResultPatchDef>
+		<defName>FireSpreadPatch</defName>
+		<typeOf>Fire</typeOf>
+		<name>SpreadInterval</name>
+		<type>float</type>
+		<isGetter>true</isGetter>
+	</ResultPatchDef>
+	 
+	<ResultPatchDef>
+		<defName>ThoughtDurationPatch</defName>
+		<typeOf>Thought_Memory</typeOf>
+		<name>DurationTicks</name>
+		<type>int</type>
+		<isGetter>true</isGetter>
+	</ResultPatchDef>
+	
+</Defs>
