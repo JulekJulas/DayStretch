@@ -98,13 +98,7 @@
 		<value>3600000</value>
 	</AdvancedPatchDef>
 	
-	<AdvancedPatchDef>
-		<defName>DayPercentPatch</defName>
-		<typeOf>GenDate</typeOf>
-		<name>DayPercent</name>
-		<type>float</type>
-		<value>60000</value>
-	</AdvancedPatchDef>
+
 	
 	<AdvancedPatchDef>
 		<defName>YearPercentFloatPatch</defName>
@@ -198,6 +192,6 @@
 		<type>int</type>
 		<value>3599999</value>
 	</AdvancedPatchDef>
-	
+
 	
 </Defs>
