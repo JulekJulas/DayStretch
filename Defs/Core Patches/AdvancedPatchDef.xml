@@ -1,7 +1,7 @@
 <Defs>
 <!-- template for patches 
 	<AdvancedPatchDef>
-		<defName>Here can be anything, not very important</defName>
+		<defName>Here can be anything, not very important, follow with Patch like NeedsPatch</defName>
 		<typeOf>Class</typeOf>
 		<name>The bit of code you want to modify</name>
 		<type>type of the number, possible options: int, float, short, long, double</isInt>
@@ -11,7 +11,7 @@
 		<isGetter>If the method is a getter, default: false</isGetter>
 		<isReverse>If you want to divide the values instead of multiplying default: false (multiply)</isReverse>
 	<AdvancedPatchDef>
-
+this patches the exact numbers
 -->
 
 <!-- important one, all needs -->
@@ -122,6 +122,23 @@
 		<type>int</type>
 		<value>120000</value>
 	</AdvancedPatchDef>
-	
+
+	<AdvancedPatchDef>
+		<defName>AgeTickIntervalPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>AgeTickInterval</name>
+		<type>int</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<defName>GetMaxDayPatch</defName>
+		<typeOf>HistoryAutoRecorderGroup</typeOf>
+		<name>GetMaxDay</name>
+		<type>float</type>
+		<value>60000</value>
+		<reverse>true</reverse>
+	</AdvancedPatchDef>
+
 
 </Defs> 

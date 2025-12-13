@@ -1,4 +1,13 @@
 <Defs>
+<!-- template for patches 
+	<ResultPatchDef>
+		<defName>Here can be anything, not very important, follow with Patch like NeedsPatch</defName>
+		<typeOf>Class</typeOf>
+		<name>The bit of code you want to modify</name>
+		<type>type of the number, possible options: int, float, short, long, double</type>
+	</ResultPatchDef>
+ this patches the result
+-->
 	<ResultPatchDef>
 		<defName>DeathInPatch</defName>
 		<typeOf>HealthUtility</typeOf>
@@ -39,5 +48,18 @@
 		<type>int</type>
 		<isGetter>true</isGetter>
 	</ResultPatchDef>
+	
+	<ResultPatchDef>
+		<defName>BirthDayOfSeasonZeroBasedPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>BirthDayOfSeasonZeroBased</name>
+		<type>int</type>
+		<isGetter>true</isGetter>
+		<reverse>true</reverse>
+	</ResultPatchDef>
+	
+
+	
+
 	
 </Defs>

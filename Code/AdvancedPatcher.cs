@@ -77,7 +77,7 @@ public static class AdvancedPatcher
         if (currentThirdValue != 0) numberOfValues++;
 
         if (reverse)
-        {// 
+        {
             currentScaledValue = (double)(value * (1f / Settings.Instance.TimeMultiplier));
             if (secondValue != 0d) currentSecondScaledValue = (double)(secondValue * (1f / Settings.Instance.TimeMultiplier));
             if (thirdValue != 0d) currentThirdScaledValue = (double)(thirdValue * (1f / Settings.Instance.TimeMultiplier));
@@ -109,7 +109,7 @@ public static class AdvancedPatcher
                 currentScaledInt = (int)(currentScaledValue);
                 if (secondValue != 0d) currentSecondScaledInt = (int)(currentSecondScaledValue);
                 if (thirdValue != 0d) currentThirdScaledInt = (int)(currentThirdScaledValue);
-                break;
+                break; // just goes to ints as it prob should
             case "double":
                 break;
             default:
@@ -188,7 +188,7 @@ public static class AdvancedPatcher
                                 var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: doubleTranspiler);
                                 break;
                             default:
-                                return;// juuust in case 
+                                return;// juuust in case even though it should have stopped before
                         }
                 numbersPatched++;
             }
