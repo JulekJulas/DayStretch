@@ -36,6 +36,8 @@ public static class AdvancedPatcher
     public static int amountofWrongValues = 0;
 
     static int numbersPatched = 0;
+    static string fullList = "[DayStretch]-(AdvancedPatch)\nVariables Patched:\n";
+    static string fullGetterList = "[DayStretch]-(AdvancedPatch)\nGetter Variables Patched:\n";
 
     static AdvancedPatcher()
     {
@@ -46,6 +48,7 @@ public static class AdvancedPatcher
         // makes so the log only shows the amount of numbers patched exactly one time
         if (!logShown)
         {
+            logShown = true;
             if (wrongValues.Count > 0)
             {
                 foreach (string key in wrongValues.Keys)
@@ -54,9 +57,21 @@ public static class AdvancedPatcher
                     if (wrongValues[key][1] != 0) Log.Error($"[DayStretch]-(AdvancedPatch) Value {wrongValues[key][1]} not found in {key}");
                     if (wrongValues[key][2] != 0) Log.Error($"[DayStretch]-(AdvancedPatch) Value {wrongValues[key][2]} not found in {key}");
                 }
+                Log.Error("[DayStretch]-(AdvancedPatch) Do note: Advanced Patcher not patching certain variables even though they are in the source code may suggest it is edited by something else.");
             }
             Log.Message($"[DayStretch]-(AdvancedPatch) Patched {numbersPatched} variables");
-            logShown = true;
+
+            fullList += "\n\n\n\n";
+            fullGetterList += "\n\n\n\n";
+            Log.Message(fullList);
+            Log.Message(fullGetterList);
+
+
+            int chance = UnityEngine.Random.Range(1, 101);
+            if (chance == 1)
+            {
+                Log.Message("[DayStretch]-(AdvancedPatch) Patch and fix till its done.");
+            }
         }
     }
 
@@ -154,8 +169,7 @@ public static class AdvancedPatcher
                         default:
                             return;// juuust in case 
                     }
-                    numbersPatched++;
-                    Log.Message($"[DayStretch]-(AdvancedPatch) Patched getter {typeOf}.{prop.Name} of value type {numType}");
+                    fullGetterList += $"{typeOf}.{prop.Name} ({numType}), \n";
                 }
                 catch (Exception e)
                 {
@@ -191,8 +205,7 @@ public static class AdvancedPatcher
                         default:
                             return;// juuust in case even though it should have stopped before
                     }
-                    numbersPatched++;
-                    Log.Message($"[DayStretch]-(AdvancedPatch) Patched {typeOf}");
+                    fullList += $"{typeOf}.{method.Name} ({numType}), \n";
                 }
                 catch (Exception e)
                 {
@@ -223,9 +236,9 @@ public static class AdvancedPatcher
         {
             if ((instr.opcode == OpCodes.Ldc_I4 || instr.opcode == OpCodes.Ldc_I4_S) && instr.operand is int val)
             {
-                if (val == value) { instr.operand = scaledValue; variablePatched = true; }
-                else if ((val == secondValue) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; }
-                else if ((val == thirdValue) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; }
+                if (val == value) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; }
+                else if ((val == secondValue) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; numbersPatched++; }
+                else if ((val == thirdValue) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; numbersPatched++; }
             }
             yield return instr;
         }
@@ -234,12 +247,10 @@ public static class AdvancedPatcher
         if (!variablePatched || incorrectSecondValue || incorrectThirdValue) // problem detected
         {
             wrongValues.Add(dictKey, new double[] { value, secondValue, thirdValue });
-            if (variablePatched) wrongValues[dictKey][0] = 0; // really bad code, i know i can do it better but i just dont wanna
+            if (variablePatched) wrongValues[dictKey][0] = 0 ; // really bad code, i know i can do it better but i just dont wanna
             if (secondVariablePatched) wrongValues[dictKey][1] = 0;
             if (thirdVariablePatched) wrongValues[dictKey][2] = 0;
         }
-        
-       
     }
     static IEnumerable<CodeInstruction> TranspileFloatVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
     {
@@ -260,9 +271,9 @@ public static class AdvancedPatcher
         {
             if ((instr.opcode == OpCodes.Ldc_R4) && instr.operand is float val)
             {
-                if (Mathf.Approximately(val, value)) { instr.operand = scaledValue; variablePatched = true; }
-                else if (Mathf.Approximately(val, secondValue) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; }
-                else if (Mathf.Approximately(val, thirdValue) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; }
+                if (Mathf.Approximately(val, value)) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; }
+                else if (Mathf.Approximately(val, secondValue) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; numbersPatched++; }
+                else if (Mathf.Approximately(val, thirdValue) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; numbersPatched++; }
             }
             yield return instr;
         }
@@ -275,6 +286,7 @@ public static class AdvancedPatcher
             if (secondVariablePatched) wrongValues[dictKey][1] = 0;
             if (thirdVariablePatched) wrongValues[dictKey][2] = 0;
         }
+
     }
     static IEnumerable<CodeInstruction> TranspileLongVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
     {
@@ -295,9 +307,9 @@ public static class AdvancedPatcher
         {
             if ((instr.opcode == OpCodes.Ldc_I8) && instr.operand is long val)
             {
-                if (val == value) { instr.operand = scaledValue; variablePatched = true; }
-                else if ((val == secondValue) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; }
-                else if ((val == thirdValue) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; }
+                if (val == value) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; }
+                else if ((val == secondValue) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; numbersPatched++; }
+                else if ((val == thirdValue) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; numbersPatched++; }
             }
             yield return instr;
         }
@@ -330,9 +342,9 @@ public static class AdvancedPatcher
         {
             if ((instr.opcode == OpCodes.Ldc_R8) && instr.operand is double val)
             {
-                if (Math.Abs(val - value) < 0.0001) { instr.operand = scaledValue; variablePatched = true; }
-                else if ((Math.Abs(val - secondValue) < 0.0001) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; }
-                else if ((Math.Abs(val - thirdValue) < 0.0001) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; }
+                if (Math.Abs(val - value) < 0.0001) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; }
+                else if ((Math.Abs(val - secondValue) < 0.0001) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; numbersPatched++; }
+                else if ((Math.Abs(val - thirdValue) < 0.0001) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; numbersPatched++; }
             }
             yield return instr;
         }
