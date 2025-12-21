@@ -73,15 +73,6 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
-		<defName>ThoughtTimePatch</defName>
-		<typeOf>ThoughtDef</typeOf>
-		<name>DurationTicks</name>
-		<type>int</type>
-		<value>60000</value>
-		<isGetter>true</isGetter>
-	</AdvancedPatchDef>
-	
-	<AdvancedPatchDef>
 		<defName>QuestTraderChancePatch</defName>
 		<typeOf>Storyteller</typeOf>
 		<name>QuestGiverTraderChanceNow</name>
@@ -105,14 +96,6 @@ this patches the exact numbers
 		<name>DaysToIntervals</name>
 		<type>float</type>
 		<value>60</value>
-	</AdvancedPatchDef>
-	
-	<AdvancedPatchDef>
-		<defName>ThreatStartPatch</defName>
-		<typeOf>ThreatsGenerator</typeOf>
-		<name>MakeIntervalIncidents</name>
-		<type>float</type>
-		<value>60000</value>
 	</AdvancedPatchDef>
 
 	<AdvancedPatchDef>
@@ -156,13 +139,36 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
-		<defName>EqualizeTemperaturePatch</defName>
+		<defName>WallEqualizationTempChangePerIntervalPatch</defName>
 		<typeOf>RoomTempTracker</typeOf>
-		<name>EqualizeTemperature</name>
+		<name>WallEqualizationTempChangePerInterval</name>
 		<type>float</type>
 		<value>120</value>
 	</AdvancedPatchDef>
 
+	<AdvancedPatchDef>
+		<defName>ThinRoofEqualizationTempChangePerIntervalPatch</defName>
+		<typeOf>RoomTempTracker</typeOf>
+		<name>ThinRoofEqualizationTempChangePerInterval</name>
+		<type>float</type>
+		<value>120</value>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<defName>NoRoofEqualizationTempChangePerIntervalPatch</defName>
+		<typeOf>RoomTempTracker</typeOf>
+		<name>NoRoofEqualizationTempChangePerInterval</name>
+		<type>float</type>
+		<value>120</value>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<defName>DeepEqualizationTempChangePerIntervalPatch</defName>
+		<typeOf>RoomTempTracker</typeOf>
+		<name>DeepEqualizationTempChangePerInterval</name>
+		<type>float</type>
+		<value>120</value>
+	</AdvancedPatchDef>
 
 
 </Defs> 

@@ -1,14 +1,5 @@
-﻿using DayStretched;
-using HarmonyLib;
-using RimWorld;
-using System;
+﻿using RimWorld;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Security.Cryptography;
-using UnityEngine;
 using Verse;
 // we do a lil defing
 public class StatPatchListDef : Def

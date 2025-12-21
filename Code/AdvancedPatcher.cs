@@ -5,6 +5,7 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
@@ -31,9 +32,10 @@ public static class AdvancedPatcher
     public static Dictionary<string, long[]> scaledLongs = new Dictionary<string, long[]>();
     public static Dictionary<string, short[]> scaledShorts = new Dictionary<string, short[]>();
     public static Dictionary<string, double[]> scaledDoubles = new Dictionary<string, double[]>();
+    public static Dictionary<string, double[]> wrongValues = new Dictionary<string, double[]>();
+    public static int amountofWrongValues = 0;
 
-
-    static int numbersPatched;
+    static int numbersPatched = 0;
 
     static AdvancedPatcher()
     {
@@ -42,30 +44,32 @@ public static class AdvancedPatcher
             AdvancedDefPatcher(def.typeOf, def.name, def.type, def.value, def.secondValue, def.thirdValue, def.reverse, def.isGetter);
         }
         // makes so the log only shows the amount of numbers patched exactly one time
-        if (!logShown) logShown = true;
+        if (!logShown)
         {
+            if (wrongValues.Count > 0)
+            {
+                foreach (string key in wrongValues.Keys)
+                {
+                    if (wrongValues[key][0] != 0) Log.Error($"[DayStretch]-(AdvancedPatch) Value {wrongValues[key][0]} not found in {key}");
+                    if (wrongValues[key][1] != 0) Log.Error($"[DayStretch]-(AdvancedPatch) Value {wrongValues[key][1]} not found in {key}");
+                    if (wrongValues[key][2] != 0) Log.Error($"[DayStretch]-(AdvancedPatch) Value {wrongValues[key][2]} not found in {key}");
+                }
+            }
             Log.Message($"[DayStretch]-(AdvancedPatch) Patched {numbersPatched} variables");
+            logShown = true;
         }
     }
 
     static void AdvancedDefPatcher(string typeOf, string name, string numType, double value, double secondValue, double thirdValue, bool reverse, bool isGetter)
     {
 
-        double scaledValue = 0; // doesnt have to be 0 but just so it looks cleaner im gonna leave it in
-        double secondScaledValue = 0;
-        double thirdScaledValue = 0;
+        double scaledValue = 0; double secondScaledValue = 0; double thirdScaledValue = 0;
 
-        int scaledInt = 0;
-        int secondScaledInt = 0;
-        int thirdScaledInt = 0;
+        int scaledInt = 0; int secondScaledInt = 0; int thirdScaledInt = 0;
 
-        float scaledFloat = 0;
-        float secondScaledFloat = 0;
-        float thirdScaledFloat = 0;
+        float scaledFloat = 0; float secondScaledFloat = 0; float thirdScaledFloat = 0;
 
-        long scaledLong = 0;
-        long secondScaledLong = 0;
-        long thirdScaledLong = 0;
+        long scaledLong = 0; long secondScaledLong = 0; long thirdScaledLong = 0;
 
         if (reverse)
         {
@@ -120,82 +124,83 @@ public static class AdvancedPatcher
         }
 
         var harmony = new Harmony("com.julekjulas.advancedpatch");
-        foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+        if (isGetter)
         {
-            if (isGetter)
+            foreach (var prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
             {
-                foreach (var prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                if (!string.IsNullOrEmpty(name) && prop.Name != name) continue;
+                var getter = prop.GetGetMethod(true);
+                if (getter == null) continue;
+                if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
+                try
                 {
-                    if (!string.IsNullOrEmpty(name) && prop.Name != name) continue;
-                    var getter = prop.GetGetMethod(true);
-                    if (getter == null) continue;
-                    if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
-                    try
+                    switch (numType)
                     {
-                        switch (numType)
-                        {
-                            case "int":
-                                var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: transpiler);
-                                break;
-                            case "float":
-                                var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: floatTranspiler);
-                                break;
-                            case "long":
-                                var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: longTranspiler);
-                                break;
-                            case "short":
-                                var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: shortTranspiler);
-                                break;
-                            case "double":
-                                var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: doubleTranspiler);
-                                break;
-                            default:
-                                return;// juuust in case 
-                        }
-                        numbersPatched++;
-                        Log.Message($"[DayStretch]-(AdvancedPatch) Patched getter {typeOf}.{prop.Name} of value type {numType}");
+                        case "int":
+                            var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: transpiler);
+                            break;
+                        case "float":
+                            var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: floatTranspiler);
+                            break;
+                        case "long":
+                            var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: longTranspiler);
+                            break;
+                        case "short":
+                            var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: shortTranspiler);
+                            break;
+                        case "double":
+                            var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: doubleTranspiler);
+                            break;
+                        default:
+                            return;// juuust in case 
                     }
-                    catch (Exception e)
-                    {
-                        Log.Error($"[DayStretch]-(AdvancedPatch) Failed patching getter {typeOf}.{prop.Name}: {e}");
-                    }
+                    numbersPatched++;
+                    Log.Message($"[DayStretch]-(AdvancedPatch) Patched getter {typeOf}.{prop.Name} of value type {numType}");
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"[DayStretch]-(AdvancedPatch) Failed patching getter {typeOf}.{prop.Name}: {e}");
                 }
             }
-            if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
-            if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
-            try
-            {
-                switch (numType)
-                {
-                    case "int":
-                        var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler);
-                        break;
-                    case "float":
-                        var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: floatTranspiler);
-                        break;
-                    case "long":
-                        var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: longTranspiler);
-                        break;
-                    case "short":
-                        var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: shortTranspiler);
-                        break; // pretty sure i can just do I4 for shorts
-                    case "double":
-                        var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: doubleTranspiler);
-                        break;
-                    default:
-                        return;// juuust in case even though it should have stopped before
-                }
-                numbersPatched++;
-            }
-            catch (Exception e)
-            {
-                Log.Error($"[DayStretch]-(AdvancedPatch) Failed Patching {typeOf}. {e}");
-                return;
-            }
-            numbersPatched++;
-            Log.Message($"[DayStretch]-(AdvancedPatch) Patched {typeOf}");
         }
-
+        else
+        {
+            foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+            {
+                if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
+                if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
+                try
+                {
+                    switch (numType)
+                    {
+                        case "int":
+                            var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler);
+                            break;
+                        case "float":
+                            var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: floatTranspiler);
+                            break;
+                        case "long":
+                            var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: longTranspiler);
+                            break;
+                        case "short":
+                            var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: shortTranspiler);
+                            break; // pretty sure i can just do I4 for shorts
+                        case "double":
+                            var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: doubleTranspiler);
+                            break;
+                        default:
+                            return;// juuust in case even though it should have stopped before
+                    }
+                    numbersPatched++;
+                    Log.Message($"[DayStretch]-(AdvancedPatch) Patched {typeOf}");
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"[DayStretch]-(AdvancedPatch) Failed Patching {typeOf}. {e}");
+                    return;
+                }
+            }
+        }
     }
 
     static IEnumerable<CodeInstruction> TranspileIntVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
@@ -205,22 +210,36 @@ public static class AdvancedPatcher
         string name = type.Name.ToString();
         string dictKey = typeOf + name; // i think this is the best way to do it
         scaledInts.TryGetValue(dictKey, out int[] values);
-        int currentScaledValue = values[0];
-        int currentSecondScaledValue = values[1];
-        int currentThirdScaledValue = values[2];
-        int currentValue = values[3];
-        int currentSecondValue = values[4];
-        int currentThirdValue = values[5];
+        int scaledValue = values[0]; int secondScaledValue = values[1]; int thirdScaledValue = values[2];
+
+        int value = values[3]; int secondValue = values[4]; int thirdValue = values[5];
+
+        bool secondVariablePresent = secondValue != 0; // checks if variables are used
+        bool thirdVariablePresent = thirdValue != 0;
+
+        bool variablePatched = false; bool secondVariablePatched = false; bool thirdVariablePatched = false;
+
         foreach (var instr in instructions)
         {
             if ((instr.opcode == OpCodes.Ldc_I4 || instr.opcode == OpCodes.Ldc_I4_S) && instr.operand is int val)
             {
-                if (val == currentValue) instr.operand = currentScaledValue;
-                else if ((val == currentSecondValue) && (currentSecondValue != 0)) instr.operand = currentSecondScaledValue;
-                else if ((val == currentThirdValue) && (currentThirdValue != 0)) instr.operand = currentThirdScaledValue;
+                if (val == value) { instr.operand = scaledValue; variablePatched = true; }
+                else if ((val == secondValue) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; }
+                else if ((val == thirdValue) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; }
             }
             yield return instr;
         }
+        bool incorrectSecondValue = (secondVariablePresent && !secondVariablePatched);
+        bool incorrectThirdValue = (thirdVariablePresent && !thirdVariablePatched);
+        if (!variablePatched || incorrectSecondValue || incorrectThirdValue) // problem detected
+        {
+            wrongValues.Add(dictKey, new double[] { value, secondValue, thirdValue });
+            if (variablePatched) wrongValues[dictKey][0] = 0; // really bad code, i know i can do it better but i just dont wanna
+            if (secondVariablePatched) wrongValues[dictKey][1] = 0;
+            if (thirdVariablePatched) wrongValues[dictKey][2] = 0;
+        }
+        
+       
     }
     static IEnumerable<CodeInstruction> TranspileFloatVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
     {
@@ -229,21 +248,32 @@ public static class AdvancedPatcher
         string name = type.Name.ToString();
         string dictKey = typeOf + name;
         scaledFloats.TryGetValue(dictKey, out float[] values);
-        float currentScaledValue = values[0];
-        float currentSecondScaledValue = values[1];
-        float currentThirdScaledValue = values[2];
-        float currentValue = values[3];
-        float currentSecondValue = values[4];
-        float currentThirdValue = values[5];
+        float scaledValue = values[0]; float secondScaledValue = values[1]; float thirdScaledValue = values[2];
+
+        float value = values[3]; float secondValue = values[4]; float thirdValue = values[5];
+
+        bool secondVariablePresent = secondValue != 0; // checks if variables are used
+        bool thirdVariablePresent = thirdValue != 0;
+
+        bool variablePatched = false; bool secondVariablePatched = false; bool thirdVariablePatched = false;
         foreach (var instr in instructions)
         {
             if ((instr.opcode == OpCodes.Ldc_R4) && instr.operand is float val)
             {
-                if (val == currentValue) instr.operand = currentScaledValue;
-                else if ((val == currentSecondValue) && (currentSecondValue != 0)) instr.operand = currentSecondScaledValue;
-                else if ((val == currentThirdValue) && (currentThirdValue != 0)) instr.operand = currentThirdScaledValue;
+                if (Mathf.Approximately(val, value)) { instr.operand = scaledValue; variablePatched = true; }
+                else if (Mathf.Approximately(val, secondValue) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; }
+                else if (Mathf.Approximately(val, thirdValue) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; }
             }
             yield return instr;
+        }
+        bool incorrectSecondValue = (secondVariablePresent && !secondVariablePatched);
+        bool incorrectThirdValue = (thirdVariablePresent && !thirdVariablePatched);
+        if (!variablePatched || incorrectSecondValue || incorrectThirdValue) // problem detected
+        {
+            wrongValues.Add(dictKey, new double[] { value, secondValue, thirdValue });
+            if (variablePatched) wrongValues[dictKey][0] = 0; // really bad code, i know i can do it better but i just dont wanna
+            if (secondVariablePatched) wrongValues[dictKey][1] = 0;
+            if (thirdVariablePatched) wrongValues[dictKey][2] = 0;
         }
     }
     static IEnumerable<CodeInstruction> TranspileLongVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
@@ -253,21 +283,32 @@ public static class AdvancedPatcher
         string name = type.Name.ToString();
         string dictKey = typeOf + name;
         scaledLongs.TryGetValue(dictKey, out long[] values);
-        long currentScaledValue = values[0];
-        long currentSecondScaledValue = values[1];
-        long currentThirdScaledValue = values[2];
-        long currentValue = values[3];
-        long currentSecondValue = values[4];
-        long currentThirdValue = values[5];
+        long scaledValue = values[0]; long secondScaledValue = values[1]; long thirdScaledValue = values[2];
+
+        long value = values[3]; long secondValue = values[4]; long thirdValue = values[5];
+
+        bool secondVariablePresent = secondValue != 0; // checks if variables are used
+        bool thirdVariablePresent = thirdValue != 0;
+
+        bool variablePatched = false; bool secondVariablePatched = false; bool thirdVariablePatched = false;
         foreach (var instr in instructions)
         {
             if ((instr.opcode == OpCodes.Ldc_I8) && instr.operand is long val)
             {
-                if (val == currentValue) instr.operand = currentScaledValue;
-                else if ((val == currentSecondValue) && (currentSecondValue != 0)) instr.operand = currentSecondScaledValue;
-                else if ((val == currentThirdValue) && (currentThirdValue != 0)) instr.operand = currentThirdScaledValue;
+                if (val == value) { instr.operand = scaledValue; variablePatched = true; }
+                else if ((val == secondValue) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; }
+                else if ((val == thirdValue) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; }
             }
             yield return instr;
+        }
+        bool incorrectSecondValue = (secondVariablePresent && !secondVariablePatched);
+        bool incorrectThirdValue = (thirdVariablePresent && !thirdVariablePatched);
+        if (!variablePatched || incorrectSecondValue || incorrectThirdValue) // problem detected
+        {
+            wrongValues.Add(dictKey, new double[] { value, secondValue, thirdValue });
+            if (variablePatched) wrongValues[dictKey][0] = 0; // really bad code, i know i can do it better but i just dont wanna
+            if (secondVariablePatched) wrongValues[dictKey][1] = 0;
+            if (thirdVariablePatched) wrongValues[dictKey][2] = 0;
         }
     }
     static IEnumerable<CodeInstruction> TranspileDoubleVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
@@ -277,21 +318,32 @@ public static class AdvancedPatcher
         string name = type.Name.ToString();
         string dictKey = typeOf + name;
         scaledDoubles.TryGetValue(dictKey, out double[] values);
-        double currentScaledValue = values[0];
-        double currentSecondScaledValue = values[1];
-        double currentThirdScaledValue = values[2];
-        double currentValue = values[3];
-        double currentSecondValue = values[4];
-        double currentThirdValue = values[5];
+        double scaledValue = values[0]; double secondScaledValue = values[1]; double thirdScaledValue = values[2];
+
+        double value = values[3]; double secondValue = values[4]; double thirdValue = values[5];
+
+        bool secondVariablePresent = secondValue != 0; // checks if variables are used
+        bool thirdVariablePresent = thirdValue != 0;
+
+        bool variablePatched = false; bool secondVariablePatched = false; bool thirdVariablePatched = false;
         foreach (var instr in instructions)
         {
             if ((instr.opcode == OpCodes.Ldc_R8) && instr.operand is double val)
             {
-                if (val == (double)currentValue) instr.operand = currentScaledValue; // just value since its already a double
-                else if ((val == (double)currentSecondValue) && (currentSecondValue != 0)) instr.operand = currentSecondScaledValue;
-                else if ((val == (double)currentThirdValue) && (currentThirdValue != 0)) instr.operand = currentThirdScaledValue;
+                if (Math.Abs(val - value) < 0.0001) { instr.operand = scaledValue; variablePatched = true; }
+                else if ((Math.Abs(val - secondValue) < 0.0001) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; }
+                else if ((Math.Abs(val - thirdValue) < 0.0001) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; }
             }
             yield return instr;
         }
+        bool incorrectSecondValue = (secondVariablePresent && !secondVariablePatched);
+        bool incorrectThirdValue = (thirdVariablePresent && !thirdVariablePatched);
+        if (!variablePatched || incorrectSecondValue || incorrectThirdValue) // problem detected
+        {
+            wrongValues.Add(dictKey, new double[] { value, secondValue, thirdValue });
+            if (variablePatched) wrongValues[dictKey][0] = 0; // really bad code, i know i can do it better but i just dont wanna
+            if (secondVariablePatched) wrongValues[dictKey][1] = 0;
+            if (thirdVariablePatched) wrongValues[dictKey][2] = 0;
+        }
     }
-}   
+}
