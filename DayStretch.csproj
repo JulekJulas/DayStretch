@@ -161,6 +161,7 @@
     <Compile Include="Code\Config.cs" />
     <Compile Include="Code\GenDatePatcher.cs" />
     <Compile Include="Code\NonAutomatablePatches.cs" />
+    <Compile Include="Code\PatchAll.cs" />
     <Compile Include="Code\ResultPatcher.cs" />
     <Compile Include="Code\SaveValueStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

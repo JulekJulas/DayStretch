@@ -155,7 +155,13 @@ this patches the exact numbers
 		<value>60</value>
 	</AdvancedPatchDef>
 	
-	
+	<AdvancedPatchDef>
+		<defName>EqualizeTemperaturePatch</defName>
+		<typeOf>RoomTempTracker</typeOf>
+		<name>EqualizeTemperature</name>
+		<type>float</type>
+		<value>120</value>
+	</AdvancedPatchDef>
 
 
 
