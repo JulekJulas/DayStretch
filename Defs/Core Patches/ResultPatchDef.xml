@@ -58,7 +58,12 @@
 		<reverse>true</reverse>
 	</ResultPatchDef>
 	
-
+	<ResultPatchDef>
+		<defName>GetMaxDayPatch</defName>
+		<typeOf>HistoryAutoRecorderGroup</typeOf>
+		<name>GetMaxDay</name>
+		<type>float</type>
+	</ResultPatchDef>
 	
 
 	

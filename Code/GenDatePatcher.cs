@@ -102,7 +102,6 @@ namespace DayStretched
                     {
                         var transpiler = new HarmonyMethod(typeof(GenDatePatcher).GetMethod(nameof(ReplaceConstsTranspiler), BindingFlags.Static | BindingFlags.NonPublic));
                         harmony.Patch(m, transpiler: transpiler);
-                        Log.Message($"Patched {m.Name}");
                     }
                     catch (Exception ex)
                     {

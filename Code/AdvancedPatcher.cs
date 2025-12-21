@@ -25,29 +25,13 @@ public class AdvancedPatchDef : Def
 [StaticConstructorOnStartup]
 public static class AdvancedPatcher
 {
-    static string currentNumType;
-    static bool currentReverse;
     static bool logShown = false;
+    public static Dictionary<string, int[]> scaledInts = new Dictionary<string, int[]>();
+    public static Dictionary<string, float[]> scaledFloats = new Dictionary<string, float[]>();
+    public static Dictionary<string, long[]> scaledLongs = new Dictionary<string, long[]>();
+    public static Dictionary<string, short[]> scaledShorts = new Dictionary<string, short[]>();
+    public static Dictionary<string, double[]> scaledDoubles = new Dictionary<string, double[]>();
 
-    static double currentValue;
-    static double currentSecondValue;
-    static double currentThirdValue;
-
-    static double currentScaledValue;
-    static double currentSecondScaledValue;
-    static double currentThirdScaledValue;
-
-    static int currentScaledInt;
-    static int currentSecondScaledInt;
-    static int currentThirdScaledInt;
-
-    static float currentScaledFloat;
-    static float currentSecondScaledFloat;
-    static float currentThirdScaledFloat;
-
-    static long currentScaledLong;
-    static long currentSecondScaledLong;
-    static long currentThirdScaledLong;
 
     static int numbersPatched;
 
@@ -66,56 +50,67 @@ public static class AdvancedPatcher
 
     static void AdvancedDefPatcher(string typeOf, string name, string numType, double value, double secondValue, double thirdValue, bool reverse, bool isGetter)
     {
-        currentNumType = numType;
-        currentValue = value;
-        currentSecondValue = secondValue;
-        currentThirdValue = thirdValue;
-        currentReverse = reverse;
 
-        int numberOfValues = 1;
-        if (currentSecondValue != 0) numberOfValues++;
-        if (currentThirdValue != 0) numberOfValues++;
+        double scaledValue = 0; // doesnt have to be 0 but just so it looks cleaner im gonna leave it in
+        double secondScaledValue = 0;
+        double thirdScaledValue = 0;
+
+        int scaledInt = 0;
+        int secondScaledInt = 0;
+        int thirdScaledInt = 0;
+
+        float scaledFloat = 0;
+        float secondScaledFloat = 0;
+        float thirdScaledFloat = 0;
+
+        long scaledLong = 0;
+        long secondScaledLong = 0;
+        long thirdScaledLong = 0;
 
         if (reverse)
         {
-            currentScaledValue = (double)(value * (1f / Settings.Instance.TimeMultiplier));
-            if (secondValue != 0d) currentSecondScaledValue = (double)(secondValue * (1f / Settings.Instance.TimeMultiplier));
-            if (thirdValue != 0d) currentThirdScaledValue = (double)(thirdValue * (1f / Settings.Instance.TimeMultiplier));
+            scaledValue = (double)(value * (1f / Settings.Instance.TimeMultiplier));
+            if (secondValue != 0d) secondScaledValue = (double)(secondValue * (1f / Settings.Instance.TimeMultiplier));
+            if (thirdValue != 0d) thirdScaledValue = (double)(thirdValue * (1f / Settings.Instance.TimeMultiplier));
         }
         else
         {
-            currentScaledValue = (double)(value * Settings.Instance.TimeMultiplier);
-            if (secondValue != 0d) currentSecondScaledValue = (double)(secondValue * Settings.Instance.TimeMultiplier);
-            if (thirdValue != 0d) currentThirdScaledValue = (double)(thirdValue * Settings.Instance.TimeMultiplier);
+            scaledValue = (double)(value * Settings.Instance.TimeMultiplier);
+            if (secondValue != 0d) secondScaledValue = (double)(secondValue * Settings.Instance.TimeMultiplier);
+            if (thirdValue != 0d) thirdScaledValue = (double)(thirdValue * Settings.Instance.TimeMultiplier);
         }
         switch (numType)
         {
             case "int":
-                currentScaledInt = (int)(currentScaledValue);
-                if (secondValue != 0d) currentSecondScaledInt = (int)(currentSecondScaledValue);
-                if (thirdValue != 0d) currentThirdScaledInt = (int)(currentThirdScaledValue);
+                scaledInt = (int)(scaledValue);
+                if (secondValue != 0d) secondScaledInt = (int)(secondScaledValue);
+                if (thirdValue != 0d) thirdScaledInt = (int)(thirdScaledValue);
+                scaledInts.Add(isGetter ? (typeOf + "get_" + name) : (typeOf + name), new int[] { scaledInt, secondScaledInt, thirdScaledInt, (int)value, (int)secondValue, (int)thirdValue });
                 break;
             case "float":
-                currentScaledFloat = (float)(currentScaledValue);
-                if (secondValue != 0d) currentSecondScaledFloat = (float)(currentSecondScaledValue);
-                if (thirdValue != 0d) currentThirdScaledFloat = (float)(currentThirdScaledValue);
+                scaledFloat = (float)(scaledValue);
+                if (secondValue != 0d) secondScaledFloat = (float)(secondScaledValue);
+                if (thirdValue != 0d) thirdScaledFloat = (float)(thirdScaledValue);
+                scaledFloats.Add(isGetter ? (typeOf + "get_" + name) : (typeOf + name), new float[] { scaledFloat, secondScaledFloat, thirdScaledFloat, (float)value, (float)secondValue, (float)thirdValue });
                 break;
             case "long":
-            currentScaledLong = (long)(currentScaledValue);
-                if (secondValue != 0d) currentSecondScaledLong = (long)(currentSecondScaledValue);
-                if (thirdValue != 0d) currentThirdScaledLong = (long)(currentThirdScaledValue);
+                scaledLong = (long)(scaledValue);
+                if (secondValue != 0d) secondScaledLong = (long)(secondScaledValue);
+                if (thirdValue != 0d) thirdScaledLong = (long)(thirdScaledValue);
+                scaledLongs.Add(isGetter ? (typeOf + "get_" + name) : (typeOf + name), new long[] { scaledLong, secondScaledLong, thirdScaledLong, (long)value, (long)secondValue, (long)thirdValue });
                 break;
             case "short": // just in case if someone inputs it
-                currentScaledInt = (int)(currentScaledValue);
-                if (secondValue != 0d) currentSecondScaledInt = (int)(currentSecondScaledValue);
-                if (thirdValue != 0d) currentThirdScaledInt = (int)(currentThirdScaledValue);
+                scaledInt = (int)(scaledValue);
+                if (secondValue != 0d) secondScaledInt = (int)(secondScaledValue);
+                if (thirdValue != 0d) thirdScaledInt = (int)(thirdScaledValue);
+                scaledShorts.Add(isGetter ? (typeOf + "get_" + name) : (typeOf + name), new short[] { (short)scaledInt, (short)secondScaledInt, (short)thirdScaledInt, (short)value, (short)secondValue, (short)thirdValue });
                 break; // just goes to ints as it prob should
             case "double":
+                scaledDoubles.Add(isGetter ? (typeOf + "get_" + name) : (typeOf + name), new double[] { scaledValue, secondScaledValue, thirdScaledValue, value, secondValue, thirdValue }); // just values since its already a double
                 break;
             default:
                 Log.Error($"[DayStretch]-(AdvancedPatch) {typeOf} has an invalid type, input: {numType}");
-                return;// i understand switch statements now guys
-                // this is pretty sweet
+                return;
         }
         Type type = GenTypes.GetTypeInAnyAssembly(typeOf);
         if (type == null)
@@ -170,26 +165,26 @@ public static class AdvancedPatcher
             if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
             try
             {
-                        switch (numType)
-                        {
-                            case "int":
-                                var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler);
-                                break;
-                            case "float":
-                                var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: floatTranspiler);
-                                break;
-                            case "long":
-                                var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: longTranspiler);
-                                break;
-                            case "short":
-                                var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: shortTranspiler);
-                                break; // pretty sure i can just do I4 for shorts
-                            case "double":
-                                var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: doubleTranspiler);
-                                break;
-                            default:
-                                return;// juuust in case even though it should have stopped before
-                        }
+                switch (numType)
+                {
+                    case "int":
+                        var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler);
+                        break;
+                    case "float":
+                        var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: floatTranspiler);
+                        break;
+                    case "long":
+                        var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: longTranspiler);
+                        break;
+                    case "short":
+                        var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: shortTranspiler);
+                        break; // pretty sure i can just do I4 for shorts
+                    case "double":
+                        var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: doubleTranspiler);
+                        break;
+                    default:
+                        return;// juuust in case even though it should have stopped before
+                }
                 numbersPatched++;
             }
             catch (Exception e)
@@ -203,47 +198,91 @@ public static class AdvancedPatcher
 
     }
 
-    static IEnumerable<CodeInstruction> TranspileIntVariables(IEnumerable<CodeInstruction> instructions)
+    static IEnumerable<CodeInstruction> TranspileIntVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
     {
+        string typeOf = type.DeclaringType.ToString();
+        typeOf = typeOf.Split('.').Last(); // gotta remove the namespace 
+        string name = type.Name.ToString();
+        string dictKey = typeOf + name; // i think this is the best way to do it
+        scaledInts.TryGetValue(dictKey, out int[] values);
+        int currentScaledValue = values[0];
+        int currentSecondScaledValue = values[1];
+        int currentThirdScaledValue = values[2];
+        int currentValue = values[3];
+        int currentSecondValue = values[4];
+        int currentThirdValue = values[5];
         foreach (var instr in instructions)
         {
             if ((instr.opcode == OpCodes.Ldc_I4 || instr.opcode == OpCodes.Ldc_I4_S) && instr.operand is int val)
             {
-                if (val == (int)currentValue) instr.operand = currentScaledInt;
-                else if ((val == (int)currentSecondValue) && (currentSecondValue != 0)) instr.operand = currentSecondScaledInt;
-                else if ((val == (int)currentThirdValue) && (currentThirdValue != 0)) instr.operand = currentThirdScaledInt;
+                if (val == currentValue) instr.operand = currentScaledValue;
+                else if ((val == currentSecondValue) && (currentSecondValue != 0)) instr.operand = currentSecondScaledValue;
+                else if ((val == currentThirdValue) && (currentThirdValue != 0)) instr.operand = currentThirdScaledValue;
             }
             yield return instr;
         }
     }
-    static IEnumerable<CodeInstruction> TranspileFloatVariables(IEnumerable<CodeInstruction> instructions)
+    static IEnumerable<CodeInstruction> TranspileFloatVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
     {
+        string typeOf = type.DeclaringType.ToString();
+        typeOf = typeOf.Split('.').Last();
+        string name = type.Name.ToString();
+        string dictKey = typeOf + name;
+        scaledFloats.TryGetValue(dictKey, out float[] values);
+        float currentScaledValue = values[0];
+        float currentSecondScaledValue = values[1];
+        float currentThirdScaledValue = values[2];
+        float currentValue = values[3];
+        float currentSecondValue = values[4];
+        float currentThirdValue = values[5];
         foreach (var instr in instructions)
         {
             if ((instr.opcode == OpCodes.Ldc_R4) && instr.operand is float val)
             {
-                if (val == (float)currentValue) instr.operand = currentScaledFloat;
-                else if ((val == (float)currentSecondValue) && (currentSecondValue != 0)) instr.operand = currentSecondScaledFloat;
-                else if ((val == (float)currentThirdValue) && (currentThirdValue != 0)) instr.operand = currentThirdScaledFloat;
+                if (val == currentValue) instr.operand = currentScaledValue;
+                else if ((val == currentSecondValue) && (currentSecondValue != 0)) instr.operand = currentSecondScaledValue;
+                else if ((val == currentThirdValue) && (currentThirdValue != 0)) instr.operand = currentThirdScaledValue;
             }
             yield return instr;
         }
     }
-    static IEnumerable<CodeInstruction> TranspileLongVariables(IEnumerable<CodeInstruction> instructions)
+    static IEnumerable<CodeInstruction> TranspileLongVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
     {
+        string typeOf = type.DeclaringType.ToString();
+        typeOf = typeOf.Split('.').Last();
+        string name = type.Name.ToString();
+        string dictKey = typeOf + name;
+        scaledLongs.TryGetValue(dictKey, out long[] values);
+        long currentScaledValue = values[0];
+        long currentSecondScaledValue = values[1];
+        long currentThirdScaledValue = values[2];
+        long currentValue = values[3];
+        long currentSecondValue = values[4];
+        long currentThirdValue = values[5];
         foreach (var instr in instructions)
         {
             if ((instr.opcode == OpCodes.Ldc_I8) && instr.operand is long val)
             {
-                if (val == (long)currentValue) instr.operand = currentScaledLong;
-                else if ((val == (long)currentSecondValue) && (currentSecondValue != 0)) instr.operand = currentSecondScaledLong;
-                else if ((val == (long)currentThirdValue) && (currentThirdValue != 0)) instr.operand = currentThirdScaledLong;
+                if (val == currentValue) instr.operand = currentScaledValue;
+                else if ((val == currentSecondValue) && (currentSecondValue != 0)) instr.operand = currentSecondScaledValue;
+                else if ((val == currentThirdValue) && (currentThirdValue != 0)) instr.operand = currentThirdScaledValue;
             }
             yield return instr;
         }
     }
-    static IEnumerable<CodeInstruction> TranspileDoubleVariables(IEnumerable<CodeInstruction> instructions)
+    static IEnumerable<CodeInstruction> TranspileDoubleVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
     {
+        string typeOf = type.DeclaringType.ToString();
+        typeOf = typeOf.Split('.').Last();
+        string name = type.Name.ToString();
+        string dictKey = typeOf + name;
+        scaledDoubles.TryGetValue(dictKey, out double[] values);
+        double currentScaledValue = values[0];
+        double currentSecondScaledValue = values[1];
+        double currentThirdScaledValue = values[2];
+        double currentValue = values[3];
+        double currentSecondValue = values[4];
+        double currentThirdValue = values[5];
         foreach (var instr in instructions)
         {
             if ((instr.opcode == OpCodes.Ldc_R8) && instr.operand is double val)

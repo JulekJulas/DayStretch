@@ -131,14 +131,7 @@ this patches the exact numbers
 		<value>60000</value>
 	</AdvancedPatchDef>
 
-	<AdvancedPatchDef>
-		<defName>GetMaxDayPatch</defName>
-		<typeOf>HistoryAutoRecorderGroup</typeOf>
-		<name>GetMaxDay</name>
-		<type>float</type>
-		<value>60000</value>
-		<reverse>true</reverse>
-	</AdvancedPatchDef>
+
 
 
 </Defs> 
