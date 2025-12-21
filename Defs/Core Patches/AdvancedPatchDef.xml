@@ -131,6 +131,31 @@ this patches the exact numbers
 		<value>60000</value>
 	</AdvancedPatchDef>
 
+	<AdvancedPatchDef>
+		<defName>CheckReachNaturalGoodwillPatch</defName>
+		<typeOf>Faction</typeOf>
+		<name>CheckReachNaturalGoodwill</name>
+		<type>int</type>
+		<value>3000000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>TicksToSecondsPatch</defName>
+		<typeOf>GenTicks</typeOf>
+		<name>TicksToSeconds</name>
+		<type>float</type>
+		<value>60</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<defName>SecondsToTicksPatch</defName>
+		<typeOf>GenTicks</typeOf>
+		<name>SecondsToTicks</name>
+		<type>float</type>
+		<value>60</value>
+	</AdvancedPatchDef>
+	
+	
 
 
 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
+using Verse.Noise;
 
 namespace DayStretched
 {// would like to say
@@ -33,9 +34,40 @@ namespace DayStretched
 
                 float negativeAmount = -0.00033333333f * (1f / Settings.Instance.TimeMultiplier);
                 HealthUtility.AdjustSeverity(pawn, __instance.hediff, negativeAmount);
-                return false;
+                return false;   
             }
         }
+
+
+
+    [HarmonyPatch(typeof(GameCondition))]
+    [HarmonyPatch("get_Expired")]
+    public static class GameConditionPatch
+    {
+        public static bool Prefix(GameCondition __instance, ref bool __result)
+        {
+            __result = !__instance.Permanent && Find.TickManager.TicksGame > __instance.startTick + (__instance.Duration * Settings.Instance.TimeMultiplier);
+            return false;
+        }
+    }
+
+    [HarmonyPatch(typeof(WeatherEventMaker))]
+    [HarmonyPatch("WeatherEventMakerTick")]
+    public static class WeatherEventMakerTickPatch
+    {
+        public static bool Prefix(WeatherEventMaker __instance, Map map, float strength)
+        {
+            if (Rand.Value < 1f / __instance.averageInterval * strength * Settings.Instance.TimeMultiplier)
+            {
+                WeatherEvent newEvent = (WeatherEvent)Activator.CreateInstance(__instance.eventClass, new object[]
+                {
+                    map
+                });
+                map.weatherManager.eventHandler.AddEvent(newEvent);
+            }
+            return false;
+        }
+    }
+
+
 }
-
-
