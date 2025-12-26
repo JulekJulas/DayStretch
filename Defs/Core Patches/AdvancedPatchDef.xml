@@ -25,16 +25,6 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 <!-- All health-->
-	<AdvancedPatchDef>
-		<namespaceOf>Verse</namespaceOf> <!-- Why the hell is this in verse while the needs are in rimworld -->
-		<defName>AllHealthPatch</defName>
-		<typeOf>Pawn_HealthTracker</typeOf>
-		<name>HealthTickInterval</name>  <!-- im gonna commit sudoku, this was HealthTrackerTickInterval and i was wondering for a few days why it didnt work -->
-		<type>int</type>
-		<value>600</value>
-		<secondValue>15</secondValue>
-		<thirdValue>60</thirdValue>
-	</AdvancedPatchDef>
 		
 
 

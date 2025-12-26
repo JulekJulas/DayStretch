@@ -74,6 +74,16 @@ namespace DayStretched
         }
     }
 
+    [HarmonyPatch(typeof(Pawn_HealthTracker))]
+    [HarmonyPatch("HealthTickInterval")]
+    static class HealthTickIntervalPatch
+    {
+        static void Prefix(ref int delta)
+        {
+            delta = (int)(delta * (1f / Settings.Instance.TimeMultiplier));
+        }
+    }
+
 
 
 

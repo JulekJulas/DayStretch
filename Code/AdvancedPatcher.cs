@@ -258,7 +258,7 @@ public static class AdvancedPatcher
         bool variablePatched = false; bool secondVariablePatched = false; bool thirdVariablePatched = false;
 
         foreach (var instr in instructions)
-        {
+        {   
             if ((instr.opcode == OpCodes.Ldc_I4 || instr.opcode == OpCodes.Ldc_I4_S) && instr.operand is int val)
             {
                 if (val == value) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; }
