@@ -16,6 +16,7 @@ this patches the exact numbers
 
 <!-- important one, all needs -->
 	<AdvancedPatchDef>	
+		<namespaceOf>RimWorld</namespaceOf>
 		<defName>AllNeedsPatch</defName>
 		<typeOf>Pawn_NeedsTracker</typeOf>
 		<name>NeedsTrackerTickInterval</name>
@@ -25,18 +26,22 @@ this patches the exact numbers
 	
 <!-- All health-->
 	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf> <!-- Why the hell is this in verse while the needs are in rimworld -->
 		<defName>AllHealthPatch</defName>
 		<typeOf>Pawn_HealthTracker</typeOf>
-		<name>HealthTrackerTickIntervalPatchl</name>
+		<name>HealthTickInterval</name>  <!-- im gonna commit sudoku, this was HealthTrackerTickInterval and i was wondering for a few days why it didnt work -->
 		<type>int</type>
 		<value>600</value>
 		<secondValue>15</secondValue>
 		<thirdValue>60</thirdValue>
 	</AdvancedPatchDef>
+		
+
 
 
 
 	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>SeverityPatch</defName>
 		<typeOf>HediffComp_SeverityModifierBase</typeOf>
 		<name>CompPostTickInterval</name>
@@ -45,6 +50,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>InfectionPatch</defName>
 		<typeOf>Pawn_InfectionVectorTracker</typeOf>
 		<name>InfectionTickInterval</name>
@@ -53,6 +59,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>HyperthermiaPatch</defName>
 		<typeOf>HediffGiver_Heat</typeOf>
 		<name>OnIntervalPassed</name>
@@ -63,6 +70,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>HypothermiaPatch</defName>
 		<typeOf>HediffGiver_Hypothermia</typeOf>
 		<name>OnIntervalPassed</name>
@@ -73,6 +81,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
 		<defName>QuestTraderChancePatch</defName>
 		<typeOf>Storyteller</typeOf>
 		<name>QuestGiverTraderChanceNow</name>
@@ -83,6 +92,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
 		<defName>IncidentTooSoonPatch</defName>
 		<typeOf>IncidentWorker</typeOf>
 		<name>FiredTooRecently</name>
@@ -91,6 +101,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
 		<defName>IncidentSpreadPatch</defName>
 		<typeOf>IncidentCycleUtility</typeOf>
 		<name>DaysToIntervals</name>
@@ -99,6 +110,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 
 	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
 		<defName>BossCooldownPatch</defName>
 		<typeOf>BossgroupWorker</typeOf>
 		<name>CanResolve</name>
@@ -107,6 +119,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 
 	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>AgeTickIntervalPatch</defName>
 		<typeOf>Pawn_AgeTracker</typeOf>
 		<name>AgeTickInterval</name>
@@ -115,6 +128,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 
 	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
 		<defName>CheckReachNaturalGoodwillPatch</defName>
 		<typeOf>Faction</typeOf>
 		<name>CheckReachNaturalGoodwill</name>
@@ -123,6 +137,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>TicksToSecondsPatch</defName>
 		<typeOf>GenTicks</typeOf>
 		<name>TicksToSeconds</name>
@@ -131,6 +146,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>SecondsToTicksPatch</defName>
 		<typeOf>GenTicks</typeOf>
 		<name>SecondsToTicks</name>
@@ -139,6 +155,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>WallEqualizationTempChangePerIntervalPatch</defName>
 		<typeOf>RoomTempTracker</typeOf>
 		<name>WallEqualizationTempChangePerInterval</name>
@@ -147,6 +164,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 
 	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>ThinRoofEqualizationTempChangePerIntervalPatch</defName>
 		<typeOf>RoomTempTracker</typeOf>
 		<name>ThinRoofEqualizationTempChangePerInterval</name>
@@ -155,6 +173,7 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 
 	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>NoRoofEqualizationTempChangePerIntervalPatch</defName>
 		<typeOf>RoomTempTracker</typeOf>
 		<name>NoRoofEqualizationTempChangePerInterval</name>
@@ -163,12 +182,33 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 
 	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>DeepEqualizationTempChangePerIntervalPatch</defName>
 		<typeOf>RoomTempTracker</typeOf>
 		<name>DeepEqualizationTempChangePerInterval</name>
 		<type>float</type>
 		<value>120</value>
 	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld.Planet</namespaceOf>
+		<defName>EstimatedTicksToArriveToEveryPatch</defName>
+		<typeOf>CaravanArrivalTimeEstimator</typeOf>
+		<name>EstimatedTicksToArriveToEvery</name>
+		<type>int</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>OnIntervalPassedPatch</defName>
+		<typeOf>HediffGiver_Bleeding</typeOf>
+		<name>OnIntervalPassed</name>
+		<type>float</type>
+		<value>0.001</value>
+		<reverse>true</reverse>
+	</AdvancedPatchDef>
+	
 
 
 </Defs> 

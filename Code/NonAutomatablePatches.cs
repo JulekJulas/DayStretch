@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 using Verse.Noise;
 
 namespace DayStretched
@@ -16,27 +17,7 @@ namespace DayStretched
 
 
 
-        // prefix, not sure how to do that one
-        [StaticConstructorOnStartup]
-        [HarmonyPatch(typeof(HediffGiver_Bleeding))]
-        [HarmonyPatch(nameof(HediffGiver_Bleeding.OnIntervalPassed))]
-        public static class BloodStatusFixer
-        {
-            static bool Prefix(HediffGiver_Bleeding __instance, Pawn pawn, Hediff cause)
-            {
-                HediffSet hediffSet = pawn.health.hediffSet;
-                if (hediffSet.BleedRateTotal >= 0.1f)
-                {
-                    float amount = hediffSet.BleedRateTotal * 0.001f * (1f / Settings.Instance.TimeMultiplier);
-                    HealthUtility.AdjustSeverity(pawn, __instance.hediff, amount);
-                    return false;
-                }
 
-                float negativeAmount = -0.00033333333f * (1f / Settings.Instance.TimeMultiplier);
-                HealthUtility.AdjustSeverity(pawn, __instance.hediff, negativeAmount);
-                return false;   
-            }
-        }
 
 
 
@@ -68,6 +49,32 @@ namespace DayStretched
             return false;
         }
     }
+
+    [HarmonyPatch(typeof(HistoryAutoRecorderGroup))]
+    [HarmonyPatch("GetMaxDay")]
+    public static class GetMaxDayPatch
+    {
+        public static bool Prefix(HistoryAutoRecorderGroup __instance, ref float __result)
+        {
+            float num = 0f;
+            foreach (HistoryAutoRecorder historyAutoRecorder in __instance.recorders)
+            {
+                int count = historyAutoRecorder.records.Count;
+                if (count != 0)
+                {
+                    float num2 = (float)((count - 1) * historyAutoRecorder.def.recordTicksFrequency) / (60000f) * Settings.Instance.TimeMultiplier;
+                    if (num2 > num)
+                    {
+                        num = num2;
+                    }
+                }
+            }
+            __result = num;
+            return false;
+        }
+    }
+
+
 
 
 

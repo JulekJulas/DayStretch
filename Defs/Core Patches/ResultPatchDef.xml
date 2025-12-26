@@ -65,6 +65,14 @@
 		<type>float</type>
 	</ResultPatchDef>
 	
+	<ResultPatchDef>
+		<defName>CalculateBleedRatePatch</defName>
+		<typeOf>HediffSet</typeOf>
+		<name>CalculateBleedRate</name>
+		<type>float</type>
+		<reverse>true</reverse>
+	</ResultPatchDef>
+	
 
 	
 </Defs>
