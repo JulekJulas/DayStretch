@@ -13,11 +13,13 @@ using Verse;
 
 public class ResultPatchDef : Def
 {
+    public string namespaceOf;
     public string typeOf;
     public string name;
     public string type;
-    public bool reverse;
+    public bool isReverse;
     public bool isGetter;
+    public bool isDelta;
 } 
 [StaticConstructorOnStartup]
 public static class ResultPatcher
@@ -25,15 +27,15 @@ public static class ResultPatcher
     static string fullList = "[DayStretch]-(ResultPatch)\nResults Patched:\n";
     static string fullGetterList = "[DayStretch]-(ResultPatch)\nGetter Results Patched:\n";
     static int resultsPatched;
+    public static Dictionary<string, bool> keyReverse = new Dictionary<string, bool>();
 
-    static bool currentReverse = false;
 
     static bool logShown = false;
     static ResultPatcher()
     {
         foreach (ResultPatchDef def in DefDatabase<ResultPatchDef>.AllDefsListForReading)
         {
-            ResultDefPatcher(def.typeOf, def.name, def.type, def.reverse, def.isGetter);
+            ResultDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.isReverse, def.isGetter, def.isDelta);
         }
         if (!logShown) logShown = true;
         {
@@ -46,14 +48,32 @@ public static class ResultPatcher
         }
     }
 
-    static void ResultDefPatcher(string typeOf, string name, string numType, bool reverse, bool isGetter)
+    static void ResultDefPatcher(string defName, string namespaceOf, string typeOf, string name, string numType, bool reverse, bool isGetter, bool isDelta)
     {
-        Type type = GenTypes.GetTypeInAnyAssembly(typeOf);
+        Type type = GenTypes.GetTypeInAnyAssembly($"{namespaceOf}.{typeOf}");
         if (type == null)
         {
-            Log.Error($"[DayStretch]-(ResultPatch) Type '{typeOf}' not found in loaded assemblies; skipping.");
+            Log.Error($"[DayStretch]-(AdvancedPatch) Type '{typeOf}' not found in namespace '{namespaceOf}'; skipping.");
             return;
         }
+        if (type.Method(name) == null && isGetter == false)
+        {
+            Log.Error($"[DayStretch]-(AdvancedPatch) Method '{name}' not found in class '{typeOf}' in namespace '{namespaceOf}'; skipping.");
+            return;
+        }
+        if (type.Property(name) == null && isGetter == true) // thanks vs autocomplete
+        {
+            Log.Error($"[DayStretch]-(AdvancedPatch) Property '{name}' not found in class '{typeOf}' in namespace '{namespaceOf}'; skipping.");
+            return;
+        }
+        keyReverse.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name),  reverse);
+
+
+
+
+
+
+
         var harmony = new Harmony("com.julekjulas.resultpatch");
         if (isGetter)
         {
@@ -70,19 +90,24 @@ public static class ResultPatcher
                     switch (numType)
                     {
                         case "int":
-                            var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(IntResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: postfix);
+                            var postfix = (isDelta ? (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(IntDeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic))) : (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(IntResultPostfix), BindingFlags.Static | BindingFlags.NonPublic))));
+                            harmony.Patch(getter, postfix: postfix);
                             break;
                         case "float":
-                            var floatPostfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(FloatResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: floatPostfix);
+                            var floatPostfix = (isDelta ? (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(FloatDeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic))) : (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(FloatResultPostfix), BindingFlags.Static | BindingFlags.NonPublic))));
+                            harmony.Patch(getter, postfix: floatPostfix);
                             break;
                         case "long":
-                            var longPostfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(LongResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: longPostfix);
+                            var longPostfix = (isDelta ? (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(LongDeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic))) : (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(LongResultPostfix), BindingFlags.Static | BindingFlags.NonPublic))));
+                            harmony.Patch(getter, postfix: longPostfix);
                             break;
                         case "short":
-                            var shortPostfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ShortResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: shortPostfix);
+                            var shortPostfix = (isDelta ? (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ShortDeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic))) : (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ShortResultPostfix), BindingFlags.Static | BindingFlags.NonPublic))));
+                            harmony.Patch(getter, postfix: shortPostfix);
                             break;
                         case "double":
-                            var doublePostfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(DoubleResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: doublePostfix);
+                            var doublePostfix = (isDelta ? (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(DoubleDeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic))) : (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(DoubleResultPostfix), BindingFlags.Static | BindingFlags.NonPublic))));
+                            harmony.Patch(getter, postfix: doublePostfix);
                             break;
                         default:
                             return;
@@ -109,19 +134,24 @@ public static class ResultPatcher
                     switch (numType)
                     {
                         case "int":
-                            var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(IntResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: postfix);
+                            var postfix = (isDelta ? (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(IntDeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic))) : (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(IntResultPostfix), BindingFlags.Static | BindingFlags.NonPublic))));
+                            harmony.Patch(method, postfix: postfix);
                             break;
                         case "float":
-                            var floatPostfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(FloatResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: floatPostfix);
+                            var floatPostfix = (isDelta ? (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(FloatDeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic))) : (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(FloatResultPostfix), BindingFlags.Static | BindingFlags.NonPublic))));
+                            harmony.Patch(method, postfix: floatPostfix);
                             break;
                         case "long":
-                            var longPostfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(LongResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: longPostfix);
+                            var longPostfix = (isDelta ? (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(LongDeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic))) : (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(LongResultPostfix), BindingFlags.Static | BindingFlags.NonPublic))));
+                            harmony.Patch(method, postfix: longPostfix);
                             break;
                         case "short":
-                            var shortPostfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ShortResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: shortPostfix);
+                            var shortPostfix = (isDelta ? (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ShortDeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic))) : (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ShortResultPostfix), BindingFlags.Static | BindingFlags.NonPublic))));
+                            harmony.Patch(method, postfix: shortPostfix);
                             break;
                         case "double":
-                            var doublePostfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(DoubleResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: doublePostfix);
+                            var doublePostfix = (isDelta ? (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(DoubleDeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic))) : (new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(DoubleResultPostfix), BindingFlags.Static | BindingFlags.NonPublic))));
+                            harmony.Patch(method, postfix: doublePostfix);
                             break;
                         default:
                             return;
@@ -137,29 +167,79 @@ public static class ResultPatcher
         }
 
     }
-    static void IntResultPostfix(ref int __result)
+
+    static bool ReverseCheck(MethodBase type) // get the bool
     {
+        string typeOf = type.DeclaringType.ToString(); 
+        string name = type.Name.ToString(); 
+        string dictKey = typeOf + name; 
+        keyReverse.TryGetValue(dictKey, out bool currentReverse);
+        return currentReverse;
+    }
+    static void IntResultPostfix(ref int __result, MethodBase __originalMethod)
+    {
+        bool currentReverse = ReverseCheck(__originalMethod); // i think its a pretty neat way to do it
         if (currentReverse) __result = Mathf.RoundToInt(__result * (1f / Settings.Instance.TimeMultiplier));
         else __result = Mathf.RoundToInt(__result * Settings.Instance.TimeMultiplier);
     }
-    static void FloatResultPostfix(ref float __result)
+    static void FloatResultPostfix(ref float __result, MethodBase __originalMethod)
     {
+        bool currentReverse = ReverseCheck(__originalMethod);
         if (currentReverse) __result /= Settings.Instance.TimeMultiplier;
         else __result *= Settings.Instance.TimeMultiplier;
     }
-    static void LongResultPostfix(ref long __result)
+    static void LongResultPostfix(ref long __result, MethodBase __originalMethod)
     {
+        bool currentReverse = ReverseCheck(__originalMethod);
         if (currentReverse) __result = (long)(__result * (1f / Settings.Instance.TimeMultiplier));
         else __result = (long)(__result * Settings.Instance.TimeMultiplier);
     }
-    static void DoubleResultPostfix(ref double __result)
+    static void DoubleResultPostfix(ref double __result, MethodBase __originalMethod)
     {
+        bool currentReverse = ReverseCheck(__originalMethod);
         if (currentReverse) __result = (double)(__result * (1f / Settings.Instance.TimeMultiplier));
         else __result = (double)(__result * Settings.Instance.TimeMultiplier);
     }
-    static void ShortResultPostfix(ref short __result)
+    static void ShortResultPostfix(ref short __result, MethodBase __originalMethod)
     {
+        bool currentReverse = ReverseCheck(__originalMethod); 
         if (currentReverse) __result = (short)(__result * (1f / Settings.Instance.TimeMultiplier));
         else __result = (short)(__result * Settings.Instance.TimeMultiplier);
     }
+
+
+    // delta patches
+
+    static void IntDeltaPostfix(ref int delta, MethodBase __originalMethod)
+    {
+        bool currentReverse = ReverseCheck(__originalMethod);
+        if (currentReverse) delta = (int)(delta * (1f / Settings.Instance.TimeMultiplier));
+        else delta = (int)(delta * Settings.Instance.TimeMultiplier);
+    }
+    static void FloatDeltaPostfix(ref float delta, MethodBase __originalMethod)
+    {
+        bool currentReverse = ReverseCheck(__originalMethod);
+        if (currentReverse) delta /= Settings.Instance.TimeMultiplier;
+        else delta *= Settings.Instance.TimeMultiplier;
+    }
+    static void LongDeltaPostfix(ref long delta, MethodBase __originalMethod)
+    {
+        bool currentReverse = ReverseCheck(__originalMethod);
+        if (currentReverse) delta = (long)(delta * (1f / Settings.Instance.TimeMultiplier));
+        else delta = (long)(delta * Settings.Instance.TimeMultiplier);
+    }
+    static void DoubleDeltaPostfix(ref double delta, MethodBase __originalMethod)
+    {
+        bool currentReverse = ReverseCheck(__originalMethod);
+        if (currentReverse) delta = (double)(delta * (1f / Settings.Instance.TimeMultiplier));
+        else delta = (double)(delta * Settings.Instance.TimeMultiplier);
+    }
+    static void ShortDeltaPostfix(ref short delta, MethodBase __originalMethod)
+    {
+        bool currentReverse = ReverseCheck(__originalMethod);
+        if (currentReverse) delta = (short)(delta * (1f / Settings.Instance.TimeMultiplier));
+        else delta = (short)(delta * Settings.Instance.TimeMultiplier);
+    }
+
+
 }

@@ -21,7 +21,7 @@ public class AdvancedPatchDef : Def
     // optional
     public double secondValue;
     public double thirdValue;
-    public bool reverse;
+    public bool isReverse;
     public bool isGetter;
 }
 
@@ -46,7 +46,7 @@ public static class AdvancedPatcher
     {
         foreach (AdvancedPatchDef def in DefDatabase<AdvancedPatchDef>.AllDefsListForReading)
         {
-            AdvancedDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.value, def.secondValue, def.thirdValue, def.reverse, def.isGetter);
+            AdvancedDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.value, def.secondValue, def.thirdValue, def.isReverse, def.isGetter);
         }
         // makes so the log only shows the amount of numbers patched exactly one time
         if (!logShown)

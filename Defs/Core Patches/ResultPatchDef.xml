@@ -8,7 +8,34 @@
 	</ResultPatchDef>
  this patches the result
 -->
+
+
+
 	<ResultPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>Pawn_HealthTrackerPatch</defName>
+		<typeOf>Pawn_HealthTracker</typeOf>
+		<name>HealthTickInterval</name>
+		<type>int</type>
+		<isDelta>true</isDelta>
+		<isReverse>true</isReverse>
+	</ResultPatchDef>
+	
+		<ResultPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>AllNeedsPatch</defName>
+		<typeOf>Pawn_NeedsTracker</typeOf>
+		<name>NeedsTrackerTickInterval</name>
+		<type>int</type>
+		<isDelta>true</isDelta>
+		<isReverse>true</isReverse>
+	</ResultPatchDef>
+	
+
+
+
+	<ResultPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>DeathInPatch</defName>
 		<typeOf>HealthUtility</typeOf>
 		<name>TicksUntilDeathDueToBloodLoss</name>
@@ -16,24 +43,27 @@
 	</ResultPatchDef>
 	
 	<ResultPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
 		<defName>PlantGrowthPatch</defName>
 		<typeOf>Plant</typeOf>
 		<name>GrowthPerTick</name>
 		<type>float</type>
-		<reverse>true</reverse>
+		<isReverse>true</isReverse>
 		<isGetter>true</isGetter>
 	</ResultPatchDef>
 	
 	<ResultPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
 		<defName>PlantDeathPatch</defName>
 		<typeOf>Plant</typeOf>
 		<name>CurrentDyingDamagePerTick</name>
 		<type>float</type>
-		<reverse>true</reverse>
+		<isReverse>true</isReverse>
 		<isGetter>true</isGetter>
 	</ResultPatchDef>
 	
 	<ResultPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
 		<defName>FireSpreadPatch</defName>
 		<typeOf>Fire</typeOf>
 		<name>SpreadInterval</name>
@@ -42,6 +72,7 @@
 	</ResultPatchDef>
 	 
 	<ResultPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
 		<defName>ThoughtDurationPatch</defName>
 		<typeOf>Thought_Memory</typeOf>
 		<name>DurationTicks</name>
@@ -50,28 +81,25 @@
 	</ResultPatchDef>
 	
 	<ResultPatchDef>
+		<namespaceOf>Verse</namespaceOf>
 		<defName>BirthDayOfSeasonZeroBasedPatch</defName>
 		<typeOf>Pawn_AgeTracker</typeOf>
 		<name>BirthDayOfSeasonZeroBased</name>
 		<type>int</type>
 		<isGetter>true</isGetter>
-		<reverse>true</reverse>
+		<isReverse>true</isReverse>
 	</ResultPatchDef>
 	
 	<ResultPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
 		<defName>GetMaxDayPatch</defName>
 		<typeOf>HistoryAutoRecorderGroup</typeOf>
 		<name>GetMaxDay</name>
 		<type>float</type>
 	</ResultPatchDef>
 	
-	<ResultPatchDef>
-		<defName>CalculateBleedRatePatch</defName>
-		<typeOf>HediffSet</typeOf>
-		<name>CalculateBleedRate</name>
-		<type>float</type>
-		<reverse>true</reverse>
-	</ResultPatchDef>
+
+	
 	
 
 	

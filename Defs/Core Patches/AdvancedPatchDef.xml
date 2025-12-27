@@ -14,17 +14,8 @@
 this patches the exact numbers
 -->
 
-<!-- important one, all needs -->
-	<AdvancedPatchDef>	
-		<namespaceOf>RimWorld</namespaceOf>
-		<defName>AllNeedsPatch</defName>
-		<typeOf>Pawn_NeedsTracker</typeOf>
-		<name>NeedsTrackerTickInterval</name>
-		<type>int</type>
-		<value>150</value>
-	</AdvancedPatchDef>
-	
-<!-- All health-->
+
+
 		
 
 
@@ -56,7 +47,7 @@ this patches the exact numbers
 		<type>float</type>
 		<value>0.000375</value>
 		<secondValue>0.027</secondValue>
-		<reverse>true</reverse>
+		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -67,7 +58,7 @@ this patches the exact numbers
 		<type>float</type>
 		<value>0.00075</value>
 		<secondValue>0.027</secondValue>
-		<reverse>true</reverse>
+		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -196,7 +187,6 @@ this patches the exact numbers
 		<name>OnIntervalPassed</name>
 		<type>float</type>
 		<value>0.001</value>
-		<reverse>true</reverse>
 	</AdvancedPatchDef>
 	
 
