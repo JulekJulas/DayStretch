@@ -185,7 +185,7 @@ public static class ResultPatcher
     static void IntResultPostfix(ref int __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod); // i think its a pretty neat way to do it
-        if (currentReverse) __result = Mathf.RoundToInt(__result * (1f / Settings.Instance.TimeMultiplier));
+        if (currentReverse) __result = Mathf.RoundToInt(__result / Settings.Instance.TimeMultiplier);
         else __result = Mathf.RoundToInt(__result * Settings.Instance.TimeMultiplier);
     }
     static void FloatResultPostfix(ref float __result, MethodBase __originalMethod)
@@ -197,19 +197,19 @@ public static class ResultPatcher
     static void LongResultPostfix(ref long __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) __result = (long)(__result * (1f / Settings.Instance.TimeMultiplier));
+        if (currentReverse) __result = (long)(__result / Settings.Instance.TimeMultiplier);
         else __result = (long)(__result * Settings.Instance.TimeMultiplier);
     }
     static void DoubleResultPostfix(ref double __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) __result = (double)(__result * (1f / Settings.Instance.TimeMultiplier));
+        if (currentReverse) __result = (double)(__result / Settings.Instance.TimeMultiplier);
         else __result = (double)(__result * Settings.Instance.TimeMultiplier);
     }
     static void ShortResultPostfix(ref short __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod); 
-        if (currentReverse) __result = (short)(__result * (1f / Settings.Instance.TimeMultiplier));
+        if (currentReverse) __result = (short)(__result / Settings.Instance.TimeMultiplier);
         else __result = (short)(__result * Settings.Instance.TimeMultiplier);
     }
 
@@ -219,7 +219,7 @@ public static class ResultPatcher
     static void IntDeltaPostfix(ref int delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) delta = (int)(delta * (1f / Settings.Instance.TimeMultiplier));
+        if (currentReverse) delta = (int)(delta / Settings.Instance.TimeMultiplier);
         else delta = (int)(delta * Settings.Instance.TimeMultiplier);
     }
     static void FloatDeltaPostfix(ref float delta, MethodBase __originalMethod)
@@ -231,21 +231,31 @@ public static class ResultPatcher
     static void LongDeltaPostfix(ref long delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) delta = (long)(delta * (1f / Settings.Instance.TimeMultiplier));
+        if (currentReverse) delta = (long)(delta / Settings.Instance.TimeMultiplier);
         else delta = (long)(delta * Settings.Instance.TimeMultiplier);
     }
     static void DoubleDeltaPostfix(ref double delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) delta = (double)(delta * (1f / Settings.Instance.TimeMultiplier));
+        if (currentReverse) delta = (double)(delta / Settings.Instance.TimeMultiplier);
         else delta = (double)(delta * Settings.Instance.TimeMultiplier);
     }
     static void ShortDeltaPostfix(ref short delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) delta = (short)(delta * (1f / Settings.Instance.TimeMultiplier));
+        if (currentReverse) delta = (short)(delta / Settings.Instance.TimeMultiplier);
         else delta = (short)(delta * Settings.Instance.TimeMultiplier);
     }
+    [HarmonyPatch(typeof(Pawn_HealthTracker))]
+    [HarmonyPatch("HealthTickInterval")]
+    static class HealthTickIntervalPatch
+    {
+        static void Prefix(ref int delta)
+        {
+            delta = (int)(delta * (1f / Settings.Instance.TimeMultiplier));
+        }
+    }
+
 
 
 }

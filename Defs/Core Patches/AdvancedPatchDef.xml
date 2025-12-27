@@ -30,14 +30,6 @@ this patches the exact numbers
 
 
 
-	<AdvancedPatchDef>
-		<namespaceOf>Verse</namespaceOf>
-		<defName>SeverityPatch</defName>
-		<typeOf>HediffComp_SeverityModifierBase</typeOf>
-		<name>CompPostTickInterval</name>
-		<type>int</type>
-		<value>200</value>
-	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
 		<namespaceOf>Verse</namespaceOf>

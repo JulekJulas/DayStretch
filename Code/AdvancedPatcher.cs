@@ -100,8 +100,8 @@ public static class AdvancedPatcher
         if (reverse)
         {
             scaledValue = (double)(value * (1f / Settings.Instance.TimeMultiplier));
-            if (secondValue != 0d) secondScaledValue = (double)(secondValue * (1f / Settings.Instance.TimeMultiplier));
-            if (thirdValue != 0d) thirdScaledValue = (double)(thirdValue * (1f / Settings.Instance.TimeMultiplier));
+            if (secondValue != 0d) secondScaledValue = (double)(secondValue / Settings.Instance.TimeMultiplier);
+            if (thirdValue != 0d) thirdScaledValue = (double)(thirdValue / Settings.Instance.TimeMultiplier);
         }
         else
         {
