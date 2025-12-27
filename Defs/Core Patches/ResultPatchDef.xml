@@ -20,16 +20,7 @@
 		<isDelta>true</isDelta>
 		<isReverse>true</isReverse>
 	</ResultPatchDef>
-	
-		<ResultPatchDef>
-		<namespaceOf>RimWorld</namespaceOf>
-		<defName>AllNeedsPatch</defName>
-		<typeOf>Pawn_NeedsTracker</typeOf>
-		<name>NeedsTrackerTickInterval</name>
-		<type>int</type>
-		<isDelta>true</isDelta>
-		<isReverse>true</isReverse>
-	</ResultPatchDef>
+
 	
 
 

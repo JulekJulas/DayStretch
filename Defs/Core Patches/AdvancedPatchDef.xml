@@ -14,7 +14,16 @@
 this patches the exact numbers
 -->
 
-
+<!-- important one, all needs -->
+	<AdvancedPatchDef>	
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>AllNeedsPatch</defName>
+		<typeOf>Pawn_NeedsTracker</typeOf>
+		<name>NeedsTrackerTickInterval</name>
+		<type>int</type>
+		<value>150</value>
+	</AdvancedPatchDef>
+	
 
 		
 

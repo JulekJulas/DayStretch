@@ -50,6 +50,12 @@ public static class ResultPatcher
 
     static void ResultDefPatcher(string defName, string namespaceOf, string typeOf, string name, string numType, bool reverse, bool isGetter, bool isDelta)
     {
+        if (namespaceOf == null) { Log.Error($"[DayStretch]-(AdvancedPatch) namespaceOf in {defName} is not filled in; skipping."); return; }
+        if (typeOf == null) { Log.Error($"[DayStretch]-(AdvancedPatch) typeOf in {defName} is not filled in; skipping."); return; }
+        if (name == null) { Log.Error($"[DayStretch]-(AdvancedPatch) name in {defName} is not filled in; skipping."); return; }
+        if (numType == null) { Log.Error($"[DayStretch]-(AdvancedPatch) type in {defName} is not filled in; skipping."); return; }
+
+
         Type type = GenTypes.GetTypeInAnyAssembly($"{namespaceOf}.{typeOf}");
         if (type == null)
         {
