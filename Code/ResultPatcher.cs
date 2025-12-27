@@ -73,7 +73,7 @@ public static class ResultPatcher
             return;
         }
         keyReverse.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name),  reverse);
-
+        Log.Message(namespaceOf + "." + typeOf + name + reverse);
 
 
 
@@ -180,6 +180,7 @@ public static class ResultPatcher
         string name = type.Name.ToString(); 
         string dictKey = typeOf + name; 
         keyReverse.TryGetValue(dictKey, out bool currentReverse);
+        Log.Message(dictKey + currentReverse);
         return currentReverse;
     }
     static void IntResultPostfix(ref int __result, MethodBase __originalMethod)
@@ -246,15 +247,7 @@ public static class ResultPatcher
         if (currentReverse) delta = (short)(delta / Settings.Instance.TimeMultiplier);
         else delta = (short)(delta * Settings.Instance.TimeMultiplier);
     }
-    [HarmonyPatch(typeof(Pawn_HealthTracker))]
-    [HarmonyPatch("HealthTickInterval")]
-    static class HealthTickIntervalPatch
-    {
-        static void Prefix(ref int delta)
-        {
-            delta = (int)(delta * (1f / Settings.Instance.TimeMultiplier));
-        }
-    }
+
 
 
 

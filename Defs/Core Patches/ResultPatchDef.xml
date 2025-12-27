@@ -11,15 +11,6 @@
 
 
 
-	<ResultPatchDef>
-		<namespaceOf>Verse</namespaceOf>
-		<defName>Pawn_HealthTrackerPatch</defName>
-		<typeOf>Pawn_HealthTracker</typeOf>
-		<name>HealthTickInterval</name>
-		<type>int</type>
-		<isDelta>true</isDelta>
-		<isReverse>true</isReverse>
-	</ResultPatchDef>
 
 	
 
