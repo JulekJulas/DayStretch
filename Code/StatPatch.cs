@@ -12,6 +12,11 @@ public class StatPatchListWorkDef : Def
     public List<string> statsName;
 }
 
+public class StatPatchReverseListDef : Def
+{
+    public List<string> statsName;
+}
+
 
 
 namespace DayStretched
@@ -34,6 +39,23 @@ namespace DayStretched
                         if (statDef != null)
                         {
                             statDef.defaultBaseValue /= Settings.Instance.TimeMultiplier;
+                            pdef++;
+                        }
+                        else Log.Warning($"[DayStretch]-(StatPatch) Could not find StatDef '{statName}' to patch.");
+                    }
+                }
+            }
+            foreach (StatPatchReverseListDef def in DefDatabase<StatPatchReverseListDef>.AllDefsListForReading)
+            {
+                foreach (string statName in def.statsName)
+                {
+                    if (string.IsNullOrEmpty(statName)) continue;
+                    else
+                    {
+                        StatDef statDef = DefDatabase<StatDef>.GetNamed(statName, true);
+                        if (statDef != null)
+                        {
+                            statDef.defaultBaseValue *= Settings.Instance.TimeMultiplier;
                             pdef++;
                         }
                         else Log.Warning($"[DayStretch]-(StatPatch) Could not find StatDef '{statName}' to patch.");
