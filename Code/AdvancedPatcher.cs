@@ -64,10 +64,8 @@ public static class AdvancedPatcher
             }
             Log.Message($"[DayStretch]-(AdvancedPatch) Patched {numbersPatched} variables");
 
-            fullList += "\n\n\n\n";
-            fullGetterList += "\n\n\n\n";
-            Log.Message(fullList);
-            Log.Message(fullGetterList);
+            Log.Message("\n\n\n\n" + fullList);
+            Log.Message("\n\n\n\n" + fullGetterList);
 
 
             int chance = UnityEngine.Random.Range(1, 101);

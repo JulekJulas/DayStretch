@@ -1,0 +1,15 @@
+<Defs>
+
+	<DeltaPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>HealthTickIntervalPatch</defName>
+		<typeOf>Pawn_HealthTracker</typeOf>
+		<name>HealthTickInterval</name>
+		<type>int</type>
+		<isPrefix>true</isPrefix>
+	</DeltaPatchDef>
+	
+	
+	
+	
+</Defs>	

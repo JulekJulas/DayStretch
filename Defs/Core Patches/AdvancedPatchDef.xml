@@ -30,6 +30,7 @@ this patches the exact numbers
 
 
 
+
 	
 	<AdvancedPatchDef>
 		<namespaceOf>Verse</namespaceOf>
@@ -183,11 +184,21 @@ this patches the exact numbers
 	
 	<AdvancedPatchDef>
 		<namespaceOf>Verse</namespaceOf>
-		<defName>OnIntervalPassedPatch</defName>
-		<typeOf>HediffGiver_Bleeding</typeOf>
-		<name>OnIntervalPassed</name>
-		<type>float</type>
-		<value>0.001</value>
+		<defName>SeverityPatch</defName>
+		<typeOf>HediffComp_SeverityModifierBase</typeOf>
+		<name>CompPostTickInterval</name>
+		<type>int</type>
+		<value>200</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>AgeTicksToStopBleedingPatch</defName>
+		<typeOf>Hediff_Injury</typeOf>
+		<name>AgeTicksToStopBleeding</name>
+		<type>int</type>
+		<value>90000</value>
+		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
 	
 

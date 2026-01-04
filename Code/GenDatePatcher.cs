@@ -82,6 +82,7 @@ namespace DayStretched
             var methods = genDateType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
             foreach (var m in methods)
             {
+                
                 if (skip.Contains(m.Name)) continue; //skip unneded methods
                 if (m.IsAbstract || m.IsGenericMethod) continue;
                 if (reverse.Contains(m.Name)) // some methods need to be divided

@@ -16,14 +16,7 @@
 
 
 
-	<ResultPatchDef>
-		<namespaceOf>Verse</namespaceOf>
-		<defName>DeathInPatch</defName>
-		<typeOf>HealthUtility</typeOf>
-		<name>TicksUntilDeathDueToBloodLoss</name>
-		<type>int</type>
-	</ResultPatchDef>
-	
+
 	<ResultPatchDef>
 		<namespaceOf>RimWorld</namespaceOf>
 		<defName>PlantGrowthPatch</defName>
@@ -78,10 +71,18 @@
 		<typeOf>HistoryAutoRecorderGroup</typeOf>
 		<name>GetMaxDay</name>
 		<type>float</type>
+	</ResultPatchDef>																														
+	
+	<ResultPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>CalculateBleedRatePatch</defName>
+		<typeOf>HediffSet</typeOf>
+		<name>CalculateBleedRate</name>
+		<type>float</type>
+		<isReverse>true</isReverse>
 	</ResultPatchDef>
 	
-
-	
+		
 	
 
 	
