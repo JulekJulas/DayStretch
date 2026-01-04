@@ -74,30 +74,6 @@ namespace DayStretched
         }
     }
 
-    [HarmonyPatch(typeof(HealthCardUtility))]
-    [HarmonyPatch("DrawHediffListing")]
-    public static class DrawHediffListingPatch
-    {
-        public static bool Postfix(HistoryAutoRecorderGroup __instance, ref float __result)
-        {
-            float num = 0f;
-            foreach (HistoryAutoRecorder historyAutoRecorder in __instance.recorders)
-            {
-                int count = historyAutoRecorder.records.Count;
-                if (count != 0)
-                {
-                    float num2 = (float)((count - 1) * historyAutoRecorder.def.recordTicksFrequency) / (60000f) * Settings.Instance.TimeMultiplier;
-                    if (num2 > num)
-                    {
-                        num = num2;
-                    }
-                }
-            }
-            __result = num;
-            return false;
-        }
-    }
-
 
 
 
