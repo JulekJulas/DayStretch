@@ -199,7 +199,18 @@ this patches the exact numbers
 		<type>int</type>
 		<value>90000</value>
 		<isGetter>true</isGetter>
+	</AdvancedPatchDef>	
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DrawHediffListingPatch</defName>
+		<typeOf>HealthCardUtility</typeOf>
+		<name>DrawHediffListing</name>
+		<type>float</type>
+		<isCall>true</isCall>
+		<callName>ToStringPercent</callName>
 	</AdvancedPatchDef>
+	
 	
 
 

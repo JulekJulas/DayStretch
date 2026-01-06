@@ -1,0 +1,12 @@
+<Defs>
+<!--
+	<StringPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DrawHediffListingPatch</defName>
+		<typeOf>HealthCardUtility</typeOf>
+		<name>DrawHediffListing</name>
+		<originalText>: </originalText>
+		<newText>:3 i am new custom text</newText>
+	</StringPatchDef>
+	-->
+</Defs>	 

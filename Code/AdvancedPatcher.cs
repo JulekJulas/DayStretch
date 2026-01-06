@@ -17,12 +17,14 @@ public class AdvancedPatchDef : Def
     public string typeOf;
     public string name;
     public string type;
-    public double value;
     // optional
+    public double value;
     public double secondValue;
     public double thirdValue;
     public bool isReverse;
     public bool isGetter;
+    public bool isCall;
+    public string callName;
 }
 
 [StaticConstructorOnStartup]
@@ -35,7 +37,8 @@ public static class AdvancedPatcher
     public static Dictionary<string, long[]> scaledLongs = new Dictionary<string, long[]>();
     public static Dictionary<string, short[]> scaledShorts = new Dictionary<string, short[]>();
     public static Dictionary<string, double[]> scaledDoubles = new Dictionary<string, double[]>();
-    public static Dictionary<string, string> scaledStrings = new Dictionary<string, string>();
+    public static Dictionary<string, string[]> calls = new Dictionary<string, string[]>();
+
     public static Dictionary<string, double[]> wrongValues = new Dictionary<string, double[]>();
 
     public static int amountofWrongValues = 0;
@@ -48,7 +51,7 @@ public static class AdvancedPatcher
     {
         foreach (AdvancedPatchDef def in DefDatabase<AdvancedPatchDef>.AllDefsListForReading)
         {
-            AdvancedDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.value, def.secondValue, def.thirdValue, def.isReverse, def.isGetter);
+            AdvancedDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.value, def.secondValue, def.thirdValue, def.isReverse, def.isGetter, def.isCall, def.callName);
         }
         // makes so the log only shows the amount of numbers patched exactly one time
         if (!logShown)
@@ -78,139 +81,41 @@ public static class AdvancedPatcher
         }
     }
 
-    static void AdvancedDefPatcher(string defName, string namespaceOf, string typeOf, string name, string numType, double value, double secondValue, double thirdValue, bool reverse, bool isGetter)
+    static void AdvancedDefPatcher(string defName, string namespaceOf, string typeOf, string name, string numType, double value, double secondValue, double thirdValue, bool reverse, bool isGetter, bool isCall, string callName)
     {
+        string[] validTypes = new string[] { "int", "float", "long", "short", "double" };
         // really compact checks for null values
         if (namespaceOf == null) { Log.Error($"[DayStretch]-(AdvancedPatch) namespaceOf in {defName} is not filled in; skipping."); return; }
         if (typeOf == null) { Log.Error($"[DayStretch]-(AdvancedPatch) typeOf in {defName} is not filled in; skipping."); return; }
         if (name == null) { Log.Error($"[DayStretch]-(AdvancedPatch) name in {defName} is not filled in; skipping."); return; }
-        if (numType == null) { Log.Error($"[DayStretch]-(AdvancedPatch) type in {defName} is not filled in; skipping."); return; }
-        if (value == 0d) { Log.Error($"[DayStretch]-(AdvancedPatch) value in {defName} is not filled in; skipping."); return; }
+        if (numType == null || !validTypes.Contains(numType)) { Log.Error($"[DayStretch]-(AdvancedPatch) {typeOf} has an invalid type or is null, input: {numType}"); return; }
+
+
+
+
+
         // my habit of overcompacting things will be the death of me one day
 
-        double scaledValue = 0; double secondScaledValue = 0; double thirdScaledValue = 0;
-
-        int scaledInt = 0; int secondScaledInt = 0; int thirdScaledInt = 0;
-
-        float scaledFloat = 0; float secondScaledFloat = 0; float thirdScaledFloat = 0;
-
-        long scaledLong = 0; long secondScaledLong = 0; long thirdScaledLong = 0;
-
-        bool secondValuePresent = secondValue != 0d;
-        bool thirdValuePresent = thirdValue != 0d;
-
-        if (reverse)
-        {
-            scaledValue = (double)(value * (1f / Settings.Instance.TimeMultiplier));
-            if (secondValuePresent) secondScaledValue = (double)(secondValue / Settings.Instance.TimeMultiplier);
-            if (thirdValuePresent) thirdScaledValue = (double)(thirdValue / Settings.Instance.TimeMultiplier);
-        }
-        else
-        {
-            scaledValue = (double)(value * Settings.Instance.TimeMultiplier);
-            if (secondValuePresent) secondScaledValue = (double)(secondValue * Settings.Instance.TimeMultiplier);
-            if (thirdValuePresent) thirdScaledValue = (double)(thirdValue * Settings.Instance.TimeMultiplier);
-        }
-        switch (numType)
-        {
-            case "int": // it looks scary but its just because im dumb and could have done this better
-                scaledInt = (int)(scaledValue);
-                if (secondValuePresent) secondScaledInt = (int)(secondScaledValue);
-                if (thirdValuePresent) thirdScaledInt = (int)(thirdScaledValue);
-                scaledInts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new int[] { scaledInt, secondScaledInt, thirdScaledInt, (int)value, (int)secondValue, (int)thirdValue });
-                break;
-            case "float":
-                scaledFloat = (float)(scaledValue);
-                if (secondValuePresent) secondScaledFloat = (float)(secondScaledValue);
-                if (thirdValuePresent) thirdScaledFloat = (float)(thirdScaledValue);
-                scaledFloats.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new float[] { scaledFloat, secondScaledFloat, thirdScaledFloat, (float)value, (float)secondValue, (float)thirdValue });
-                break;
-            case "long":
-                scaledLong = (long)(scaledValue);
-                if (secondValuePresent) secondScaledLong = (long)(secondScaledValue);
-                if (thirdValuePresent) thirdScaledLong = (long)(thirdScaledValue);
-                scaledLongs.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new long[] { scaledLong, secondScaledLong, thirdScaledLong, (long)value, (long)secondValue, (long)thirdValue });
-                break;
-            case "short": // just in case if someone inputs it
-                scaledInt = (int)(scaledValue);
-                if (secondValuePresent) secondScaledInt = (int)(secondScaledValue);
-                if (thirdValuePresent) thirdScaledInt = (int)(thirdScaledValue);
-                scaledShorts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new short[] { (short)scaledInt, (short)secondScaledInt, (short)thirdScaledInt, (short)value, (short)secondValue, (short)thirdValue });
-                break; // just goes to ints as it prob should
-            case "double":
-                scaledDoubles.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new double[] { scaledValue, secondScaledValue, thirdScaledValue, value, secondValue, thirdValue }); // just values since its already a double
-                break;
-            default:
-                Log.Error($"[DayStretch]-(AdvancedPatch) {typeOf} has an invalid type, input: {numType}");
-                return;
-        }
-        Type type = GenTypes.GetTypeInAnyAssembly($"{namespaceOf}.{typeOf}");
-
-
-        // extra checks
-
-        if (type == null)
-        {
-            Log.Error($"[DayStretch]-(AdvancedPatch) Type '{typeOf}' not found in namespace '{namespaceOf}'; skipping.");
-            return;
-        }
-        if (type.Method(name) == null && isGetter == false)
-        {
-            Log.Error($"[DayStretch]-(AdvancedPatch) Method '{name}' not found in class '{typeOf}' in namespace '{namespaceOf}'; skipping.");
-            return;
-        }
-        if (type.Property(name) == null && isGetter == true) // thanks vs autocomplete
-        {
-            Log.Error($"[DayStretch]-(AdvancedPatch) Property '{name}' not found in class '{typeOf}' in namespace '{namespaceOf}'; skipping.");
-            return;
-        }
-
         var harmony = new Harmony("com.julekjulas.advancedpatch");
-        if (isGetter)
-        {
-            foreach (var prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
-            {
-                if (!string.IsNullOrEmpty(name) && prop.Name != name) continue;
-                var getter = prop.GetGetMethod(true);
-                if (getter == null) continue;
-                if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
-                try
-                {
-                    switch (numType)
-                    {
-                        case "int": var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: transpiler); break;
-                        case "float": var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: floatTranspiler); break;
-                        case "long": var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: longTranspiler); break;
-                        case "short": var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: shortTranspiler); break;
-                        case "double": var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: doubleTranspiler); break;
-                        default: return;
-                    }
-                    fullGetterList += $"{typeOf}.{prop.Name} ({numType}), \n";
-                }
-                catch (Exception e)
-                {
-                    Log.Error($"[DayStretch]-(AdvancedPatch) Failed patching getter {typeOf}.{prop.Name}: {e}");
-                }
-            }
-        }
 
-        else
+        Type type = GenTypes.GetTypeInAnyAssembly($"{namespaceOf}.{typeOf}"); 
+
+        if (type == null) { Log.Error($"[DayStretch]-(AdvancedPatch) Type '{typeOf}' not found in namespace '{namespaceOf}'; skipping."); return; }
+        if (type.Method(name) == null && isGetter == false) { Log.Error($"[DayStretch]-(AdvancedPatch) Method '{name}' not found in class '{typeOf}' in namespace '{namespaceOf}'; skipping."); return; }
+        if (type.Property(name) == null && isGetter == true) { Log.Error($"[DayStretch]-(AdvancedPatch) Property '{name}' not found in class '{typeOf}' in namespace '{namespaceOf}'; skipping."); return; }
+
+        if (isCall) // since there is no value we have to do patch it now
         {
+            if (callName == null) { Log.Error($"[DayStretch]-(AdvancedPatch) callName in {defName} is not filled in despite using isCall; skipping."); return; }
+            calls.Add(namespaceOf + "." + typeOf + name, new string[] { callName, reverse.ToString(), numType });
+
             foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
             {
                 if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
                 if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
                 try
                 {
-                    switch (numType)
-                    {
-                        case "int": var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler); break;
-                        case "float": var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: floatTranspiler); break;
-                        case "long": var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: longTranspiler); break;
-                        case "short": var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: shortTranspiler); break;
-                        case "double": var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: doubleTranspiler); break;
-                        default: return;
-                    }
+                    var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileCall), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler);
                     fullList += $"{typeOf}.{method.Name} ({numType}), \n";
                 }
                 catch (Exception e)
@@ -220,7 +125,131 @@ public static class AdvancedPatcher
                 }
             }
         }
+        else
+        {
+            double scaledValue = 0; double secondScaledValue = 0; double thirdScaledValue = 0;
+
+            int scaledInt = 0; int secondScaledInt = 0; int thirdScaledInt = 0;
+
+            float scaledFloat = 0; float secondScaledFloat = 0; float thirdScaledFloat = 0;
+
+            long scaledLong = 0; long secondScaledLong = 0; long thirdScaledLong = 0;
+
+            bool secondValuePresent = secondValue != 0d;
+            bool thirdValuePresent = thirdValue != 0d;
+            if (value == 0d) { Log.Error($"[DayStretch]-(AdvancedPatch) value in {defName} is not filled in; skipping."); return; }
+            if (reverse)
+            {
+                scaledValue = (double)(value * (1f / Settings.Instance.TimeMultiplier));
+                if (secondValuePresent) secondScaledValue = (double)(secondValue / Settings.Instance.TimeMultiplier);
+                if (thirdValuePresent) thirdScaledValue = (double)(thirdValue / Settings.Instance.TimeMultiplier);
+            }
+            else
+            {
+                scaledValue = (double)(value * Settings.Instance.TimeMultiplier);
+                if (secondValuePresent) secondScaledValue = (double)(secondValue * Settings.Instance.TimeMultiplier);
+                if (thirdValuePresent) thirdScaledValue = (double)(thirdValue * Settings.Instance.TimeMultiplier);
+            }
+            switch (numType)
+            {
+                case "int": // it looks scary but its just because im dumb and could have done this better
+                    scaledInt = (int)(scaledValue);
+                    if (secondValuePresent) secondScaledInt = (int)(secondScaledValue);
+                    if (thirdValuePresent) thirdScaledInt = (int)(thirdScaledValue);
+                    scaledInts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new int[] { scaledInt, secondScaledInt, thirdScaledInt, (int)value, (int)secondValue, (int)thirdValue });
+                    break;
+                case "float":
+                    scaledFloat = (float)(scaledValue);
+                    if (secondValuePresent) secondScaledFloat = (float)(secondScaledValue);
+                    if (thirdValuePresent) thirdScaledFloat = (float)(thirdScaledValue);
+                    scaledFloats.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new float[] { scaledFloat, secondScaledFloat, thirdScaledFloat, (float)value, (float)secondValue, (float)thirdValue });
+                    break;
+                case "long":
+                    scaledLong = (long)(scaledValue);
+                    if (secondValuePresent) secondScaledLong = (long)(secondScaledValue);
+                    if (thirdValuePresent) thirdScaledLong = (long)(thirdScaledValue);
+                    scaledLongs.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new long[] { scaledLong, secondScaledLong, thirdScaledLong, (long)value, (long)secondValue, (long)thirdValue });
+                    break;
+                case "short": // just in case if someone inputs it
+                    scaledInt = (int)(scaledValue);
+                    if (secondValuePresent) secondScaledInt = (int)(secondScaledValue);
+                    if (thirdValuePresent) thirdScaledInt = (int)(thirdScaledValue);
+                    scaledShorts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new short[] { (short)scaledInt, (short)secondScaledInt, (short)thirdScaledInt, (short)value, (short)secondValue, (short)thirdValue });
+                    break; // just goes to ints as it prob should
+                case "double":
+                    scaledDoubles.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new double[] { scaledValue, secondScaledValue, thirdScaledValue, value, secondValue, thirdValue }); // just values since its already a double
+                    break;
+                default:
+                    Log.Error($"[DayStretch]-(AdvancedPatch) {typeOf} has an invalid type, input: {numType}");
+                    return;
+            }
+
+
+
+            // extra checks
+
+
+
+            if (isGetter)
+            {
+                foreach (var prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    if (!string.IsNullOrEmpty(name) && prop.Name != name) continue;
+                    var getter = prop.GetGetMethod(true);
+                    if (getter == null) continue;
+                    if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
+                    try
+                    {
+                        switch (numType)
+                        {
+                            case "int": var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: transpiler); break;
+                            case "float": var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: floatTranspiler); break;
+                            case "long": var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: longTranspiler); break;
+                            case "short": var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: shortTranspiler); break;
+                            case "double": var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: doubleTranspiler); break;
+                            default: return;
+                        }
+                        fullGetterList += $"{typeOf}.{prop.Name} ({numType}), \n";
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[DayStretch]-(AdvancedPatch) Failed patching getter {typeOf}.{prop.Name}: {e}");
+                    }
+                }
+            }
+
+            else
+            {
+                foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
+                    if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
+                    try
+                    {
+                        switch (numType)
+                        {
+                            case "int": var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler); break;
+                            case "float": var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: floatTranspiler); break;
+                            case "long": var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: longTranspiler); break;
+                            case "short": var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: shortTranspiler); break;
+                            case "double": var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: doubleTranspiler); break;
+                            default: return;
+                        }
+                        fullList += $"{typeOf}.{method.Name} ({numType}), \n";
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[DayStretch]-(AdvancedPatch) Failed Patching {typeOf}. {e}");
+                        return;
+                    }
+                }
+            }
+        }
     }
+
+
+
+
 
     static IEnumerable<CodeInstruction> TranspileIntVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
     {
@@ -360,4 +389,52 @@ public static class AdvancedPatcher
             if (thirdVariablePatched) wrongValues[dictKey][2] = 0;
         }
     }
+
+    static IEnumerable<CodeInstruction> TranspileCall(IEnumerable<CodeInstruction> instructions, MethodBase type)
+    {
+        string typeOf = type.DeclaringType.ToString();
+        string name = type.Name.ToString();
+        string dictKey = typeOf + name;
+        calls.TryGetValue(dictKey, out string[] strings);
+        string callName = strings[0]; bool reverse = Convert.ToBoolean(strings[1]); string numType = strings[2];
+        MethodInfo targetMethod = null;
+
+
+        switch (numType)
+        {
+            case "int": targetMethod = AccessTools.Method(typeof(GenText), callName, new Type[] { typeof(int) }); break;
+            case "float": targetMethod = AccessTools.Method(typeof(GenText), callName, new Type[] { typeof(float) }); break;
+            case "long": targetMethod = AccessTools.Method(typeof(GenText), callName, new Type[] { typeof(long) }); break;
+            case "short": targetMethod = AccessTools.Method(typeof(GenText), callName, new Type[] { typeof(short) }); break;
+            case "double": targetMethod = AccessTools.Method(typeof(GenText), callName, new Type[] { typeof(double) }); break;
+        }
+        bool callPatched = false;
+        FieldInfo instanceField = AccessTools.Field(typeof(Settings), nameof(Settings.Instance));
+        FieldInfo timeMultiplierField = AccessTools.Field(typeof(DayStretch), nameof(DayStretch.TimeMultiplier));
+
+        foreach (var instr in instructions)
+        {
+            if (instr.Calls(targetMethod))
+            {
+                yield return new CodeInstruction(OpCodes.Ldsfld, instanceField);
+                yield return new CodeInstruction(OpCodes.Ldfld, timeMultiplierField);
+                callPatched = true;
+                if (reverse) yield return new CodeInstruction(OpCodes.Div);
+                else yield return new CodeInstruction(OpCodes.Mul);
+            }
+            yield return instr;
+        }
+        if (callPatched == false)
+        {
+            wrongValues.Add(dictKey, new double[] { 1, 0, 0 }); // just a dummy value to show its not patched, yup thanks vs autocomplete
+        }
+    }
+
+
+
+
+
+
+
+
 }
