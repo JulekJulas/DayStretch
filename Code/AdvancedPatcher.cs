@@ -44,8 +44,9 @@ public static class AdvancedPatcher
     public static int amountofWrongValues = 0;
 
     static int numbersPatched = 0;
-    static string fullList = "[DayStretch]-(AdvancedPatch)\nVariables Patched:\n";
-    static string fullGetterList = "[DayStretch]-(AdvancedPatch)\nGetter Variables Patched:\n";
+    static string fullList = "Methods Patched:\n";
+    static string fullGetterList = "Getters Patched:\n";
+    public static string loggerList = "";
 
     static AdvancedPatcher()
     {
@@ -67,17 +68,8 @@ public static class AdvancedPatcher
                 }
                 Log.Warning("[DayStretch]-(AdvancedPatch) Do note: Advanced Patcher not patching certain variables even though they are in the source code may suggest it is edited by something else.");
             }
-            Log.Message($"[DayStretch]-(AdvancedPatch) Patched {numbersPatched} variables");
 
-            Log.Message(fullList + "\n\n\n\n");
-            Log.Message(fullGetterList + "\n\n\n\n");
-
-
-            int chance = UnityEngine.Random.Range(1, 101);
-            if (chance == 1)
-            {
-                Log.Message("[DayStretch]-(AdvancedPatch) Patch and fix till its done.");
-            }
+            loggerList += $"Advanced Patcher:\nNumber of variables patched: {numbersPatched}\n\n{fullList}\n\n{fullGetterList}";
         }
     }
 

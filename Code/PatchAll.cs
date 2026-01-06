@@ -12,7 +12,7 @@ namespace DayStretched
     {
         public DayStretched(ModContentPack content) : base(content)
         {
-            var harmony = new Harmony("jj.daystretch"); harmony.PatchAll();
+            var harmony = new Harmony("julekjulas.daystretch"); harmony.PatchAll();
         }
     }
 }

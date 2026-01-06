@@ -32,7 +32,8 @@ public static class StringPatcher
     public static int amountofWrongStrings = 0;
 
     static int stringsPatched = 0;
-    static string fullList = "[DayStretch]-(StringPatch)\nStrings Patched:\n";
+    static string fullList = "Methods Patched:\n";
+    public static string loggerList = "";
 
     static StringPatcher()
     {
@@ -51,9 +52,7 @@ public static class StringPatcher
                     Log.Error($"[DayStretch]-(StringPatch) String {wrongStrings[key][0]} not found in {key}");
                 }
             }
-            Log.Message($"[DayStretch]-(StringPatch) Patched {stringsPatched} strings");
-
-            Log.Message(fullList + "\n\n\n\n");
+            loggerList += $"String Patcher:\nNumber of strings patched: {stringsPatched}\n\n{fullList}";
         }
     }
     static void StringDefPatcher(string defName, string namespaceOf, string typeOf, string name, string originalText, string newText)

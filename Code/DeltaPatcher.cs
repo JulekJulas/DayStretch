@@ -25,8 +25,9 @@ public class DeltaPatchDef : Def
 [StaticConstructorOnStartup]
 public static class DeltaPatcher
 {
-    static string fullList = "[DayStretch]-(DeltaPatch)\nDeltas Patched:\n";
-    static string fullGetterList = "[DayStretch]-(DeltaPatch)\nGetter Deltas Patched:\n";
+    static string fullList = "Method Deltas Patched:\n";
+    static string fullGetterList = "Getter Deltas Patched:\n";
+    public static string loggerList = "";
     static int deltasPatched;
     public static Dictionary<string, bool> keyReverse = new Dictionary<string, bool>();
 
@@ -40,12 +41,7 @@ public static class DeltaPatcher
         }
         if (!logShown) logShown = true;
         {
-            fullList += "\n\n\n\n";
-            fullGetterList += "\n\n\n\n";
-            Log.Message(fullList);
-            Log.Message(fullGetterList);
-
-            Log.Message($"[DayStretch]-(DeltaPatch) Patched {deltasPatched} deltas");
+            loggerList += $"Delta Patcher:\nNumber of deltas patched: {deltasPatched}\n\n{fullList}\n\n{fullGetterList}";
         }
     }
 

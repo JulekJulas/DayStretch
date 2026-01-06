@@ -164,6 +164,7 @@
     <Compile Include="Code\Config.cs" />
     <Compile Include="Code\DeltaPatcher.cs" />
     <Compile Include="Code\GenDatePatcher.cs" />
+    <Compile Include="Debug\Logger.cs" />
     <Compile Include="Debug\InstructionReader.cs" />
     <Compile Include="Code\NonAutomatablePatches.cs" />
     <Compile Include="Code\PatchAll.cs" />

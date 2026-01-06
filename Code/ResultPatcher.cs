@@ -25,8 +25,9 @@ public class ResultPatchDef : Def
 [StaticConstructorOnStartup]
 public static class ResultPatcher
 {
-    static string fullList = "[DayStretch]-(ResultPatch)\nResults Patched:\n";
-    static string fullGetterList = "[DayStretch]-(ResultPatch)\nGetter Results Patched:\n";
+    static string fullList = "Method Results Patched:\n";
+    static string fullGetterList = "Getter Results Patched:\n";
+    public static string loggerList = "";
     static int resultsPatched;
     public static Dictionary<string, bool> keyReverse = new Dictionary<string, bool>();
 
@@ -40,12 +41,7 @@ public static class ResultPatcher
         }
         if (!logShown) logShown = true;
         {
-            fullList += "\n\n\n\n";
-            fullGetterList += "\n\n\n\n";
-            Log.Message(fullList);
-            Log.Message(fullGetterList);
-
-            Log.Message($"[DayStretch]-(ResultPatch) Patched {resultsPatched} results");
+            loggerList += $"Result Patcher:\nNumber of results patched: {resultsPatched}\n\n{fullList}\n\n{fullGetterList}";
         }
     }
 
