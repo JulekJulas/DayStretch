@@ -1,0 +1,15 @@
+<Defs>
+	<InstructionReadDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DrawHediffListingRead</defName>
+		<typeOf>HealthCardUtility</typeOf>
+		<name>DrawHediffListing</name>
+	</InstructionReadDef>
+	
+	
+	
+	
+	
+	
+	
+</Defs>	

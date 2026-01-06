@@ -160,10 +160,12 @@
     <Compile Include="Code\Config.cs" />
     <Compile Include="Code\DeltaPatcher.cs" />
     <Compile Include="Code\GenDatePatcher.cs" />
+    <Compile Include="Debug\InstructionReader.cs" />
     <Compile Include="Code\NonAutomatablePatches.cs" />
     <Compile Include="Code\PatchAll.cs" />
     <Compile Include="Code\ResultPatcher.cs" />
-    <Compile Include="Code\SaveValueStore.cs" />
+    <Compile Include="Debug\SaveValueStore.cs" />
+    <Compile Include="Code\StringPatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\StatPatch.cs" />
   </ItemGroup>

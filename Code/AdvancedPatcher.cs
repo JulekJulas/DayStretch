@@ -35,7 +35,9 @@ public static class AdvancedPatcher
     public static Dictionary<string, long[]> scaledLongs = new Dictionary<string, long[]>();
     public static Dictionary<string, short[]> scaledShorts = new Dictionary<string, short[]>();
     public static Dictionary<string, double[]> scaledDoubles = new Dictionary<string, double[]>();
+    public static Dictionary<string, string> scaledStrings = new Dictionary<string, string>();
     public static Dictionary<string, double[]> wrongValues = new Dictionary<string, double[]>();
+
     public static int amountofWrongValues = 0;
 
     static int numbersPatched = 0;
@@ -64,8 +66,8 @@ public static class AdvancedPatcher
             }
             Log.Message($"[DayStretch]-(AdvancedPatch) Patched {numbersPatched} variables");
 
-            Log.Message("\n\n\n\n" + fullList);
-            Log.Message("\n\n\n\n" + fullGetterList);
+            Log.Message(fullList + "\n\n\n\n");
+            Log.Message(fullGetterList + "\n\n\n\n");
 
 
             int chance = UnityEngine.Random.Range(1, 101);
@@ -94,43 +96,45 @@ public static class AdvancedPatcher
 
         long scaledLong = 0; long secondScaledLong = 0; long thirdScaledLong = 0;
 
+        bool secondValuePresent = secondValue != 0d;
+        bool thirdValuePresent = thirdValue != 0d;
 
         if (reverse)
         {
             scaledValue = (double)(value * (1f / Settings.Instance.TimeMultiplier));
-            if (secondValue != 0d) secondScaledValue = (double)(secondValue / Settings.Instance.TimeMultiplier);
-            if (thirdValue != 0d) thirdScaledValue = (double)(thirdValue / Settings.Instance.TimeMultiplier);
+            if (secondValuePresent) secondScaledValue = (double)(secondValue / Settings.Instance.TimeMultiplier);
+            if (thirdValuePresent) thirdScaledValue = (double)(thirdValue / Settings.Instance.TimeMultiplier);
         }
         else
         {
             scaledValue = (double)(value * Settings.Instance.TimeMultiplier);
-            if (secondValue != 0d) secondScaledValue = (double)(secondValue * Settings.Instance.TimeMultiplier);
-            if (thirdValue != 0d) thirdScaledValue = (double)(thirdValue * Settings.Instance.TimeMultiplier);
+            if (secondValuePresent) secondScaledValue = (double)(secondValue * Settings.Instance.TimeMultiplier);
+            if (thirdValuePresent) thirdScaledValue = (double)(thirdValue * Settings.Instance.TimeMultiplier);
         }
         switch (numType)
         {
             case "int": // it looks scary but its just because im dumb and could have done this better
                 scaledInt = (int)(scaledValue);
-                if (secondValue != 0d) secondScaledInt = (int)(secondScaledValue);
-                if (thirdValue != 0d) thirdScaledInt = (int)(thirdScaledValue);
+                if (secondValuePresent) secondScaledInt = (int)(secondScaledValue);
+                if (thirdValuePresent) thirdScaledInt = (int)(thirdScaledValue);
                 scaledInts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new int[] { scaledInt, secondScaledInt, thirdScaledInt, (int)value, (int)secondValue, (int)thirdValue });
                 break;
             case "float":
                 scaledFloat = (float)(scaledValue);
-                if (secondValue != 0d) secondScaledFloat = (float)(secondScaledValue);
-                if (thirdValue != 0d) thirdScaledFloat = (float)(thirdScaledValue);
+                if (secondValuePresent) secondScaledFloat = (float)(secondScaledValue);
+                if (thirdValuePresent) thirdScaledFloat = (float)(thirdScaledValue);
                 scaledFloats.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new float[] { scaledFloat, secondScaledFloat, thirdScaledFloat, (float)value, (float)secondValue, (float)thirdValue });
                 break;
             case "long":
                 scaledLong = (long)(scaledValue);
-                if (secondValue != 0d) secondScaledLong = (long)(secondScaledValue);
-                if (thirdValue != 0d) thirdScaledLong = (long)(thirdScaledValue);
+                if (secondValuePresent) secondScaledLong = (long)(secondScaledValue);
+                if (thirdValuePresent) thirdScaledLong = (long)(thirdScaledValue);
                 scaledLongs.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new long[] { scaledLong, secondScaledLong, thirdScaledLong, (long)value, (long)secondValue, (long)thirdValue });
                 break;
             case "short": // just in case if someone inputs it
                 scaledInt = (int)(scaledValue);
-                if (secondValue != 0d) secondScaledInt = (int)(secondScaledValue);
-                if (thirdValue != 0d) thirdScaledInt = (int)(thirdScaledValue);
+                if (secondValuePresent) secondScaledInt = (int)(secondScaledValue);
+                if (thirdValuePresent) thirdScaledInt = (int)(thirdScaledValue);
                 scaledShorts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new short[] { (short)scaledInt, (short)secondScaledInt, (short)thirdScaledInt, (short)value, (short)secondValue, (short)thirdValue });
                 break; // just goes to ints as it prob should
             case "double":
@@ -174,23 +178,12 @@ public static class AdvancedPatcher
                 {
                     switch (numType)
                     {
-                        case "int":
-                            var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: transpiler);
-                            break;
-                        case "float":
-                            var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: floatTranspiler);
-                            break;
-                        case "long":
-                            var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: longTranspiler);
-                            break;
-                        case "short":
-                            var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: shortTranspiler);
-                            break;
-                        case "double":
-                            var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: doubleTranspiler);
-                            break;
-                        default:
-                            return;// juuust in case 
+                        case "int": var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: transpiler); break;
+                        case "float": var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: floatTranspiler); break;
+                        case "long": var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: longTranspiler); break;
+                        case "short": var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: shortTranspiler); break;
+                        case "double": var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: doubleTranspiler); break;
+                        default: return;
                     }
                     fullGetterList += $"{typeOf}.{prop.Name} ({numType}), \n";
                 }
@@ -211,23 +204,12 @@ public static class AdvancedPatcher
                 {
                     switch (numType)
                     {
-                        case "int":
-                            var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler);
-                            break;
-                        case "float":
-                            var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: floatTranspiler);
-                            break;
-                        case "long":
-                            var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: longTranspiler);
-                            break;
-                        case "short":
-                            var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: shortTranspiler);
-                            break; // pretty sure i can just do I4 for shorts
-                        case "double":
-                            var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: doubleTranspiler);
-                            break;
-                        default:
-                            return;// juuust in case even though it should have stopped before
+                        case "int": var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler); break;
+                        case "float": var floatTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: floatTranspiler); break;
+                        case "long": var longTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: longTranspiler); break;
+                        case "short": var shortTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: shortTranspiler); break;
+                        case "double": var doubleTranspiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileDoubleVariables), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: doubleTranspiler); break;
+                        default: return;
                     }
                     fullList += $"{typeOf}.{method.Name} ({numType}), \n";
                 }
