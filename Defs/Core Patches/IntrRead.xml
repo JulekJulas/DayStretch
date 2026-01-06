@@ -6,8 +6,12 @@
 		<name>DrawHediffListing</name>
 	</InstructionReadDef>
 	
-	
-	
+	<InstructionReadDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DateOnGUIPatch</defName>
+		<typeOf>DateReadout</typeOf>
+		<name>DateOnGUI</name>
+	</InstructionReadDef>
 	
 	
 	

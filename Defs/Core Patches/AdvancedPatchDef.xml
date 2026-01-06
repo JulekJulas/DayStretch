@@ -211,7 +211,41 @@ this patches the exact numbers
 		<callName>ToStringPercent</callName>
 	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef> <!-- if someone can tell me why these didnt get patched during the main patcher i would be greatful-->
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DaysPassedAtPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>DaysPassedAt</name>
+		<type>float</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
 	
-
-
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>TwelfthsPassedAtPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>TwelfthsPassedAt</name>
+		<type>float</type>
+		<value>300000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>YearsPassedAtPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>YearsPassedAt</name>
+		<type>float</type>
+		<value>3600000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DoGraphPagePatch</defName>
+		<typeOf>MainTabWindow_History</typeOf>
+		<name>DoGraphPage</name>
+		<type>float</type>
+		<value>60000</value>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+	
 </Defs> 

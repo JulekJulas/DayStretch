@@ -68,7 +68,7 @@ namespace DayStretched
     public static class GenDatePatcher
     {
         static string[] reverse = { }; 
-        static string[] skip = { "DaysPassedFloat", "DaysPassedSinceSettleFloat", "YearsPassedFloat", "TicksToPeriod" };
+        static string[] skip = { "DaysPassedFloat", "DaysPassedSinceSettleFloat", "YearsPassedFloat", "TicksToPeriod", "DaysPassedInt" };
 
         static GenDatePatcher()
         {

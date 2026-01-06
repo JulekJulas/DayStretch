@@ -210,35 +210,40 @@ public static class ResultPatcher
 
 
 
-    static void IntResultPrefix(ref int __result, MethodBase __originalMethod)
+    static bool IntResultPrefix(ref int __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod); // i think its a pretty neat way to do it
         if (currentReverse) __result = Mathf.RoundToInt(__result / Settings.Instance.TimeMultiplier);
         else __result = Mathf.RoundToInt(__result * Settings.Instance.TimeMultiplier);
+        return false;
     }
-    static void FloatResultPrefix(ref float __result, MethodBase __originalMethod)
+    static bool FloatResultPrefix(ref float __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
         if (currentReverse) __result /= Settings.Instance.TimeMultiplier;
         else __result *= Settings.Instance.TimeMultiplier;
+        return false;
     }
-    static void LongResultPrefix(ref long __result, MethodBase __originalMethod)
+    static bool LongResultPrefix(ref long __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
         if (currentReverse) __result = (long)(__result / Settings.Instance.TimeMultiplier);
         else __result = (long)(__result * Settings.Instance.TimeMultiplier);
+        return false;
     }
-    static void DoubleResultPrefix(ref double __result, MethodBase __originalMethod)
+    static bool DoubleResultPrefix(ref double __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
         if (currentReverse) __result = (double)(__result / Settings.Instance.TimeMultiplier);
         else __result = (double)(__result * Settings.Instance.TimeMultiplier);
+        return false;
     }
-    static void ShortResultPrefix(ref short __result, MethodBase __originalMethod)
+    static bool ShortResultPrefix(ref short __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
         if (currentReverse) __result = (short)(__result / Settings.Instance.TimeMultiplier);
         else __result = (short)(__result * Settings.Instance.TimeMultiplier);
+        return false;
     }
 
 

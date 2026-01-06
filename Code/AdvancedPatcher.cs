@@ -25,6 +25,7 @@ public class AdvancedPatchDef : Def
     public bool isGetter;
     public bool isCall;
     public string callName;
+    public int skipResults;
 }
 
 [StaticConstructorOnStartup]
@@ -52,7 +53,7 @@ public static class AdvancedPatcher
     {
         foreach (AdvancedPatchDef def in DefDatabase<AdvancedPatchDef>.AllDefsListForReading)
         {
-            AdvancedDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.value, def.secondValue, def.thirdValue, def.isReverse, def.isGetter, def.isCall, def.callName);
+            AdvancedDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.value, def.secondValue, def.thirdValue, def.isReverse, def.isGetter, def.isCall, def.callName, def.skipResults);
         }
         // makes so the log only shows the amount of numbers patched exactly one time
         if (!logShown)
@@ -73,7 +74,7 @@ public static class AdvancedPatcher
         }
     }
 
-    static void AdvancedDefPatcher(string defName, string namespaceOf, string typeOf, string name, string numType, double value, double secondValue, double thirdValue, bool reverse, bool isGetter, bool isCall, string callName)
+    static void AdvancedDefPatcher(string defName, string namespaceOf, string typeOf, string name, string numType, double value, double secondValue, double thirdValue, bool reverse, bool isGetter, bool isCall, string callName, int skipResults)
     {
         string[] validTypes = new string[] { "int", "float", "long", "short", "double" };
         // really compact checks for null values
@@ -148,28 +149,28 @@ public static class AdvancedPatcher
                     scaledInt = (int)(scaledValue);
                     if (secondValuePresent) secondScaledInt = (int)(secondScaledValue);
                     if (thirdValuePresent) thirdScaledInt = (int)(thirdScaledValue);
-                    scaledInts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new int[] { scaledInt, secondScaledInt, thirdScaledInt, (int)value, (int)secondValue, (int)thirdValue });
+                    scaledInts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new int[] { scaledInt, secondScaledInt, thirdScaledInt, (int)value, (int)secondValue, (int)thirdValue, skipResults });
                     break;
                 case "float":
                     scaledFloat = (float)(scaledValue);
                     if (secondValuePresent) secondScaledFloat = (float)(secondScaledValue);
                     if (thirdValuePresent) thirdScaledFloat = (float)(thirdScaledValue);
-                    scaledFloats.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new float[] { scaledFloat, secondScaledFloat, thirdScaledFloat, (float)value, (float)secondValue, (float)thirdValue });
+                    scaledFloats.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new float[] { scaledFloat, secondScaledFloat, thirdScaledFloat, (float)value, (float)secondValue, (float)thirdValue, (float)skipResults });
                     break;
                 case "long":
                     scaledLong = (long)(scaledValue);
                     if (secondValuePresent) secondScaledLong = (long)(secondScaledValue);
                     if (thirdValuePresent) thirdScaledLong = (long)(thirdScaledValue);
-                    scaledLongs.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new long[] { scaledLong, secondScaledLong, thirdScaledLong, (long)value, (long)secondValue, (long)thirdValue });
+                    scaledLongs.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new long[] { scaledLong, secondScaledLong, thirdScaledLong, (long)value, (long)secondValue, (long)thirdValue, (long)skipResults });
                     break;
                 case "short": // just in case if someone inputs it
                     scaledInt = (int)(scaledValue);
                     if (secondValuePresent) secondScaledInt = (int)(secondScaledValue);
                     if (thirdValuePresent) thirdScaledInt = (int)(thirdScaledValue);
-                    scaledShorts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new short[] { (short)scaledInt, (short)secondScaledInt, (short)thirdScaledInt, (short)value, (short)secondValue, (short)thirdValue });
+                    scaledShorts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new short[] { (short)scaledInt, (short)secondScaledInt, (short)thirdScaledInt, (short)value, (short)secondValue, (short)thirdValue, (short)skipResults });
                     break; // just goes to ints as it prob should
                 case "double":
-                    scaledDoubles.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new double[] { scaledValue, secondScaledValue, thirdScaledValue, value, secondValue, thirdValue }); // just values since its already a double
+                    scaledDoubles.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new double[] { scaledValue, secondScaledValue, thirdScaledValue, value, secondValue, thirdValue, skipResults }); // just values since its already a double
                     break;
                 default:
                     Log.Error($"[DayStretch]-(AdvancedPatch) {typeOf} has an invalid type, input: {numType}");
@@ -251,18 +252,17 @@ public static class AdvancedPatcher
         scaledInts.TryGetValue(dictKey, out int[] values);
         int scaledValue = values[0]; int secondScaledValue = values[1]; int thirdScaledValue = values[2];
 
-        int value = values[3]; int secondValue = values[4]; int thirdValue = values[5];
+        int value = values[3]; int secondValue = values[4]; int thirdValue = values[5]; int skipResults = (int)values[6];
 
         bool secondVariablePresent = secondValue != 0; // checks if variables are used
         bool thirdVariablePresent = thirdValue != 0;
 
         bool variablePatched = false; bool secondVariablePatched = false; bool thirdVariablePatched = false;
-
         foreach (var instr in instructions)
         {   
             if ((instr.opcode == OpCodes.Ldc_I4 || instr.opcode == OpCodes.Ldc_I4_S) && instr.operand is int val)
             {
-                if (val == value) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; }
+                if (val == value) { if (skipResults == 0) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; } else skipResults--; }
                 else if ((val == secondValue) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; numbersPatched++; }
                 else if ((val == thirdValue) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; numbersPatched++; }
             }
@@ -286,7 +286,7 @@ public static class AdvancedPatcher
         scaledFloats.TryGetValue(dictKey, out float[] values);
         float scaledValue = values[0]; float secondScaledValue = values[1]; float thirdScaledValue = values[2];
 
-        float value = values[3]; float secondValue = values[4]; float thirdValue = values[5];
+        float value = values[3]; float secondValue = values[4]; float thirdValue = values[5]; int skipResults = (int)values[6];
 
         bool secondVariablePresent = secondValue != 0; // checks if variables are used
         bool thirdVariablePresent = thirdValue != 0;
@@ -296,7 +296,7 @@ public static class AdvancedPatcher
         {
             if ((instr.opcode == OpCodes.Ldc_R4) && instr.operand is float val)
             {
-                if (Mathf.Approximately(val, value)) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; }
+                if (Mathf.Approximately(val, value)) { if (skipResults == 0) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; } else skipResults--; }
                 else if (Mathf.Approximately(val, secondValue) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; numbersPatched++; }
                 else if (Mathf.Approximately(val, thirdValue) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; numbersPatched++; }
             }
@@ -321,7 +321,7 @@ public static class AdvancedPatcher
         scaledLongs.TryGetValue(dictKey, out long[] values);
         long scaledValue = values[0]; long secondScaledValue = values[1]; long thirdScaledValue = values[2];
 
-        long value = values[3]; long secondValue = values[4]; long thirdValue = values[5];
+        long value = values[3]; long secondValue = values[4]; long thirdValue = values[5]; int skipResults = (int)values[6];
 
         bool secondVariablePresent = secondValue != 0; // checks if variables are used
         bool thirdVariablePresent = thirdValue != 0;
@@ -331,7 +331,7 @@ public static class AdvancedPatcher
         {
             if ((instr.opcode == OpCodes.Ldc_I8) && instr.operand is long val)
             {
-                if (val == value) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; }
+                if (val == value) { if (skipResults == 0) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; } else skipResults--; }
                 else if ((val == secondValue) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; numbersPatched++; }
                 else if ((val == thirdValue) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; numbersPatched++; }
             }
@@ -355,7 +355,7 @@ public static class AdvancedPatcher
         scaledDoubles.TryGetValue(dictKey, out double[] values);
         double scaledValue = values[0]; double secondScaledValue = values[1]; double thirdScaledValue = values[2];
 
-        double value = values[3]; double secondValue = values[4]; double thirdValue = values[5];
+        double value = values[3]; double secondValue = values[4]; double thirdValue = values[5]; int skipResults = (int)values[6];
 
         bool secondVariablePresent = secondValue != 0; // checks if variables are used
         bool thirdVariablePresent = thirdValue != 0;
@@ -365,7 +365,7 @@ public static class AdvancedPatcher
         {
             if ((instr.opcode == OpCodes.Ldc_R8) && instr.operand is double val)
             {
-                if (Math.Abs(val - value) < 0.0001) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; }
+                if (Math.Abs(val - value) < 0.0001) { if (skipResults == 0) { instr.operand = scaledValue; variablePatched = true; numbersPatched++; } else skipResults--; }
                 else if ((Math.Abs(val - secondValue) < 0.0001) && (secondVariablePresent)) { instr.operand = secondScaledValue; secondVariablePatched = true; numbersPatched++; }
                 else if ((Math.Abs(val - thirdValue) < 0.0001) && (thirdVariablePresent)) { instr.operand = thirdScaledValue; thirdVariablePatched = true; numbersPatched++; }
             }
