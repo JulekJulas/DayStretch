@@ -25,6 +25,8 @@ public static class Logger
                 fullList += DeltaPatcher.loggerList;
                 fullList += "\n\n\n";
                 fullList += StringPatcher.loggerList;
+                fullList += "\n\n\n";
+                fullList += VariablePatcher.loggerList;
                 Log.Message(fullList);
             }
         });
