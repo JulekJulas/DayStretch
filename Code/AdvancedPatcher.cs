@@ -8,24 +8,26 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Verse;
 
 public class AdvancedPatchDef : Def
 {
-    public string namespaceOf;
-    public string typeOf;
-    public string name;
-    public string type;
+    public string namespaceOf; //namespace
+    public string typeOf; // class
+    public string name; // method or property name
+    public string type; // int, float, long, short, double
     // optional
-    public double value;
-    public double secondValue;
-    public double thirdValue;
-    public bool isReverse;
-    public bool isGetter;
-    public bool isCall;
-    public string callName;
-    public int skipResults;
+    public double value; // must be filled in unless isCall is used
+    public double secondValue; // optional, cant be used if skip results is used
+    public double thirdValue; // same as above
+    public bool isReverse; // by default the value is multiplied, if isReverse is true it is divided instead
+    public bool isGetter; // by default methods are used, if isGetter is true it uses property getters instead
+    public bool isCall; // if true, AdvancedPatcher will try to find the method used and add multiplication/division to the call
+    public string callName; // the name of the method in call
+    public int skipResults; // skips x amount of results
 }
 
 [StaticConstructorOnStartup]
@@ -87,11 +89,11 @@ public static class AdvancedPatcher
 
 
 
-        // my habit of overcompacting things will be the death of me one day
+        // my habit of overcompacting things will be the death of me one day    
 
         var harmony = new Harmony("com.julekjulas.advancedpatch");
 
-        Type type = GenTypes.GetTypeInAnyAssembly($"{namespaceOf}.{typeOf}"); 
+        Type type = GenTypes.GetTypeInAnyAssembly($"{namespaceOf}.{typeOf}");
 
         if (type == null) { Log.Error($"[DayStretch]-(AdvancedPatch) Type '{typeOf}' not found in namespace '{namespaceOf}'; skipping."); return; }
         if (type.Method(name) == null && isGetter == false) { Log.Error($"[DayStretch]-(AdvancedPatch) Method '{name}' not found in class '{typeOf}' in namespace '{namespaceOf}'; skipping."); return; }
@@ -100,7 +102,7 @@ public static class AdvancedPatcher
         if (isCall) // since there is no value we have to do patch it now
         {
             if (callName == null) { Log.Error($"[DayStretch]-(AdvancedPatch) callName in {defName} is not filled in despite using isCall; skipping."); return; }
-            calls.Add(namespaceOf + "." + typeOf + name, new string[] { callName, reverse.ToString(), numType });
+            calls.Add(namespaceOf + "." + typeOf + name + ":call", new string[] { callName, reverse.ToString(), numType });
 
             foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
             {
@@ -149,34 +151,33 @@ public static class AdvancedPatcher
                     scaledInt = (int)(scaledValue);
                     if (secondValuePresent) secondScaledInt = (int)(secondScaledValue);
                     if (thirdValuePresent) thirdScaledInt = (int)(thirdScaledValue);
-                    scaledInts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new int[] { scaledInt, secondScaledInt, thirdScaledInt, (int)value, (int)secondValue, (int)thirdValue, skipResults });
+                    scaledInts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name + ":int") : (namespaceOf + "." + typeOf + name + ":int"), new int[] { scaledInt, secondScaledInt, thirdScaledInt, (int)value, (int)secondValue, (int)thirdValue, skipResults });
                     break;
                 case "float":
                     scaledFloat = (float)(scaledValue);
                     if (secondValuePresent) secondScaledFloat = (float)(secondScaledValue);
                     if (thirdValuePresent) thirdScaledFloat = (float)(thirdScaledValue);
-                    scaledFloats.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new float[] { scaledFloat, secondScaledFloat, thirdScaledFloat, (float)value, (float)secondValue, (float)thirdValue, (float)skipResults });
+                    scaledFloats.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name + ":float") : (namespaceOf + "." + typeOf + name + ":float"), new float[] { scaledFloat, secondScaledFloat, thirdScaledFloat, (float)value, (float)secondValue, (float)thirdValue, (float)skipResults });
                     break;
                 case "long":
                     scaledLong = (long)(scaledValue);
                     if (secondValuePresent) secondScaledLong = (long)(secondScaledValue);
                     if (thirdValuePresent) thirdScaledLong = (long)(thirdScaledValue);
-                    scaledLongs.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new long[] { scaledLong, secondScaledLong, thirdScaledLong, (long)value, (long)secondValue, (long)thirdValue, (long)skipResults });
+                    scaledLongs.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name + ":long") : (namespaceOf + "." + typeOf + name + ":long"), new long[] { scaledLong, secondScaledLong, thirdScaledLong, (long)value, (long)secondValue, (long)thirdValue, (long)skipResults });
                     break;
                 case "short": // just in case if someone inputs it
                     scaledInt = (int)(scaledValue);
                     if (secondValuePresent) secondScaledInt = (int)(secondScaledValue);
                     if (thirdValuePresent) thirdScaledInt = (int)(thirdScaledValue);
-                    scaledShorts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new short[] { (short)scaledInt, (short)secondScaledInt, (short)thirdScaledInt, (short)value, (short)secondValue, (short)thirdValue, (short)skipResults });
+                    scaledShorts.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name + ":int") : (namespaceOf + "." + typeOf + name + ":int"), new short[] { (short)scaledInt, (short)secondScaledInt, (short)thirdScaledInt, (short)value, (short)secondValue, (short)thirdValue, (short)skipResults });
                     break; // just goes to ints as it prob should
                 case "double":
-                    scaledDoubles.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), new double[] { scaledValue, secondScaledValue, thirdScaledValue, value, secondValue, thirdValue, skipResults }); // just values since its already a double
+                    scaledDoubles.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name + ":double") : (namespaceOf + "." + typeOf + name + ":double"), new double[] { scaledValue, secondScaledValue, thirdScaledValue, value, secondValue, thirdValue, skipResults }); // just values since its already a double
                     break;
                 default:
                     Log.Error($"[DayStretch]-(AdvancedPatch) {typeOf} has an invalid type, input: {numType}");
                     return;
             }
-
 
 
             // extra checks
@@ -210,7 +211,6 @@ public static class AdvancedPatcher
                     }
                 }
             }
-
             else
             {
                 foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
@@ -248,7 +248,7 @@ public static class AdvancedPatcher
     {
         string typeOf = type.DeclaringType.ToString();
         string name = type.Name.ToString();
-        string dictKey = typeOf + name; // i think this is the best way to do it hint: its not
+        string dictKey = typeOf + name + ":int";
         scaledInts.TryGetValue(dictKey, out int[] values);
         int scaledValue = values[0]; int secondScaledValue = values[1]; int thirdScaledValue = values[2];
 
@@ -282,7 +282,7 @@ public static class AdvancedPatcher
     {
         string typeOf = type.DeclaringType.ToString();
         string name = type.Name.ToString();
-        string dictKey = typeOf + name;
+        string dictKey = typeOf + name + ":float";
         scaledFloats.TryGetValue(dictKey, out float[] values);
         float scaledValue = values[0]; float secondScaledValue = values[1]; float thirdScaledValue = values[2];
 
@@ -317,7 +317,7 @@ public static class AdvancedPatcher
     {
         string typeOf = type.DeclaringType.ToString();
         string name = type.Name.ToString();
-        string dictKey = typeOf + name;
+        string dictKey = typeOf + name + ":long";
         scaledLongs.TryGetValue(dictKey, out long[] values);
         long scaledValue = values[0]; long secondScaledValue = values[1]; long thirdScaledValue = values[2];
 
@@ -351,7 +351,7 @@ public static class AdvancedPatcher
     {
         string typeOf = type.DeclaringType.ToString();
         string name = type.Name.ToString();
-        string dictKey = typeOf + name;
+        string dictKey = typeOf + name + ":double";
         scaledDoubles.TryGetValue(dictKey, out double[] values);
         double scaledValue = values[0]; double secondScaledValue = values[1]; double thirdScaledValue = values[2];
 
@@ -386,7 +386,7 @@ public static class AdvancedPatcher
     {
         string typeOf = type.DeclaringType.ToString();
         string name = type.Name.ToString();
-        string dictKey = typeOf + name;
+        string dictKey = typeOf + name + ":call";
         calls.TryGetValue(dictKey, out string[] strings);
         string callName = strings[0]; bool reverse = Convert.ToBoolean(strings[1]); string numType = strings[2];
         MethodInfo targetMethod = null;
