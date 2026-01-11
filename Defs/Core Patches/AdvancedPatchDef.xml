@@ -248,22 +248,7 @@ this patches the exact numbers
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 	
-	<AdvancedPatchDef>
-		<namespaceOf>RimWorld.Planet</namespaceOf>
-		<defName>ApproxTilesPerDayPatch</defName>
-		<typeOf>TilesPerDayCalculator</typeOf>
-		<name>ApproxTilesPerDay</name>
-		<type>float</type>
-		<value>60000</value>
-		<parameters>
-			<li>System.Int32</li>
-			<li>RimWorld.Planet.PlanetTile</li>
-			<li>RimWorld.Planet.PlanetTile</li>
-			<li>System.Text.StringBuilder</li>
-			<li>System.String</li>
-			<li>System.Boolean</li>
-		</parameters>
-	</AdvancedPatchDef>
+
 	
 	
 	
