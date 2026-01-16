@@ -28,6 +28,7 @@ public class AdvancedPatchDef : Def
     public bool isCall; // if true, AdvancedPatcher will try to find the method used and add multiplication/division to the call
     public string callName; // the name of the method in call
     public int skipResults; // skips x amount of results
+    public int parametersLength;
 }
 
 [StaticConstructorOnStartup]
@@ -55,7 +56,7 @@ public static class AdvancedPatcher
     {
         foreach (AdvancedPatchDef def in DefDatabase<AdvancedPatchDef>.AllDefsListForReading)
         {
-            AdvancedDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.value, def.secondValue, def.thirdValue, def.isReverse, def.isGetter, def.isCall, def.callName, def.skipResults);
+            AdvancedDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.value, def.secondValue, def.thirdValue, def.isReverse, def.isGetter, def.isCall, def.callName, def.skipResults, def.parametersLength);
         }
         // makes so the log only shows the amount of numbers patched exactly one time
         if (!logShown)
@@ -76,7 +77,7 @@ public static class AdvancedPatcher
         }
     }
 
-    static void AdvancedDefPatcher(string defName, string namespaceOf, string typeOf, string name, string numType, double value, double secondValue, double thirdValue, bool reverse, bool isGetter, bool isCall, string callName, int skipResults)
+    static void AdvancedDefPatcher(string defName, string namespaceOf, string typeOf, string name, string numType, double value, double secondValue, double thirdValue, bool reverse, bool isGetter, bool isCall, string callName, int skipResults, int parametersLength)
     {
         string[] validTypes = new string[] { "int", "float", "long", "short", "double" };
         // really compact checks for null values
@@ -96,8 +97,6 @@ public static class AdvancedPatcher
         Type type = GenTypes.GetTypeInAnyAssembly($"{namespaceOf}.{typeOf}");
 
         if (type == null) { Log.Error($"[DayStretch]-(AdvancedPatch) Type '{typeOf}' not found in namespace '{namespaceOf}'; skipping."); return; }
-        if (type.Method(name) == null && isGetter == false) { Log.Error($"[DayStretch]-(AdvancedPatch) Method '{name}' not found in class '{typeOf}' in namespace '{namespaceOf}'; skipping."); return; }
-        if (type.Property(name) == null && isGetter == true) { Log.Error($"[DayStretch]-(AdvancedPatch) Property '{name}' not found in class '{typeOf}' in namespace '{namespaceOf}'; skipping."); return; }
 
         if (isCall) // since there is no value we have to do patch it now
         {
@@ -180,9 +179,6 @@ public static class AdvancedPatcher
             }
 
 
-            // extra checks
-
-
 
             if (isGetter)
             {
@@ -191,6 +187,7 @@ public static class AdvancedPatcher
                     if (!string.IsNullOrEmpty(name) && prop.Name != name) continue;
                     var getter = prop.GetGetMethod(true);
                     if (getter == null) continue;
+                    if (getter.GetParameters().Length != parametersLength) continue;
                     if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
                     try
                     {
@@ -218,6 +215,7 @@ public static class AdvancedPatcher
                 foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
                 {
                     if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
+                    if (method.GetParameters().Length != parametersLength) continue;
                     if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
                     try
                     {

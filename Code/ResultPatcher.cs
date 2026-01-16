@@ -21,6 +21,7 @@ public class ResultPatchDef : Def
     public bool isReverse;
     public bool isGetter;
     public bool isPrefix;
+    public int parametersLength;
 } 
 [StaticConstructorOnStartup]
 public static class ResultPatcher
@@ -37,7 +38,7 @@ public static class ResultPatcher
     {
         foreach (ResultPatchDef def in DefDatabase<ResultPatchDef>.AllDefsListForReading)
         {
-            ResultDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.isReverse, def.isGetter, def.isPrefix);
+            ResultDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.isReverse, def.isGetter, def.isPrefix, def.parametersLength);
         }
         if (!logShown) logShown = true;
         {
@@ -45,7 +46,7 @@ public static class ResultPatcher
         }
     }
 
-    static void ResultDefPatcher(string defName, string namespaceOf, string typeOf, string name, string numType, bool reverse, bool isGetter, bool isPrefix)
+    static void ResultDefPatcher(string defName, string namespaceOf, string typeOf, string name, string numType, bool reverse, bool isGetter, bool isPrefix, int parametersLength)
     {
         if (namespaceOf == null) { Log.Error($"[DayStretch]-(ResultPatch) namespaceOf in {defName} is not filled in; skipping."); return; }
         if (typeOf == null) { Log.Error($"[DayStretch]-(ResultPatch) typeOf in {defName} is not filled in; skipping."); return; }
@@ -57,16 +58,6 @@ public static class ResultPatcher
         if (type == null)
         {
             Log.Error($"[DayStretch]-(ResultPatch) Type '{typeOf}' not found in namespace '{namespaceOf}'; skipping.");
-            return;
-        }
-        if (type.Method(name) == null && isGetter == false)
-        {
-            Log.Error($"[DayStretch]-(ResultPatch) Method '{name}' not found in class '{typeOf}' in namespace '{namespaceOf}'; skipping.");
-            return;
-        }
-        if (type.Property(name) == null && isGetter == true) // thanks vs autocomplete
-        {
-            Log.Error($"[DayStretch]-(ResultPatch) Property '{name}' not found in class '{typeOf}' in namespace '{namespaceOf}'; skipping.");
             return;
         }
         keyReverse.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name),  reverse);
@@ -85,6 +76,7 @@ public static class ResultPatcher
 
                 var getter = prop.GetGetMethod(true);
                 if (getter == null) continue;
+                if (getter.GetParameters().Length != parametersLength) continue;
                 if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
 
                 try
@@ -130,6 +122,7 @@ public static class ResultPatcher
 
                 if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
                 if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
+                if (method.GetParameters().Length != parametersLength) continue;
                 try
                 {
                     if (isPrefix)

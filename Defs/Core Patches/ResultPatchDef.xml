@@ -82,7 +82,14 @@
 		<isReverse>true</isReverse>
 	</ResultPatchDef>
 	
-
+	<ResultPatchDef>
+		<namespaceOf>RimWorld.Planet</namespaceOf>
+		<defName>CostToMovePatch</defName>
+		<typeOf>Caravan_PathFollower</typeOf>
+		<name>CostToMove</name>
+		<type>int</type>
+		<parametersLength>8</parametersLength>
+	</ResultPatchDef>
 	
 		
 	
