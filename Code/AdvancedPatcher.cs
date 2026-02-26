@@ -85,7 +85,7 @@ public static class AdvancedPatcher
         if (typeOf == null) { Log.Error($"[DayStretch]-(AdvancedPatch) typeOf in {defName} is not filled in; skipping."); return; }
         if (name == null) { Log.Error($"[DayStretch]-(AdvancedPatch) name in {defName} is not filled in; skipping."); return; }
         if (numType == null || !validTypes.Contains(numType)) { Log.Error($"[DayStretch]-(AdvancedPatch) {typeOf} has an invalid type or is null, input: {numType}"); return; }
-
+        bool parametersLengthFilled = parametersLength != 0;
 
 
 
@@ -187,7 +187,7 @@ public static class AdvancedPatcher
                     if (!string.IsNullOrEmpty(name) && prop.Name != name) continue;
                     var getter = prop.GetGetMethod(true);
                     if (getter == null) continue;
-                    if (getter.GetParameters().Length != parametersLength) continue;
+                    if (getter.GetParameters().Length != parametersLength && parametersLengthFilled) continue;
                     if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
                     try
                     {
@@ -215,7 +215,7 @@ public static class AdvancedPatcher
                 foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
                 {
                     if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
-                    if (method.GetParameters().Length != parametersLength) continue;
+                    if (method.GetParameters().Length != parametersLength && parametersLengthFilled) continue;
                     if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
                     try
                     {
