@@ -134,15 +134,15 @@ public static class AdvancedPatcher
             if (value == 0d) { Log.Error($"[DayStretch]-(AdvancedPatch) value in {defName} is not filled in; skipping."); return; }
             if (reverse)
             {
-                scaledValue = (double)(value * (1f / Settings.Instance.TimeMultiplier));
-                if (secondValuePresent) secondScaledValue = (double)(secondValue / Settings.Instance.TimeMultiplier);
-                if (thirdValuePresent) thirdScaledValue = (double)(thirdValue / Settings.Instance.TimeMultiplier);
+                scaledValue = (double)(value * (1f / DayStretch.Settings.Instance.TimeMultiplier));
+                if (secondValuePresent) secondScaledValue = (double)(secondValue / DayStretch.Settings.Instance.TimeMultiplier);
+                if (thirdValuePresent) thirdScaledValue = (double)(thirdValue / DayStretch.Settings.Instance.TimeMultiplier);
             }
             else
             {
-                scaledValue = (double)(value * Settings.Instance.TimeMultiplier);
-                if (secondValuePresent) secondScaledValue = (double)(secondValue * Settings.Instance.TimeMultiplier);
-                if (thirdValuePresent) thirdScaledValue = (double)(thirdValue * Settings.Instance.TimeMultiplier);
+                scaledValue = (double)(value * DayStretch.Settings.Instance.TimeMultiplier);
+                if (secondValuePresent) secondScaledValue = (double)(secondValue * DayStretch.Settings.Instance.TimeMultiplier);
+                if (thirdValuePresent) thirdScaledValue = (double)(thirdValue * DayStretch.Settings.Instance.TimeMultiplier);
             }
             switch (numType)
             {
@@ -187,7 +187,7 @@ public static class AdvancedPatcher
                     if (!string.IsNullOrEmpty(name) && prop.Name != name) continue;
                     var getter = prop.GetGetMethod(true);
                     if (getter == null) continue;
-                    if (getter.GetParameters().Length != parametersLength) continue;
+                    if (getter.GetParameters().Length != parametersLength && parametersLength != 0) continue;
                     if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
                     try
                     {
@@ -215,7 +215,7 @@ public static class AdvancedPatcher
                 foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
                 {
                     if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
-                    if (method.GetParameters().Length != parametersLength) continue;
+                    if (method.GetParameters().Length != parametersLength && parametersLength != 0) continue;
                     if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
                     try
                     {
@@ -403,8 +403,8 @@ public static class AdvancedPatcher
             case "double": targetMethod = AccessTools.Method(typeof(GenText), callName, new Type[] { typeof(double) }); break;
         }
         bool callPatched = false;
-        FieldInfo instanceField = AccessTools.Field(typeof(Settings), nameof(Settings.Instance));
-        FieldInfo timeMultiplierField = AccessTools.Field(typeof(DayStretch), nameof(DayStretch.TimeMultiplier));
+        FieldInfo instanceField = AccessTools.Field(typeof(DayStretch.Settings), nameof(DayStretch.Settings.Instance));
+        FieldInfo timeMultiplierField = AccessTools.Field(typeof(DayStretch.DayStretch), nameof(DayStretch.DayStretch.TimeMultiplier));
 
         foreach (var instr in instructions)
         {

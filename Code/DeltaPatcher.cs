@@ -180,32 +180,32 @@ public static class DeltaPatcher
     static void IntDeltaPostfix(ref int delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod); // i think its a pretty neat way to do it
-        if (currentReverse) delta = Mathf.RoundToInt(delta / Settings.Instance.TimeMultiplier);
-        else delta = Mathf.RoundToInt(delta * Settings.Instance.TimeMultiplier);
+        if (currentReverse) delta = Mathf.RoundToInt(delta / DayStretch.Settings.Instance.TimeMultiplier);
+        else delta = Mathf.RoundToInt(delta * DayStretch.Settings.Instance.TimeMultiplier);
     }
     static void FloatDeltaPostfix(ref float delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) delta /= Settings.Instance.TimeMultiplier;
-        else delta *= Settings.Instance.TimeMultiplier;
+        if (currentReverse) delta /= DayStretch.Settings.Instance.TimeMultiplier;
+        else delta *= DayStretch.Settings.Instance.TimeMultiplier;
     }
     static void LongDeltaPostfix(ref long delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) delta = (long)(delta / Settings.Instance.TimeMultiplier);
-        else delta = (long)(delta * Settings.Instance.TimeMultiplier);
+        if (currentReverse) delta = (long)(delta / DayStretch.Settings.Instance.TimeMultiplier);
+        else delta = (long)(delta * DayStretch.Settings.Instance.TimeMultiplier);
     }
     static void DoubleDeltaPostfix(ref double delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) delta = (double)(delta / Settings.Instance.TimeMultiplier);
-        else delta = (double)(delta * Settings.Instance.TimeMultiplier);
+        if (currentReverse) delta = (double)(delta / DayStretch.Settings.Instance.TimeMultiplier);
+        else delta = (double)(delta * DayStretch.Settings.Instance.TimeMultiplier);
     }
     static void ShortDeltaPostfix(ref short delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) delta = (short)(delta / Settings.Instance.TimeMultiplier);
-        else delta = (short)(delta * Settings.Instance.TimeMultiplier);
+        if (currentReverse) delta = (short)(delta / DayStretch.Settings.Instance.TimeMultiplier);
+        else delta = (short)(delta * DayStretch.Settings.Instance.TimeMultiplier);
     }
 
 
@@ -214,32 +214,32 @@ public static class DeltaPatcher
     static void IntDeltaPrefix(ref int delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod); // i think its a pretty neat way to do it
-        if (currentReverse) delta = Mathf.RoundToInt(delta / Settings.Instance.TimeMultiplier);
-        else delta = Mathf.RoundToInt(delta * Settings.Instance.TimeMultiplier);
+        if (currentReverse) delta = Mathf.RoundToInt(delta / DayStretch.Settings.Instance.TimeMultiplier);
+        else delta = Mathf.RoundToInt(delta * DayStretch.Settings.Instance.TimeMultiplier);
     }
     static void FloatDeltaPrefix(ref float delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) delta /= Settings.Instance.TimeMultiplier;
-        else delta *= Settings.Instance.TimeMultiplier;
+        if (currentReverse) delta /= DayStretch.Settings.Instance.TimeMultiplier;
+        else delta *= DayStretch.Settings.Instance.TimeMultiplier;
     }
     static void LongDeltaPrefix(ref long delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) delta = (long)(delta / Settings.Instance.TimeMultiplier);
-        else delta = (long)(delta * Settings.Instance.TimeMultiplier);
+        if (currentReverse) delta = (long)(delta / DayStretch.Settings.Instance.TimeMultiplier);
+        else delta = (long)(delta * DayStretch.Settings.Instance.TimeMultiplier);
     }
     static void DoubleDeltaPrefix(ref double delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) delta = (double)(delta / Settings.Instance.TimeMultiplier);
-        else delta = (double)(delta * Settings.Instance.TimeMultiplier);
+        if (currentReverse) delta = (double)(delta / DayStretch.Settings.Instance.TimeMultiplier);
+        else delta = (double)(delta * DayStretch.Settings.Instance.TimeMultiplier);
     }
     static void ShortDeltaPrefix(ref short delta, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) delta = (short)(delta / Settings.Instance.TimeMultiplier);
-        else delta = (short)(delta * Settings.Instance.TimeMultiplier);
+        if (currentReverse) delta = (short)(delta / DayStretch.Settings.Instance.TimeMultiplier);
+        else delta = (short)(delta * DayStretch.Settings.Instance.TimeMultiplier);
     }
 
 

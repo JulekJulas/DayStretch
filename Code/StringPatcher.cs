@@ -63,7 +63,7 @@ public static class StringPatcher
         if (originalText == null) { Log.Error($"[DayStretch]-(StringPatch) original text in {defName} is not filled in; skipping."); return; }
         if (newText == null) { Log.Error($"[DayStretch]-(StringPatch) new text in {defName} is not filled in; skipping."); return; }
 
-        float TimeMultiplier = Settings.Instance.TimeMultiplier;
+        float TimeMultiplier = DayStretch.Settings.Instance.TimeMultiplier;
 
         scaledStrings.Add(namespaceOf + "." + typeOf + name, new string[] { originalText, newText });
 

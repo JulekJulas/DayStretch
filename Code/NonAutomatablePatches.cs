@@ -28,7 +28,7 @@ namespace DayStretched
     {
         public static bool Prefix(GameCondition __instance, ref bool __result)
         {
-            __result = !__instance.Permanent && Find.TickManager.TicksGame > __instance.startTick + (__instance.Duration * Settings.Instance.TimeMultiplier);
+            __result = !__instance.Permanent && Find.TickManager.TicksGame > __instance.startTick + (__instance.Duration * DayStretch.Settings.Instance.TimeMultiplier);
             return false;
         }
     }
@@ -39,7 +39,7 @@ namespace DayStretched
     {
         public static bool Prefix(WeatherEventMaker __instance, Map map, float strength)
         {
-            if (Rand.Value < 1f / __instance.averageInterval * strength * Settings.Instance.TimeMultiplier)
+            if (Rand.Value < 1f / __instance.averageInterval * strength * DayStretch.Settings.Instance.TimeMultiplier)
             {
                 WeatherEvent newEvent = (WeatherEvent)Activator.CreateInstance(__instance.eventClass, new object[]
                 {
@@ -63,7 +63,7 @@ namespace DayStretched
                 int count = historyAutoRecorder.records.Count;
                 if (count != 0)
                 {
-                    float num2 = (float)((count - 1) * historyAutoRecorder.def.recordTicksFrequency) / (60000f) * Settings.Instance.TimeMultiplier;
+                    float num2 = (float)((count - 1) * historyAutoRecorder.def.recordTicksFrequency) / (60000f) * DayStretch.Settings.Instance.TimeMultiplier;
                     if (num2 > num)
                     {
                         num = num2;

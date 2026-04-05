@@ -266,6 +266,15 @@ this patches the exact numbers
 		<value>60000</value>
 	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>TicksAbsForSunPosInWorldSpacePatch</defName>
+		<typeOf>GenCelestial</typeOf>
+		<name>TicksAbsForSunPosInWorldSpace</name>
+		<type>float</type>
+		<value>2500</value>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
 	
 	
 </Defs> 

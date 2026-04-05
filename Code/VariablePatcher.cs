@@ -73,11 +73,11 @@ public static class VariablePatcher
             {
                 switch (numType)
                 {
-                    case "int": int intValue = (int)field.GetValue(target); intValue = reverse ? Mathf.RoundToInt(intValue / Settings.Instance.TimeMultiplier) : Mathf.RoundToInt(intValue * Settings.Instance.TimeMultiplier); field.SetValue(target, intValue); break;
-                    case "float": float floatValue = (float)field.GetValue(target); floatValue = reverse ? (floatValue / Settings.Instance.TimeMultiplier) : (floatValue * Settings.Instance.TimeMultiplier); field.SetValue(target, floatValue); break;
-                    case "long": long longValue = (long)field.GetValue(target); longValue = reverse ? (long)(longValue / Settings.Instance.TimeMultiplier) : (long)(longValue * Settings.Instance.TimeMultiplier); field.SetValue(target, longValue); break;
-                    case "short": short shortValue = (short)field.GetValue(target); shortValue = reverse ? (short)(shortValue / Settings.Instance.TimeMultiplier) : (short)(shortValue * Settings.Instance.TimeMultiplier); field.SetValue(target, shortValue); break;
-                    case "double": double doubleValue = (double)field.GetValue(target); doubleValue = reverse ? (double)(doubleValue / Settings.Instance.TimeMultiplier) : (double)(doubleValue * Settings.Instance.TimeMultiplier); field.SetValue(target, doubleValue); break;
+                    case "int": int intValue = (int)field.GetValue(target); intValue = reverse ? Mathf.RoundToInt(intValue / DayStretch.Settings.Instance.TimeMultiplier) : Mathf.RoundToInt(intValue * DayStretch.Settings.Instance.TimeMultiplier); field.SetValue(target, intValue); break;
+                    case "float": float floatValue = (float)field.GetValue(target); floatValue = reverse ? (floatValue / DayStretch.Settings.Instance.TimeMultiplier) : (floatValue * DayStretch.Settings.Instance.TimeMultiplier); field.SetValue(target, floatValue); break;
+                    case "long": long longValue = (long)field.GetValue(target); longValue = reverse ? (long)(longValue / DayStretch.Settings.Instance.TimeMultiplier) : (long)(longValue * DayStretch.Settings.Instance.TimeMultiplier); field.SetValue(target, longValue); break;
+                    case "short": short shortValue = (short)field.GetValue(target); shortValue = reverse ? (short)(shortValue / DayStretch.Settings.Instance.TimeMultiplier) : (short)(shortValue * DayStretch.Settings.Instance.TimeMultiplier); field.SetValue(target, shortValue); break;
+                    case "double": double doubleValue = (double)field.GetValue(target); doubleValue = reverse ? (double)(doubleValue / DayStretch.Settings.Instance.TimeMultiplier) : (double)(doubleValue * DayStretch.Settings.Instance.TimeMultiplier); field.SetValue(target, doubleValue); break;
                     default: return;
                 }
                 fullList += $"{typeOf}.{name} ({numType}), \n";

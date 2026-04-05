@@ -14,7 +14,7 @@ namespace DayStretched
         {
             base.StartedNewGame();
             // capture the current global setting once for this save
-            savedTimeMultiplier = Settings.Instance.TimeMultiplier;
+            savedTimeMultiplier = DayStretch.Settings.Instance.TimeMultiplier;
         }
         public override void ExposeData()
         {
@@ -24,7 +24,7 @@ namespace DayStretched
         public static float ForCurrentSave()
         {
             var comp = Current.Game?.GetComponent<DayStretchedGameComp>();
-            return comp != null ? comp.savedTimeMultiplier : Settings.Instance.TimeMultiplier;
+            return comp != null ? comp.savedTimeMultiplier : DayStretch.Settings.Instance.TimeMultiplier;
         }
     
 
@@ -32,10 +32,10 @@ namespace DayStretched
     public override void LoadedGame()
         {
             base.LoadedGame();
-            if (savedTimeMultiplier != Settings.Instance.TimeMultiplier)
+            if (savedTimeMultiplier != DayStretch.Settings.Instance.TimeMultiplier)
             {
                 string text = $"The saved time multiplier for this save is {savedTimeMultiplier}.\n" +
-                              $"Your current multiplier is {Settings.Instance.TimeMultiplier}.\n" +
+                              $"Your current multiplier is {DayStretch.Settings.Instance.TimeMultiplier}.\n" +
                               $"Continuing with the current multiplier may cause save corruption and many bugs.\n\n" +
                               $"Do you want to switch to the saved multiplier?\n\n" +
                               $"Though also note that the mod cannot be added midgame.";
@@ -47,7 +47,7 @@ namespace DayStretched
                     text,
                     "Yes".Translate(), () =>
                     {
-                        Settings.Instance.TimeMultiplier = savedTimeMultiplier;
+                        DayStretch.Settings.Instance.TimeMultiplier = savedTimeMultiplier;
                         Find.WindowStack.Add(new Dialog_MessageBox("Done! Please restart the game for the changes to apply. DO NOT SAVE NOW"));
                     },
                     "No".Translate(), () =>
@@ -60,7 +60,7 @@ namespace DayStretched
                         },
                             "No".Translate(), () =>
                             {
-                                Settings.Instance.TimeMultiplier = savedTimeMultiplier;
+                                DayStretch.Settings.Instance.TimeMultiplier = savedTimeMultiplier;
                                 Find.WindowStack.Add(new Dialog_MessageBox("Value changed! Please restart the game for the changes to apply. DO NOT SAVE NOW"));
                             }
                     ));

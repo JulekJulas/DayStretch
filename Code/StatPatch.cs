@@ -38,7 +38,7 @@ namespace DayStretched
                         StatDef statDef = DefDatabase<StatDef>.GetNamed(statName, true);
                         if (statDef != null)
                         {
-                            statDef.defaultBaseValue /= Settings.Instance.TimeMultiplier;
+                            statDef.defaultBaseValue /= DayStretch.Settings.Instance.TimeMultiplier;
                             pdef++;
                         }
                         else Log.Warning($"[DayStretch]-(StatPatch) Could not find StatDef '{statName}' to patch.");
@@ -55,14 +55,14 @@ namespace DayStretched
                         StatDef statDef = DefDatabase<StatDef>.GetNamed(statName, true);
                         if (statDef != null)
                         {
-                            statDef.defaultBaseValue *= Settings.Instance.TimeMultiplier;
+                            statDef.defaultBaseValue *= DayStretch.Settings.Instance.TimeMultiplier;
                             pdef++;
                         }
                         else Log.Warning($"[DayStretch]-(StatPatch) Could not find StatDef '{statName}' to patch.");
                     }
                 }
             }
-            if (Settings.Instance.WorkRelated == true)
+            if (DayStretch.Settings.Instance.WorkRelated == true)
             {
                 foreach (StatPatchListWorkDef def in DefDatabase<StatPatchListWorkDef>.AllDefsListForReading)
                 {
@@ -74,7 +74,7 @@ namespace DayStretched
                             StatDef statDef = DefDatabase<StatDef>.GetNamed(statName, true);
                             if (statDef != null)
                             {
-                                statDef.defaultBaseValue /= Settings.Instance.TimeMultiplier;
+                                statDef.defaultBaseValue /= DayStretch.Settings.Instance.TimeMultiplier;
                                 wpdef++;
                             }
                             else Log.Warning($"[DayStretch]-(StatPatch) Could not find work related StatDef '{statName}' to patch.");

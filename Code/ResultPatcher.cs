@@ -172,32 +172,32 @@ public static class ResultPatcher
     static void IntResultPostfix(ref int __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod); // i think its a pretty neat way to do it
-        if (currentReverse) __result = Mathf.RoundToInt(__result / Settings.Instance.TimeMultiplier);
-        else __result = Mathf.RoundToInt(__result * Settings.Instance.TimeMultiplier);
+        if (currentReverse) __result = Mathf.RoundToInt(__result / DayStretch.Settings.Instance.TimeMultiplier);
+        else __result = Mathf.RoundToInt(__result * DayStretch.Settings.Instance.TimeMultiplier);
     }
     static void FloatResultPostfix(ref float __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) __result /= Settings.Instance.TimeMultiplier;
-        else __result *= Settings.Instance.TimeMultiplier;
+        if (currentReverse) __result /= DayStretch.Settings.Instance.TimeMultiplier;
+        else __result *= DayStretch.Settings.Instance.TimeMultiplier;
     }
     static void LongResultPostfix(ref long __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) __result = (long)(__result / Settings.Instance.TimeMultiplier);
-        else __result = (long)(__result * Settings.Instance.TimeMultiplier);
+        if (currentReverse) __result = (long)(__result / DayStretch.Settings.Instance.TimeMultiplier);
+        else __result = (long)(__result * DayStretch.Settings.Instance.TimeMultiplier);
     }
     static void DoubleResultPostfix(ref double __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) __result = (double)(__result / Settings.Instance.TimeMultiplier);
-        else __result = (double)(__result * Settings.Instance.TimeMultiplier);
+        if (currentReverse) __result = (double)(__result / DayStretch.Settings.Instance.TimeMultiplier);
+        else __result = (double)(__result * DayStretch.Settings.Instance.TimeMultiplier);
     }
     static void ShortResultPostfix(ref short __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod); 
-        if (currentReverse) __result = (short)(__result / Settings.Instance.TimeMultiplier);
-        else __result = (short)(__result * Settings.Instance.TimeMultiplier);
+        if (currentReverse) __result = (short)(__result / DayStretch.Settings.Instance.TimeMultiplier);
+        else __result = (short)(__result * DayStretch.Settings.Instance.TimeMultiplier);
     }
 
 
@@ -206,36 +206,36 @@ public static class ResultPatcher
     static bool IntResultPrefix(ref int __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod); // i think its a pretty neat way to do it
-        if (currentReverse) __result = Mathf.RoundToInt(__result / Settings.Instance.TimeMultiplier);
-        else __result = Mathf.RoundToInt(__result * Settings.Instance.TimeMultiplier);
+        if (currentReverse) __result = Mathf.RoundToInt(__result / DayStretch.Settings.Instance.TimeMultiplier);
+        else __result = Mathf.RoundToInt(__result * DayStretch.Settings.Instance.TimeMultiplier);
         return false;
     }
     static bool FloatResultPrefix(ref float __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) __result /= Settings.Instance.TimeMultiplier;
-        else __result *= Settings.Instance.TimeMultiplier;
+        if (currentReverse) __result /= DayStretch.Settings.Instance.TimeMultiplier;
+        else __result *= DayStretch.Settings.Instance.TimeMultiplier;
         return false;
     }
     static bool LongResultPrefix(ref long __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) __result = (long)(__result / Settings.Instance.TimeMultiplier);
-        else __result = (long)(__result * Settings.Instance.TimeMultiplier);
+        if (currentReverse) __result = (long)(__result / DayStretch.Settings.Instance.TimeMultiplier);
+        else __result = (long)(__result * DayStretch.Settings.Instance.TimeMultiplier);
         return false;
     }
     static bool DoubleResultPrefix(ref double __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) __result = (double)(__result / Settings.Instance.TimeMultiplier);
-        else __result = (double)(__result * Settings.Instance.TimeMultiplier);
+        if (currentReverse) __result = (double)(__result / DayStretch.Settings.Instance.TimeMultiplier);
+        else __result = (double)(__result * DayStretch.Settings.Instance.TimeMultiplier);
         return false;
     }
     static bool ShortResultPrefix(ref short __result, MethodBase __originalMethod)
     {
         bool currentReverse = ReverseCheck(__originalMethod);
-        if (currentReverse) __result = (short)(__result / Settings.Instance.TimeMultiplier);
-        else __result = (short)(__result * Settings.Instance.TimeMultiplier);
+        if (currentReverse) __result = (short)(__result / DayStretch.Settings.Instance.TimeMultiplier);
+        else __result = (short)(__result * DayStretch.Settings.Instance.TimeMultiplier);
         return false;
     }
 
