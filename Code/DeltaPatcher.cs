@@ -10,19 +10,21 @@ using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.Analytics;
 using Verse;
+
+public class DeltaPatchDef : Def
+{
+    public string namespaceOf;
+    public string typeOf;
+    public string name;
+    public string type;
+    // optional
+    public bool isReverse;
+    public bool isGetter;
+    public bool isPrefix;
+}
+
 namespace DayStretch
 {
-    public class DeltaPatchDef : Def
-    {
-        public string namespaceOf;
-        public string typeOf;
-        public string name;
-        public string type;
-        // optional
-        public bool isReverse;
-        public bool isGetter;
-        public bool isPrefix;
-    }
     [StaticConstructorOnStartup]
     public static class DeltaPatcher
     {

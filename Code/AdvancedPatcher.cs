@@ -12,26 +12,28 @@ using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Verse;
+
+public class AdvancedPatchDef : Def
+{
+    public string namespaceOf; //namespace
+    public string typeOf; // class
+    public string name; // method or property name
+    public string type; // int, float, long, short, double
+                        // optional
+    public double value; // must be filled in unless isCall is used
+    public double secondValue; // optional, cant be used if skip results is used
+    public double thirdValue; // same as above
+    public bool isReverse; // by default the value is multiplied, if isReverse is true it is divided instead
+    public bool isGetter; // by default methods are used, if isGetter is true it uses property getters instead
+    public bool isCall; // if true, AdvancedPatcher will try to find the method used and add multiplication/division to the call
+    public string callName; // the name of the method in call
+    public int skipResults; // skips x amount of results
+    public int parametersLength;
+}
+
+
 namespace DayStretch
 {
-    public class AdvancedPatchDef : Def
-    {
-        public string namespaceOf; //namespace
-        public string typeOf; // class
-        public string name; // method or property name
-        public string type; // int, float, long, short, double
-                            // optional
-        public double value; // must be filled in unless isCall is used
-        public double secondValue; // optional, cant be used if skip results is used
-        public double thirdValue; // same as above
-        public bool isReverse; // by default the value is multiplied, if isReverse is true it is divided instead
-        public bool isGetter; // by default methods are used, if isGetter is true it uses property getters instead
-        public bool isCall; // if true, AdvancedPatcher will try to find the method used and add multiplication/division to the call
-        public string callName; // the name of the method in call
-        public int skipResults; // skips x amount of results
-        public int parametersLength;
-    }
-
     [StaticConstructorOnStartup]
     public static class AdvancedPatcher
     {

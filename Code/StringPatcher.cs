@@ -11,16 +11,18 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
+public class StringPatchDef : Def
+{
+    public string namespaceOf;
+    public string typeOf;
+    public string name;
+    public string originalText;
+    public string newText;
+}
+
+
 namespace DayStretch
 {
-    public class StringPatchDef : Def
-    {
-        public string namespaceOf;
-        public string typeOf;
-        public string name;
-        public string originalText;
-        public string newText;
-    }
 
     [StaticConstructorOnStartup]
     public static class StringPatcher

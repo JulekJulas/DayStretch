@@ -12,17 +12,21 @@ using UnityEngine;
 using UnityEngine.Analytics;
 using Verse;
 
+public class VariablePatchDef : Def
+{
+    public string namespaceOf;
+    public string typeOf;
+    public string type;
+    public string name;
+    // optional
+    public bool isReverse;
+}
+
+
+
 namespace DayStretch
 {
-    public class VariablePatchDef : Def
-    {
-        public string namespaceOf;
-        public string typeOf;
-        public string type;
-        public string name;
-        // optional
-        public bool isReverse;
-    }
+
     [StaticConstructorOnStartup]
     public static class VariablePatcher
     {

@@ -10,14 +10,18 @@ using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
 using Verse;
+
+public class InstructionReadDef : Def
+{
+    public string namespaceOf;
+    public string typeOf;
+    public string name;
+}
+
+
 namespace DayStretch
 {
-    public class InstructionReadDef : Def
-    {
-        public string namespaceOf;
-        public string typeOf;
-        public string name;
-    }
+
 
     [StaticConstructorOnStartup]
     public static class InstructionReader

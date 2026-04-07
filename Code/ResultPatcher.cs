@@ -10,20 +10,22 @@ using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.Analytics;
 using Verse;
+
+public class ResultPatchDef : Def
+{
+    public string namespaceOf;
+    public string typeOf;
+    public string name;
+    public string type;
+    // optional
+    public bool isReverse;
+    public bool isGetter;
+    public bool isPrefix;
+    public int parametersLength;
+}
+
 namespace DayStretch
 {
-    public class ResultPatchDef : Def
-    {
-        public string namespaceOf;
-        public string typeOf;
-        public string name;
-        public string type;
-        // optional
-        public bool isReverse;
-        public bool isGetter;
-        public bool isPrefix;
-        public int parametersLength;
-    }
     [StaticConstructorOnStartup]
     public static class ResultPatcher
     {

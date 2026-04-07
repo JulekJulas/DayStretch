@@ -1,8 +1,0 @@
-<Defs>
-	<StatPatchReverseListDef>
-		<defName>DayStretchReverseStats</defName>
-		<statsName>
-			<li>JoyGainFactor</li>
-		</statsName>
-	</StatPatchReverseListDef>
-</Defs>
