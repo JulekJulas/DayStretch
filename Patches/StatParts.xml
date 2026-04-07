@@ -69,4 +69,55 @@
 			</li>
 		</operations>
 	</Operation>
+	
+	<Operation Class="PatchOperationSequence">
+		<success>Always</success>
+		<operations>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="MeleeCooldownFactor"]</xpath>
+				<value><parts /></value>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="MeleeCooldownFactor"]/parts</xpath>
+				<value>
+					<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+				</value>
+			</li>
+		</operations>
+	</Operation>
+	
+	<Operation Class="PatchOperationSequence">
+		<success>Always</success>
+		<operations>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="RangedCooldownFactor"]</xpath>
+				<value><parts /></value>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="RangedCooldownFactor"]/parts</xpath>
+				<value>
+					<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+				</value>
+			</li>
+		</operations>
+	</Operation>
+	
+	<Operation Class="PatchOperationSequence">
+		<success>Always</success>
+		<operations>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="AimingDelayFactor"]</xpath>
+				<value><parts /></value>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="AimingDelayFactor"]/parts</xpath>
+				<value>
+					<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+				</value>
+			</li>
+		</operations>
+	</Operation>
+	
+	
+
 </Patch>
