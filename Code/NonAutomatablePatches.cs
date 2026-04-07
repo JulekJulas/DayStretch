@@ -73,8 +73,30 @@ namespace DayStretch
             __result = num;
             return false;
         }
-    }
 
+
+        [HarmonyPatch(typeof(Hediff))]
+        [HarmonyPatch("TickInterval")]
+        static IEnumerable<CodeInstruction> IHateHediffs(IEnumerable<CodeInstruction> instructions)
+        {
+            float[] whyAreThereSoManyNumbers = { 60f, 60000f, 600f, 400f, 200f };
+            foreach (var instr in instructions)
+            {
+                if (instr.opcode == OpCodes.Ldc_R4 && instr.operand is float val)
+                {
+                    foreach (float target in whyAreThereSoManyNumbers)
+                    {
+                        if (Mathf.Approximately(val, target))
+                        {
+                            instr.operand = target * Settings.Instance.TimeMultiplier;
+                            break;
+                        }
+                    }// my system can only handle 3 at most, why 5 ludeon?
+                }
+                yield return instr;
+            }
+        }
+    }
 }
 
 

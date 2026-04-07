@@ -25,9 +25,23 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 
-		
-
-
+	<AdvancedPatchDef>	
+		<namespaceOf>Verse</namespaceOf>
+		<defName>HealthPatchThree</defName>
+		<typeOf>ImmunityRecord</typeOf>
+		<name>ImmunityChangePerTick</name>
+		<type>float</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>	
+		<namespaceOf>Verse</namespaceOf>
+		<defName>HealthPatchFour</defName>
+		<typeOf>Pawn_HealthTracker</typeOf>
+		<name>HealthTickInterval</name>
+		<type>float</type>
+		<value>60</value>
+	</AdvancedPatchDef>
 
 
 

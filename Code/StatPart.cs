@@ -20,5 +20,18 @@ namespace DayStretch
             return $"DayStretch multiplier: /{Settings.Instance.TimeMultiplier}";
         }
     }
+
+    public class StatPart_ReverseDayStretchMultiplier : StatPart
+    {
+        public override void TransformValue(StatRequest req, ref float val)
+        {
+            val *= Settings.Instance.TimeMultiplier;
+        }
+
+        public override string ExplanationPart(StatRequest req)
+        {
+            return $"DayStretch multiplier: x{Settings.Instance.TimeMultiplier}";
+        }
+    }
 }
 
