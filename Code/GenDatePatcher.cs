@@ -9,7 +9,7 @@ using System.Xml.Linq;
 using UnityEngine;
 using Verse;
 
-namespace DayStretched
+namespace DayStretch
 {
     public static class DayConstants
     {
@@ -19,7 +19,7 @@ namespace DayStretched
         public const int VanillaTicksPerQuadrum = 900000;
         public const int VanillaTicksPerYear = 3600000;
 
-        public static int TicksPerDayInt() => Mathf.RoundToInt(VanillaTicksPerDay * DayStretch.Settings.Instance.TimeMultiplier);
+        public static int TicksPerDayInt() => Mathf.RoundToInt(VanillaTicksPerDay * Settings.Instance.TimeMultiplier);
         public static long TicksPerDayLong() => (long)TicksPerDayInt();
         public static float TicksPerDayFloat() => (float)TicksPerDayInt();  
 
@@ -41,7 +41,7 @@ namespace DayStretched
 
         public static long TicksPerDecadeLong() => (long)TicksPerYearInt() * 10L;
         // reverse
-        public static int ReverseTicksPerDayInt() => Mathf.RoundToInt(VanillaTicksPerDay * (1f / DayStretch.Settings.Instance.TimeMultiplier));
+        public static int ReverseTicksPerDayInt() => Mathf.RoundToInt(VanillaTicksPerDay * (1f / Settings.Instance.TimeMultiplier));
         public static long ReverseTicksPerDayLong() => (long)ReverseTicksPerDayInt();
         public static float ReverseTicksPerDayFloat() => (float)ReverseTicksPerDayInt();
 

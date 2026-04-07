@@ -1,22 +1,3 @@
 <Defs>
-	<StatPatchListDef>
-		<defName>DayStretchStats</defName>
-		<statsName>
-			<li>ToxicEnvironmentResistance</li>
-			<li>MeditationFocusGain</li>
-			<li>FilthRate</li>
-			<li>EatingSpeed</li>
-			<li>DeteriorationRate</li>
-			<li>GlobalLearningFactor</li>
-			<li>Flammability</li>
-			<li>AnimalsLearningFactor</li>
-		</statsName>
-	</StatPatchListDef>
-	<StatPatchListWorkDef>
-		<defName>DayStretchWorkStats</defName>
-			<statsName>
-				<li>WorkSpeedGlobal</li>
-				<li>CleaningTimeFactor</li>
-			</statsName>
-	</StatPatchListWorkDef>
+
 </Defs>

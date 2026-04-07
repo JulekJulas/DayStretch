@@ -164,6 +164,7 @@
     <Compile Include="Code\Config.cs" />
     <Compile Include="Code\DeltaPatcher.cs" />
     <Compile Include="Code\GenDatePatcher.cs" />
+    <Compile Include="Code\StatPart.cs" />
     <Compile Include="Code\Testing.cs" />
     <Compile Include="Code\VariablePatcher.cs" />
     <Compile Include="Debug\Logger.cs" />
@@ -174,7 +175,6 @@
     <Compile Include="Debug\SaveValueStore.cs" />
     <Compile Include="Code\StringPatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Code\StatPatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Todo.txt" />

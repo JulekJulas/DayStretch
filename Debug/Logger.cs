@@ -5,31 +5,36 @@ using System.Text;
 using System.Threading.Tasks;
 using Verse;
 
-[StaticConstructorOnStartup]
-public static class Logger
+namespace DayStretch
 {
-    static bool logShown = false;
-    static Logger()
+    [StaticConstructorOnStartup]
+    public static class Logger
     {
-        LongEventHandler.ExecuteWhenFinished(() =>
+        static bool logShown = false;
+        static Logger()
         {
-            if (!logShown)
+            LongEventHandler.ExecuteWhenFinished(() =>
             {
-                logShown = true;
-                string fullList = "[DayStretch]-(Logger)Mod Loaded Successfully, full list of all patches made:\n\n";
-                fullList += "\n\n\n";
-                fullList += AdvancedPatcher.loggerList;
-                fullList += "\n\n\n";
-                fullList += ResultPatcher.loggerList;
-                fullList += "\n\n\n";
-                fullList += DeltaPatcher.loggerList;
-                fullList += "\n\n\n";
-                fullList += StringPatcher.loggerList;
-                fullList += "\n\n\n";
-                fullList += VariablePatcher.loggerList;
-                Log.Message(fullList);
-            }
-        });
-    }
+                if (!logShown)
+                {
+                    logShown = true;
+                    string fullList = "[DayStretch]-(Logger)Mod Loaded Successfully, full list of all patches made:\n\n";
+                    fullList += "\n\n\n";
+                    fullList += AdvancedPatcher.loggerList;
+                    fullList += "\n\n\n";
+                    fullList += ResultPatcher.loggerList;
+                    fullList += "\n\n\n";
+                    fullList += DeltaPatcher.loggerList;
+                    fullList += "\n\n\n";
+                    fullList += StringPatcher.loggerList;
+                    fullList += "\n\n\n";
+                    fullList += VariablePatcher.loggerList;
+                    Log.Message(fullList);
+                }
+            });
+        }
 
+    }
 }
+
+
