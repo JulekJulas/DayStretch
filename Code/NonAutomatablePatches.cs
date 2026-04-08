@@ -97,12 +97,30 @@ namespace DayStretch
             return false;
         }
 
+        [HarmonyPatch(typeof(Thing))]
+        [HarmonyPatch("GetInspectStringLowPriority")]
+        public static class GetInspectStringLowPriorityPatch
+        {
+            public static string Postfix(string __result, Thing __instance)
+            {
+                List<string> tmpDeteriorationReasons = GetTmpDeteriorationReasons(__instance);
+                tmpDeteriorationReasons.Clear();
+                float f = (SteadyEnvironmentEffects.FinalDeteriorationRate(__instance, tmpDeteriorationReasons)) * Settings.Instance.TimeMultiplier;
+                if (tmpDeteriorationReasons.Count != 0)
+                {
+                    return string.Format("{0}: {1} ({2})", "DeterioratingBecauseOf".Translate(), tmpDeteriorationReasons.ToCommaList(false, false).CapitalizeFirst(), "PerDay".Translate(f.ToStringByStyle(ToStringStyle.FloatMaxTwo, ToStringNumberSense.Absolute)));
+                }
+                return null;
+            }
+
+            private static List<string> GetTmpDeteriorationReasons(Thing instance)
+            {
+                return (List<string>)AccessTools.Field(typeof(Thing), "tmpDeteriorationReasons")
+                    .GetValue(instance);
+            }
 
 
-
-
-
-
+        }
 
 
         [HarmonyPatch(typeof(Hediff))]

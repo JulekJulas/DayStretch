@@ -290,9 +290,16 @@ this patches the exact numbers
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
 
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>CompInspectStringExtraPatch</defName>
+		<typeOf>CompRottable</typeOf>
+		<name>CompInspectStringExtra</name>
+		<type>float</type>
+		<value>0.001</value>
+		<secondValue>0.999</secondValue>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
 
-
-	
-	
 	
 </Defs> 
