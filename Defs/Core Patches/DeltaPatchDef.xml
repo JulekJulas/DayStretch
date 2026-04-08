@@ -1,5 +1,12 @@
 <Defs>
+<!-- you know what fuck you delta patch time, i tried to patch this 3 different times and it doesnt wanna cooperate -->
 
-	
+	<DeltaPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>RotTickIntervalPatch</defName>
+		<typeOf>CompRottable</typeOf>
+		<name>TickInterval</name>
+		<type>int</type>
+	</DeltaPatchDef>
 	
 </Defs>	

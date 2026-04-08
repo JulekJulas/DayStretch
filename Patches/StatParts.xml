@@ -5,6 +5,13 @@
 			<li Class="DayStretch.StatPart_DayStretchMultiplier" />
 		</value>
 	</Operation>
+	
+	<Operation Class="PatchOperationAdd">
+		<xpath>*/StatDef[defName="DeteriorationRate"]/parts</xpath>
+		<value>
+			<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+		</value>
+	</Operation>
 
 	<Operation Class="PatchOperationSequence">
 		<success>Always</success>

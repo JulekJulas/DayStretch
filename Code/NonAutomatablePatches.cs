@@ -51,6 +51,29 @@ namespace DayStretch
         }
     }
 
+    [HarmonyPatch(typeof(GenTemperature))]
+    [HarmonyPatch("RotRateAtTemperature")]
+    public static class RotRateAtTemperaturePatch
+    {
+        public static bool Prefix(ref float __result, ref float temperature)
+        {
+            if (temperature < 0f)
+            {
+                __result = 0f;
+                return false;
+            }
+            if (temperature >= 10f)
+            {
+                __result = 1f / Settings.Instance.TimeMultiplier;
+                return false;
+            }
+            __result = ((temperature - 0f) / 10f) / Settings.Instance.TimeMultiplier;
+            return false;
+        }
+    }
+
+
+
     [HarmonyPatch(typeof(HistoryAutoRecorderGroup))]
     [HarmonyPatch("GetMaxDay")]
     public static class GetMaxDayPatch
@@ -73,6 +96,13 @@ namespace DayStretch
             __result = num;
             return false;
         }
+
+
+
+
+
+
+
 
 
         [HarmonyPatch(typeof(Hediff))]
