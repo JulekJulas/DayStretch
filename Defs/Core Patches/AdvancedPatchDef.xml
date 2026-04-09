@@ -305,6 +305,15 @@ this patches the exact numbers
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DrawHediffListingPatch</defName>
+		<typeOf>HealthCardUtility</typeOf>
+		<name>DrawHediffListing</name>
+		<type>int</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
+	
 	
 
 	
