@@ -300,6 +300,41 @@ this patches the exact numbers
 		<secondValue>0.999</secondValue>
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
+<!-- think over if its needed
+	<AdvancedPatchDef>
+		<namespaceOf>Verse.AI</namespaceOf>
+		<defName>MentalStateTickPatch</defName>
+		<typeOf>MentalState</typeOf>
+		<name>MentalStateTick</name>
+		<type>int</type>
+		<value>30</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse.AI</namespaceOf>
+		<defName>MentalStateTickMentalState_MurderousRagePatch</defName>
+		<typeOf>MentalState_MurderousRage</typeOf>
+		<name>MentalStateTick</name>
+		<type>int</type>
+		<value>120</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse.AI</namespaceOf>
+		<defName>MentalStateTickMentalState_CorpseObsessionPatch</defName>
+		<typeOf>MentalState_CorpseObsession</typeOf>
+		<name>MentalStateTick</name>
+		<type>int</type>
+		<value>500</value>
+	</AdvancedPatchDef>
 
+	<AdvancedPatchDef>
+		<namespaceOf>Verse.AI</namespaceOf>
+		<defName>MentalStateTickMentalState_HumanityBreakPatch</defName>
+		<typeOf>MentalState_HumanityBreak</typeOf>
+		<name>MentalStateTick</name>
+		<type>int</type>
+		<value>30</value>
+	</AdvancedPatchDef> -->
 	
 </Defs> 

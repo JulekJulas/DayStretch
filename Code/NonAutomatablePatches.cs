@@ -86,7 +86,7 @@ namespace DayStretch
                 int count = historyAutoRecorder.records.Count;
                 if (count != 0)
                 {
-                    float num2 = (float)((count - 1) * historyAutoRecorder.def.recordTicksFrequency) / (60000f) * Settings.Instance.TimeMultiplier;
+                    float num2 = (float)((count - 1) * historyAutoRecorder.def.recordTicksFrequency) / (60000f) / Settings.Instance.TimeMultiplier;
                     if (num2 > num)
                     {
                         num = num2;

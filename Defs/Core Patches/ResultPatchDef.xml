@@ -91,7 +91,25 @@
 		<parametersLength>8</parametersLength>
 	</ResultPatchDef>
 	
-
+	<ResultPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>AdultAgingMultiplierPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>AdultAgingMultiplier</name>
+		<type>float</type>
+		<isGetter>true</isGetter>
+		<isReverse>true</isReverse>
+	</ResultPatchDef>
+	
+	<ResultPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>ChildAgingMultiplierPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>ChildAgingMultiplier</name>
+		<type>float</type>
+		<isGetter>true</isGetter>
+		<isReverse>true</isReverse>
+	</ResultPatchDef>
 
 	
 </Defs>

@@ -3,5 +3,6 @@
 	<v1.6>
 		<li>/</li>
 		<li IfModActive="CETeam.CombatExtended">ModPatches/CE</li>
+		<li IfModActive="sjaandi.realtiltmod">ModPatches/realtiltmod</li>
 	</v1.6>
 </loadFolders>

@@ -1,4 +1,12 @@
 <Patch>
+	<Operation Class="PatchOperationReplace">
+		<xpath>*/StatDef[defName="WorkSpeedGlobal"]/minValue</xpath>
+		<value>
+			<minValue>0.01</minValue>
+		</value>
+	</Operation>
+
+
 	<Operation Class="PatchOperationAdd">
 		<xpath>*/StatDef[defName="WorkSpeedGlobal"]/parts</xpath>
 		<value>
@@ -126,5 +134,8 @@
 	</Operation>
 	
 	
+
+
+
 
 </Patch>
