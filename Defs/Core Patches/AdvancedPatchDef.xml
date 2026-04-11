@@ -307,16 +307,31 @@ this patches the exact numbers
 	
 	<AdvancedPatchDef>
 		<namespaceOf>RimWorld</namespaceOf>
-		<defName>DrawHediffListingPatch</defName>
+		<defName>DrawHediffListingHealthPatch</defName>
 		<typeOf>HealthCardUtility</typeOf>
 		<name>DrawHediffListing</name>
-		<type>int</type>
+		<type>int</type>	
 		<value>60000</value>
 	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>CompInspectStringExtraRefuelPatch</defName>
+		<typeOf>CompRefuelable</typeOf>
+		<name>CompInspectStringExtra</name>
+		<type>float</type>	
+		<value>60000</value>
+	</AdvancedPatchDef>
 	
-
-	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>ConsumptionRatePerTickPatch</defName>
+		<typeOf>CompRefuelable</typeOf>
+		<name>ConsumptionRatePerTick</name>
+		<type>float</type>	
+		<value>60000</value>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
 	
 	
 	

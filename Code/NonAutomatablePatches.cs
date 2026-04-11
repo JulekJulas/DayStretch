@@ -22,6 +22,8 @@ namespace DayStretch
 
 
 
+
+
     [HarmonyPatch(typeof(GameCondition))]
     [HarmonyPatch("get_Expired")]
     public static class GameConditionPatch
