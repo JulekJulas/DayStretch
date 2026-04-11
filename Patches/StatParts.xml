@@ -10,7 +10,7 @@
 	<Operation Class="PatchOperationAdd">
 		<xpath>*/StatDef[defName="WorkSpeedGlobal"]/parts</xpath>
 		<value>
-			<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+			<li Class="DayStretch.StatPart_WorkDayStretchMultiplier" />
 		</value>
 	</Operation>
 	
