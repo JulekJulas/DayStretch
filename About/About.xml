@@ -8,6 +8,14 @@
 		<li>1.6</li>
 	</supportedVersions>
 	<description>A full rewrite for Time Control</description>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+	</modDependencies>
 	<incompatibleWith>
 		<li>sjaandi.realtiltmod</li>
 	</incompatibleWith>

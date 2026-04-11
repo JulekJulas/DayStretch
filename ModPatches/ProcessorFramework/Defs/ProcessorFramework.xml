@@ -1,0 +1,51 @@
+<Defs>
+	<AdvancedPatchDef>	
+		<namespaceOf>ProcessorFramework</namespaceOf>
+		<defName>ProcessorFramework_ActiveProcessTicksPatch</defName>
+		<typeOf>ActiveProcess</typeOf>
+		<name>ActiveProcessDays</name>
+		<type>float</type>
+		<value>60000</value>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>	
+		<namespaceOf>ProcessorFramework</namespaceOf>
+		<defName>ProcessorFramework_EstimatedTicksLeftPatch</defName>
+		<typeOf>ActiveProcess</typeOf>
+		<name>EstimatedTicksLeft</name>
+		<type>float</type>
+		<value>60000</value>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>	
+		<namespaceOf>ProcessorFramework</namespaceOf>
+		<defName>ProcessorFramework_DoTicksPatch</defName>
+		<typeOf>ActiveProcess</typeOf>
+		<name>DoTicks</name>
+		<type>float</type>
+		<value>2500</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>	
+		<namespaceOf>ProcessorFramework</namespaceOf>
+		<defName>ProcessorFramework_TimeForQualityLeftPatch</defName>
+		<typeOf>ActiveProcess</typeOf>
+		<name>TimeForQualityLeft</name>
+		<type>float</type>
+		<value>60000</value>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>ProcessorFramework</namespaceOf>
+		<defName>ProcessorFramework_ProcessTooltipPatch</defName>
+		<typeOf>ActiveProcess</typeOf>
+		<name>ProcessTooltip</name>
+		<type>float</type>
+		<value>60000</value>
+	</AdvancedPatchDef>	
+	
+
+	
+</Defs> 
