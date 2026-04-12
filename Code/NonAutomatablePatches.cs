@@ -8,6 +8,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Verse;
 using Verse.AI;
 using Verse.Noise;
@@ -73,6 +74,26 @@ namespace DayStretch
             return false;
         }
     }
+
+    [HarmonyPatch(typeof(GenTemperature))]
+    [HarmonyPatch("AverageTemperatureAtTileForTwelfth")]
+    public static class AverageTemperatureAtTileForTwelfthPatch
+    {
+        public static float Postfix(float __result, ref PlanetTile tile, ref Twelfth twelfth)
+        {
+            int num = (int)(30000 * Settings.Instance.TimeMultiplier);
+            int num2 = (int)(300000 * (int)twelfth * Settings.Instance.TimeMultiplier);
+            float num3 = 0f;
+            for (int i = 0; i < 120; i++)
+            {
+                int absTick = num2 + num + Mathf.RoundToInt((float)i / 120f * 300000f * Settings.Instance.TimeMultiplier);
+                num3 += GenTemperature.GetTemperatureFromSeasonAtTile(absTick, tile);
+            }
+            return num3 / 120f;
+        }
+    }
+
+
 
 
 

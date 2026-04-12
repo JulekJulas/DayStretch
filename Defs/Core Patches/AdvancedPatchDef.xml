@@ -333,8 +333,32 @@ this patches the exact numbers
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>OffsetFromSeasonCyclePatch</defName>
+		<typeOf>GenTemperature</typeOf>
+		<name>OffsetFromSeasonCycle</name>
+		<type>float</type>	
+		<value>60000</value>
+	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>MinTemperatureAtTilePatch</defName>
+		<typeOf>GenTemperature</typeOf>
+		<name>MinTemperatureAtTile</name>
+		<type>int</type>	
+		<value>3600000</value>
+	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>MaxTemperatureAtTilePatch</defName>
+		<typeOf>GenTemperature</typeOf>
+		<name>MaxTemperatureAtTile</name>
+		<type>int</type>	
+		<value>3600000</value>
+	</AdvancedPatchDef>
 	
 <!-- think over if its needed
 	<AdvancedPatchDef>
