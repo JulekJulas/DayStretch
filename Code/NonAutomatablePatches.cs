@@ -93,8 +93,68 @@ namespace DayStretch
         }
     }
 
-
-
+    [HarmonyPatch(typeof(Rand))]
+    [HarmonyPatch("MTBEventOccurs")]
+    public static class MTBEventOccursPatch
+    {
+        public static bool Prefix(bool __result, float mtb, float mtbUnit, float ticksSinceLastCheck)
+        {
+            mtb *= Settings.Instance.TimeMultiplier;
+            if (float.IsPositiveInfinity(mtb))
+            {
+                return false;
+            }
+            if (mtb == 0f)
+            {
+                return true;
+            }
+            if (mtb < 0f)
+            {
+                Log.Error("MTBEventOccurs with nevative mtb=" + mtb.ToString());
+                return true;
+            }
+            if (mtbUnit <= 0f)
+            {
+                Log.Error("MTBEventOccurs with mtbUnit=" + mtbUnit.ToString());
+                return false;
+            }
+            if (ticksSinceLastCheck <= 0f)
+            {
+                Log.Error("MTBEventOccurs with checkDuration=" + ticksSinceLastCheck.ToString());
+                return false;
+            }
+            double num = (double)ticksSinceLastCheck / ((double)mtb * (double)mtbUnit);
+            if (num <= 0.0)
+            {
+                Log.Error(string.Concat(new string[]
+                {
+                    "chancePerCheck is ",
+                    num.ToString(),
+                    ". mtb=",
+                    mtb.ToString(),
+                    ", mtbUnit=",
+                    mtbUnit.ToString(),
+                    ", checkDuration=",
+                    ticksSinceLastCheck.ToString()
+                }));
+                return false;
+            }
+            double num2 = 1.0;
+            if (num < 0.0001)
+            {
+                while (num < 0.0001)
+                {
+                    num *= 8.0;
+                    num2 /= 8.0;
+                }
+                if ((double)Rand.Value > num2)
+                {
+                    return false;
+                }
+            }
+            return (double)Rand.Value < num;
+        }
+    }
 
 
     [HarmonyPatch(typeof(HistoryAutoRecorderGroup))]
@@ -145,6 +205,7 @@ namespace DayStretch
 
         }
 
+        
 
         [HarmonyPatch(typeof(Hediff))]
         [HarmonyPatch("TickInterval")]
@@ -167,6 +228,9 @@ namespace DayStretch
                 yield return instr;
             }
         }
+
+
+
     }
 }
 

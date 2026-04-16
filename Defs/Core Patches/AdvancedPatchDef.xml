@@ -360,6 +360,28 @@ this patches the exact numbers
 		<value>3600000</value>
 	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>Inspiration_AgeDaysPatch</defName>
+		<typeOf>Inspiration</typeOf>
+		<name>AgeDays</name>
+		<type>float</type>	
+		<value>60000</value>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>Inspiration_InspectLinePatch</defName>
+		<typeOf>Inspiration</typeOf>
+		<name>InspectLine</name>
+		<type>float</type>	
+		<value>60000</value>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	
+	
 <!-- think over if its needed
 	<AdvancedPatchDef>
 		<namespaceOf>Verse.AI</namespaceOf>

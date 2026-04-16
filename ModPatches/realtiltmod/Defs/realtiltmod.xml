@@ -1,0 +1,15 @@
+<Defs>
+	<AdvancedPatchDef>
+		<namespaceOf>RealTiltMod</namespaceOf>
+		<defName>GetMoonAltAzPhasePatch</defName>
+		<typeOf>CelestialTrig</typeOf>
+		<name>GetMoonAltAzPhase</name>
+		<type>float</type>	
+		<value>60000</value>
+	</AdvancedPatchDef>
+	
+	
+	
+	
+	
+</Defs>
