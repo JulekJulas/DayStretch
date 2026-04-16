@@ -77,34 +77,10 @@ this patches the exact numbers
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 	
-	<AdvancedPatchDef>
-		<namespaceOf>RimWorld</namespaceOf>
-		<defName>QuestTraderChancePatch</defName>
-		<typeOf>Storyteller</typeOf>
-		<name>QuestGiverTraderChanceNow</name>
-		<type>int</type>
-		<value>600000</value>
-		<secondValue>3600000</secondValue>
-		<isGetter>true</isGetter>
-	</AdvancedPatchDef>
+
+
 	
-	<AdvancedPatchDef>
-		<namespaceOf>RimWorld</namespaceOf>
-		<defName>IncidentTooSoonPatch</defName>
-		<typeOf>IncidentWorker</typeOf>
-		<name>FiredTooRecently</name>
-		<type>float</type>
-		<value>60000</value>
-	</AdvancedPatchDef>
-	
-	<AdvancedPatchDef>
-		<namespaceOf>RimWorld</namespaceOf>
-		<defName>IncidentSpreadPatch</defName>
-		<typeOf>IncidentCycleUtility</typeOf>
-		<name>DaysToIntervals</name>
-		<type>float</type>
-		<value>60</value>
-	</AdvancedPatchDef>
+
 
 	<AdvancedPatchDef>
 		<namespaceOf>RimWorld</namespaceOf>

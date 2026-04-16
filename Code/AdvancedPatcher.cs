@@ -29,6 +29,7 @@ public class AdvancedPatchDef : Def
     public string callName; // the name of the method in call
     public int skipResults; // skips x amount of results
     public int parametersLength;
+    public float customModifier;
 }
 
 
@@ -59,7 +60,7 @@ namespace DayStretch
         {
             foreach (AdvancedPatchDef def in DefDatabase<AdvancedPatchDef>.AllDefsListForReading)
             {
-                AdvancedDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.value, def.secondValue, def.thirdValue, def.isReverse, def.isGetter, def.isCall, def.callName, def.skipResults, def.parametersLength);
+                AdvancedDefPatcher(def.defName, def.namespaceOf, def.typeOf, def.name, def.type, def.value, def.secondValue, def.thirdValue, def.isReverse, def.isGetter, def.isCall, def.callName, def.skipResults, def.parametersLength, def.customModifier);
             }
             // makes so the log only shows the amount of numbers patched exactly one time
             if (!logShown)
@@ -80,7 +81,7 @@ namespace DayStretch
             }
         }
 
-        static void AdvancedDefPatcher(string defName, string namespaceOf, string typeOf, string name, string numType, double value, double secondValue, double thirdValue, bool reverse, bool isGetter, bool isCall, string callName, int skipResults, int parametersLength)
+        static void AdvancedDefPatcher(string defName, string namespaceOf, string typeOf, string name, string numType, double value, double secondValue, double thirdValue, bool reverse, bool isGetter, bool isCall, string callName, int skipResults, int parametersLength, float customModifier)
         {
             string[] validTypes = new string[] { "int", "float", "long", "short", "double" };
             // really compact checks for null values
@@ -89,7 +90,7 @@ namespace DayStretch
             if (name == null) { Log.Error($"[DayStretch]-(AdvancedPatch) name in {defName} is not filled in; skipping."); return; }
             if (numType == null || !validTypes.Contains(numType)) { Log.Error($"[DayStretch]-(AdvancedPatch) {typeOf} has an invalid type or is null, input: {numType}"); return; }
             bool parametersLengthFilled = parametersLength != 0;
-
+            bool customModifierFilled = customModifier != 0f;
 
 
 
@@ -135,18 +136,29 @@ namespace DayStretch
                 bool secondValuePresent = secondValue != 0d;
                 bool thirdValuePresent = thirdValue != 0d;
                 if (value == 0d) { Log.Error($"[DayStretch]-(AdvancedPatch) value in {defName} is not filled in; skipping."); return; }
-                if (reverse)
+                if (!customModifierFilled)
                 {
-                    scaledValue = (double)(value * (1f / Settings.Instance.TimeMultiplier));
-                    if (secondValuePresent) secondScaledValue = (double)(secondValue / Settings.Instance.TimeMultiplier);
-                    if (thirdValuePresent) thirdScaledValue = (double)(thirdValue / Settings.Instance.TimeMultiplier);
+                    if (reverse)
+                    {
+                        scaledValue = (double)(value * (1f / Settings.Instance.TimeMultiplier));
+                        if (secondValuePresent) secondScaledValue = (double)(secondValue / Settings.Instance.TimeMultiplier);
+                        if (thirdValuePresent) thirdScaledValue = (double)(thirdValue / Settings.Instance.TimeMultiplier);
+                    }
+                    else
+                    {
+                        scaledValue = (double)(value * Settings.Instance.TimeMultiplier);
+                        if (secondValuePresent) secondScaledValue = (double)(secondValue * Settings.Instance.TimeMultiplier);
+                        if (thirdValuePresent) thirdScaledValue = (double)(thirdValue * Settings.Instance.TimeMultiplier);
+                    }
                 }
                 else
                 {
-                    scaledValue = (double)(value * Settings.Instance.TimeMultiplier);
-                    if (secondValuePresent) secondScaledValue = (double)(secondValue * Settings.Instance.TimeMultiplier);
-                    if (thirdValuePresent) thirdScaledValue = (double)(thirdValue * Settings.Instance.TimeMultiplier);
+                    scaledValue = (double)(value * customModifier);
+                    if (secondValuePresent) secondScaledValue = (double)(secondValue * customModifier);
+                    if (thirdValuePresent) thirdScaledValue = (double)(thirdValue * customModifier);
                 }
+
+
                 switch (numType)
                 {
                     case "int": // it looks scary but its just because im dumb and could have done this better
