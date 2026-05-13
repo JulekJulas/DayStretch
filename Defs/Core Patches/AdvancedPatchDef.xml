@@ -356,7 +356,24 @@ this patches the exact numbers
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld.QuestGen</namespaceOf>
+		<defName>SendLetter_NewTempPatch</defName>
+		<typeOf>QuestNode_Root_WandererJoin_WalkIn</typeOf>
+		<name>SendLetter_NewTemp</name>
+		<type>int</type>	
+		<value>3600000</value>
+		<secondValue>60000</secondValue>
+	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld.QuestGen</namespaceOf>
+		<defName>QuestNode_Root_WorkSiteRunIntPatch</defName>
+		<typeOf>QuestNode_Root_WorkSite</typeOf>
+		<name>RunInt</name>
+		<type>int</type>	
+		<value>1800000</value>
+	</AdvancedPatchDef>
 	
 <!-- think over if its needed
 	<AdvancedPatchDef>

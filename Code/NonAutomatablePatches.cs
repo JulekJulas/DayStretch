@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
+using RimWorld.QuestGen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ using UnityEngine.Tilemaps;
 using Verse;
 using Verse.AI;
 using Verse.Noise;
+using static UnityEngine.GraphicsBuffer;
 
 namespace DayStretch
 {// would like to say
@@ -92,6 +94,8 @@ namespace DayStretch
             return num3 / 120f;
         }
     }
+
+
 
     [HarmonyPatch(typeof(Rand))]
     [HarmonyPatch("MTBEventOccurs")]
@@ -228,6 +232,8 @@ namespace DayStretch
                 yield return instr;
             }
         }
+
+
 
 
 

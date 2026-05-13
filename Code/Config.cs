@@ -42,10 +42,10 @@ namespace DayStretch
             settings.firstPopup = false;
             Listing_Standard listingStandard = new Listing_Standard();
             listingStandard.Begin(inRect);
-            listingStandard.Label("Time Multiplier: " + settings.FakeTimeMultiplier.ToString("0.0"));
+            listingStandard.Label("Day length multiplier: " + settings.FakeTimeMultiplier.ToString("0.0"));
             settings.FakeTimeMultiplier = listingStandard.Slider(settings.FakeTimeMultiplier, 0.1f, 20f);
             settings.FakeTimeMultiplier = (float)Math.Round(settings.FakeTimeMultiplier, 1);
-            listingStandard.Label($"Current Time Multiplier: {settings.TimeMultiplier}");
+            listingStandard.Label($"Current day length multiplier: {settings.TimeMultiplier}");
             listingStandard.CheckboxLabeled("Should work use its own slider ", ref settings.ShouldWorkFollow);
             if (settings.ShouldWorkFollow)
             {

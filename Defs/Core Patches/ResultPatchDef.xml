@@ -46,14 +46,6 @@
 		<isGetter>true</isGetter>
 	</ResultPatchDef>
 	 
-	<ResultPatchDef>
-		<namespaceOf>RimWorld</namespaceOf>
-		<defName>ThoughtDurationPatch</defName>
-		<typeOf>Thought_Memory</typeOf>
-		<name>DurationTicks</name>
-		<type>int</type>
-		<isGetter>true</isGetter>
-	</ResultPatchDef>
 	
 	<ResultPatchDef>
 		<namespaceOf>Verse</namespaceOf>
@@ -111,7 +103,14 @@
 		<isReverse>true</isReverse>
 	</ResultPatchDef>
 	
-
+	<ResultPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>PlantLifespanTicksPatch</defName>
+		<typeOf>PlantProperties</typeOf>
+		<name>LifespanTicks</name>
+		<type>int</type>
+		<isGetter>true</isGetter>
+	</ResultPatchDef>
 
 	
 </Defs>
