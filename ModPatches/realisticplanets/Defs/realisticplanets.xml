@@ -1,0 +1,12 @@
+<Defs>
+	<AdvancedPatchDef>
+		<namespaceOf>Planets.PlanetaryLighting</namespaceOf>
+		<defName>RealisticPlanets_CelestialPositionPatch</defName>
+		<typeOf>CelestialPosition</typeOf>
+		<name>TicksPerDay</name>
+		<type>int</type>	
+		<value>60000</value>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+</Defs>
