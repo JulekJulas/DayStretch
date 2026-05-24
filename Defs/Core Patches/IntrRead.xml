@@ -1,9 +1,9 @@
 <Defs>
 	<InstructionReadDef>
 		<namespaceOf>RimWorld</namespaceOf>
-		<defName>Pawn_InteractionsTrackerCheck</defName>
-		<typeOf>Pawn_InteractionsTracker</typeOf>
-		<name>InteractionsTrackerTickInterval</name>
+		<defName>NeedsCardUtilityCheck</defName>
+		<typeOf>NeedsCardUtility</typeOf>
+		<name>DrawThoughtGroup</name>
 	</InstructionReadDef>
 	 
 	
