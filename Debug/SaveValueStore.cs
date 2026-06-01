@@ -6,6 +6,7 @@ namespace DayStretch
     public class DayStretchGameComp : GameComponent
     {
         public float savedTimeMultiplier = 1f;
+        public bool stopShowing = false;
 
         public DayStretchGameComp(Game game) : base()
         {
@@ -20,6 +21,7 @@ namespace DayStretch
         {
             base.ExposeData();
             Scribe_Values.Look(ref savedTimeMultiplier, "DayStretched_SavedTimeMultiplier", 1f);
+            Scribe_Values.Look(ref stopShowing, "DayStretched_StopShowing", false);
         }
         public static float ForCurrentSave()
         {
