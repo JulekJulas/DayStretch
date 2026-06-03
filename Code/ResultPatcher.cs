@@ -26,7 +26,7 @@ public class ResultPatchDef : Def
 
 namespace DayStretch
 {
-    [StaticConstructorOnStartup]
+   /* [StaticConstructorOnStartup]
     public static class ResultPatcher
     {
         static string fullList = "Method Results Patched:\n";
@@ -241,5 +241,5 @@ namespace DayStretch
             else __result = (short)(__result * Settings.Instance.TimeMultiplier);
             return false;
         }
-    }
+    }*/
 }

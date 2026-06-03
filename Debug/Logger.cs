@@ -22,7 +22,7 @@ namespace DayStretch
                     fullList += "\n\n\n";
                     fullList += AdvancedPatcher.loggerList;
                     fullList += "\n\n\n";
-                    fullList += ResultPatcher.loggerList;
+                    fullList += AdvancedPatcher.resLoggerList;
                     fullList += "\n\n\n";
                     fullList += DeltaPatcher.loggerList;
                     fullList += "\n\n\n";

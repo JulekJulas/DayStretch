@@ -59,7 +59,10 @@ namespace DayStretch
         static string fullGetterList = "Getters Patched:\n";
         public static string loggerList = "";
 
-
+        static string resFullList = "Method Results Patched:\n";
+        static string resFullGetterList = "Getter Results Patched:\n";
+        public static string resLoggerList = "";
+        static int resultsPatched;
 
 
         static AdvancedPatcher()
@@ -84,12 +87,13 @@ namespace DayStretch
                 }
 
                 loggerList += $"Advanced Patcher:\nNumber of variables patched: {numbersPatched}\n\n{fullList}\n\n{fullGetterList}";
+                resLoggerList += $"Result Patcher:\nNumber of results patched: {resultsPatched}\n\n{resFullList}\n\n{resFullGetterList}";
             }
         }
 
         static void AdvancedDefPatcher(AdvancedPatchDef def)
         {
-            string[] numericalTypes = new string[] { "int", "float", "long", "short", "double"};
+            string[] numericalTypes = new string[] { "int", "float", "long", "short", "double" };
             string[] otherTypes = new string[] { "call", "result", "delta" };
             bool isNumericalType = numericalTypes.Contains(def.type);
             bool isOtherType = otherTypes.Contains(def.type);
@@ -113,7 +117,7 @@ namespace DayStretch
                 if (def.isGetter) fullDictionaryEntry += "get_";
                 fullDictionaryEntry += $"{def.name}:{def.type}";
                 double reverse = def.isReverse ? -1 : 1;
-                List<double> curValues = new List<double> { reverse, def.customModifier, def.skipResults};
+                List<double> curValues = new List<double> { reverse, def.customModifier, def.skipResults };
                 foreach (double val in def.values) { curValues.Add(val); }
                 targetNumbers.Add(fullDictionaryEntry, curValues);
                 if (def.isGetter)
@@ -179,35 +183,31 @@ namespace DayStretch
             }
             else
             {
-                switch (def.type)
-                {
-                    case "result": DoResult(def); break;
-
-
-                }
-                if (def.type == "call") // since there is no value we have to do patch it now
-                {
-                    if (def.callName == null) { Log.Error($"[DayStretch]-(AdvancedPatch) callName in {def.defName} is not filled in despite using isCall; skipping."); return; }
-                    calls.Add(def.namespaceOf + "." + def.typeOf + def.name + ":call", new string[] { def.callName, def.isReverse.ToString(), def.type });
-
-                    foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
-                    {
-                        if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
-                        if (!string.IsNullOrEmpty(def.name) && method.Name != def.name) continue;
-                        try
-                        {
-                            var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileCall), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler);
-                            fullList += $"{def.typeOf}.{method.Name} ({def.type}), \n";
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Error($"[DayStretch]-(AdvancedPatch) Failed Patching {def.typeOf}. {e}");
-                            return;
-                        }
-                    }
-                }
             }
 
+        }
+        public static void DoCall(AdvancedPatchDef def)
+        {
+            Type type = GenTypes.GetTypeInAnyAssembly($"{def.namespaceOf}.{def.typeOf}");
+            var harmony = new Harmony("com.julekjulas.callpatch");
+            if (def.callName == null) { Log.Error($"[DayStretch]-(AdvancedPatch) callName in {def.defName} is not filled in despite using isCall; skipping."); return; }
+            calls.Add(def.namespaceOf + "." + def.typeOf + def.name + ":call", new string[] { def.callName, def.isReverse.ToString(), def.type });
+
+            foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+            {
+                if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
+                if (!string.IsNullOrEmpty(def.name) && method.Name != def.name) continue;
+                try
+                {
+                    var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileCall), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler);
+                    fullList += $"{def.typeOf}.{method.Name} ({def.type}), \n";
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"[DayStretch]-(AdvancedPatch) Failed Patching {def.typeOf}. {e}");
+                    return;
+                }
+            }
         }
         public static void DoResult(AdvancedPatchDef def)
         {
@@ -233,12 +233,14 @@ namespace DayStretch
                     {
                         if (def.isPrefix)
                         {
-                            var prefix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, prefix: prefix); break;
+                            var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, prefix: prefix);
                         }
                         else
                         {
-                            var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: postfix); break;
+                            var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: postfix);
                         }
+                        resFullGetterList += $"{def.typeOf}.{prop.Name} \n";
+                        resultsPatched++;
                     }
                     catch (Exception e)
                     {
@@ -259,12 +261,14 @@ namespace DayStretch
                     {
                         if (def.isPrefix)
                         {
-                            var prefix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, prefix: prefix); break;
+                            var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, prefix: prefix);
                         }
                         else
                         {
-                            var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: postfix); break;
-                        } // TODO do the logger bit
+                            var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: postfix);
+                        }
+                        fullList += $"{def.typeOf}.{method.Name} \n";
+                        resultsPatched++;
                     }
                     catch (Exception e)
                     {
@@ -281,7 +285,7 @@ namespace DayStretch
         {
             string typeOf = type.DeclaringType.ToString();
             string name = type.Name.ToString();
-            string dictKey = typeOf + name + ":int"; // the :int is literally the only reason its not all one big IEnumerable, yes really
+            string dictKey = typeOf + name + ":int"; // the :int is literally the only reason its not all one big IEnumerable, yes really, I didnt do that in result patcher cuz you dont need as much info
             targetNumbers.TryGetValue(dictKey, out List<double> values);
             bool reverse = false;
             double customModifier = 0; bool customModifierFilled = false;

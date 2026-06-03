@@ -412,4 +412,111 @@ this patches the exact numbers
 		<value>30</value>
 	</AdvancedPatchDef> -->
 	
+	
+		<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>PlantGrowthPatch</defName>
+		<typeOf>Plant</typeOf>
+		<name>GrowthPerTick</name>
+		<type>result</type>
+		<isReverse>true</isReverse>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>PlantDeathPatch</defName>
+		<typeOf>Plant</typeOf>
+		<name>CurrentDyingDamagePerTick</name>
+		<type>result</type>
+		<isReverse>true</isReverse>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>FireSpreadPatch</defName>
+		<typeOf>Fire</typeOf>
+		<name>SpreadInterval</name>
+		<type>result</type>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+
+	 
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>BirthDayOfSeasonZeroBasedPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>BirthDayOfSeasonZeroBased</name>
+		<type>result</type>
+		<isGetter>true</isGetter>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>GetMaxDayPatch</defName>
+		<typeOf>HistoryAutoRecorderGroup</typeOf>
+		<name>GetMaxDay</name>
+		<type>result</type>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>CalculateBleedRatePatch</defName>
+		<typeOf>HediffSet</typeOf>
+		<name>CalculateBleedRate</name>
+		<type>result</type>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld.Planet</namespaceOf>
+		<defName>CostToMovePatch</defName>
+		<typeOf>Caravan_PathFollower</typeOf>
+		<name>CostToMove</name>
+		<type>result</type>
+		<parametersLength>8</parametersLength>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>AdultAgingMultiplierPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>AdultAgingMultiplier</name>
+		<type>result</type>
+		<isGetter>true</isGetter>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>ChildAgingMultiplierPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>ChildAgingMultiplier</name>
+		<type>result</type>
+		<isGetter>true</isGetter>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>PlantLifespanTicksPatch</defName>
+		<typeOf>PlantProperties</typeOf>
+		<name>LifespanTicks</name>
+		<type>result</type>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	
+	
 </Defs> 
