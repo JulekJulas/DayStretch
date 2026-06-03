@@ -226,7 +226,7 @@ namespace DayStretch
                     catch (Exception e)
                     {
                         Log.Error($"[DayStretch]-(ResultPatch) Failed patching getter {def.typeOf}.{prop.Name}: {e}");
-                    }// TODO do the logger bit
+                    }
                 }
                 return;
             }
@@ -248,7 +248,7 @@ namespace DayStretch
                         {
                             var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: postfix);
                         }
-                        fullList += $"{def.typeOf}.{method.Name} \n";
+                        resFullList += $"{def.typeOf}.{method.Name} \n";
                         resultsPatched++;
                     }
                     catch (Exception e)
@@ -278,7 +278,7 @@ namespace DayStretch
                 {
                     if ((instr.opcode == OpCodes.Ldc_I4 || instr.opcode == OpCodes.Ldc_I4_S) && instr.operand is int val)
                     { 
-                        if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { if (reverse) { instr.operand = (int)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (int)(val * Settings.Instance.TimeMultiplier); } } else skipResults--; }
+                        if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = (int)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (int)(val * Settings.Instance.TimeMultiplier); } } else skipResults--; }
                     }
                     yield return instr;
                 }
@@ -299,7 +299,7 @@ namespace DayStretch
             {
                 if ((instr.opcode == OpCodes.Ldc_R4) && instr.operand is float val)
                 {
-                    if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { if (reverse) { instr.operand = val / Settings.Instance.TimeMultiplier; } else { instr.operand = val * Settings.Instance.TimeMultiplier; } } else skipResults--; }
+                    if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = val / Settings.Instance.TimeMultiplier; } else { instr.operand = val * Settings.Instance.TimeMultiplier; } } else skipResults--; }
                 }
                 yield return instr;
             }
@@ -321,7 +321,7 @@ namespace DayStretch
             {
                 if ((instr.opcode == OpCodes.Ldc_I8) && instr.operand is long val)
                 {
-                    if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { if (reverse) { instr.operand = (long)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (long)(val * Settings.Instance.TimeMultiplier); } } else skipResults--;      }
+                    if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if(reverse) { instr.operand = (long)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (long)(val * Settings.Instance.TimeMultiplier); } } else skipResults--;      }
                 }
                 yield return instr;
             }
@@ -342,7 +342,7 @@ namespace DayStretch
             {
                 if ((instr.opcode == OpCodes.Ldc_R8) && instr.operand is double val)
                 {
-                    if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { if (reverse) { instr.operand = val / Settings.Instance.TimeMultiplier; } else { instr.operand = val * Settings.Instance.TimeMultiplier; } } else skipResults--; }
+                    if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = val / Settings.Instance.TimeMultiplier; } else { instr.operand = val * Settings.Instance.TimeMultiplier; } } else skipResults--; }
                 }
                 yield return instr;
             }

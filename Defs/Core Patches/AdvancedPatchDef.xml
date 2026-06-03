@@ -231,14 +231,6 @@ this patches the exact numbers
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>	
 	
-	<AdvancedPatchDef>
-		<namespaceOf>RimWorld</namespaceOf>
-		<defName>DrawHediffListingPatch</defName>
-		<typeOf>HealthCardUtility</typeOf>
-		<name>DrawHediffListing</name>
-		<type>call</type>
-		<callName>ToStringPercent</callName>
-	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef> <!-- if someone can tell me why these didnt get patched during the main patcher i would be greatful-->
 		<namespaceOf>RimWorld</namespaceOf>
