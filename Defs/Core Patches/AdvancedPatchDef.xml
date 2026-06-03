@@ -21,7 +21,9 @@ this patches the exact numbers
 		<typeOf>Pawn_NeedsTracker</typeOf>
 		<name>NeedsTrackerTickInterval</name>
 		<type>int</type>
-		<value>150</value>
+		<values>
+			<li>150</li>
+		</values>
 	</AdvancedPatchDef>
 	
 
@@ -31,7 +33,9 @@ this patches the exact numbers
 		<typeOf>ImmunityRecord</typeOf>
 		<name>ImmunityChangePerTick</name>
 		<type>float</type>
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>	
@@ -40,7 +44,9 @@ this patches the exact numbers
 		<typeOf>Pawn_HealthTracker</typeOf>
 		<name>HealthTickInterval</name>
 		<type>float</type>
-		<value>60</value>
+		<values>
+			<li>60</li>
+		</values>
 	</AdvancedPatchDef>
 
 
@@ -52,7 +58,9 @@ this patches the exact numbers
 		<typeOf>Pawn_InfectionVectorTracker</typeOf>
 		<name>InfectionTickInterval</name>
 		<type>int</type>
-		<value>600</value>
+		<values>
+			<li>600</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -61,8 +69,10 @@ this patches the exact numbers
 		<typeOf>HediffGiver_Heat</typeOf>
 		<name>OnIntervalPassed</name>
 		<type>float</type>
-		<value>0.000375</value>
-		<secondValue>0.027</secondValue>
+		<values>
+			<li>0.000375</li>
+			<li>0.027</li>
+		</values>
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 	
@@ -72,8 +82,10 @@ this patches the exact numbers
 		<typeOf>HediffGiver_Hypothermia</typeOf>
 		<name>OnIntervalPassed</name>
 		<type>float</type>
-		<value>0.00075</value>
-		<secondValue>0.027</secondValue>
+		<values>
+			<li>0.00075</li>
+			<li>0.027</li>
+		</values>
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 	
@@ -88,7 +100,9 @@ this patches the exact numbers
 		<typeOf>BossgroupWorker</typeOf>
 		<name>CanResolve</name>
 		<type>int</type>
-		<value>120000</value>
+		<values>
+			<li>120000</li>
+		</values>
 	</AdvancedPatchDef>
 
 	<AdvancedPatchDef>
@@ -97,7 +111,9 @@ this patches the exact numbers
 		<typeOf>Pawn_AgeTracker</typeOf>
 		<name>AgeTickInterval</name>
 		<type>int</type>
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 	</AdvancedPatchDef>
 
 	<AdvancedPatchDef>
@@ -106,7 +122,9 @@ this patches the exact numbers
 		<typeOf>Faction</typeOf>
 		<name>CheckReachNaturalGoodwill</name>
 		<type>int</type>
-		<value>3000000</value>
+		<values>
+			<li>3000000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -115,7 +133,9 @@ this patches the exact numbers
 		<typeOf>GenTicks</typeOf>
 		<name>TicksToSeconds</name>
 		<type>float</type>
-		<value>60</value>
+		<values>
+			<li>60</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -124,7 +144,9 @@ this patches the exact numbers
 		<typeOf>GenTicks</typeOf>
 		<name>SecondsToTicks</name>
 		<type>float</type>
-		<value>60</value>
+		<values>
+			<li>60</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -133,7 +155,9 @@ this patches the exact numbers
 		<typeOf>RoomTempTracker</typeOf>
 		<name>WallEqualizationTempChangePerInterval</name>
 		<type>float</type>
-		<value>120</value>
+		<values>
+			<li>120</li>
+		</values>
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 
@@ -143,7 +167,9 @@ this patches the exact numbers
 		<typeOf>RoomTempTracker</typeOf>
 		<name>ThinRoofEqualizationTempChangePerInterval</name>
 		<type>float</type>
-		<value>120</value>
+		<values>
+			<li>120</li>
+		</values>
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 
@@ -153,7 +179,9 @@ this patches the exact numbers
 		<typeOf>RoomTempTracker</typeOf>
 		<name>NoRoofEqualizationTempChangePerInterval</name>
 		<type>float</type>
-		<value>120</value>
+		<values>
+			<li>120</li>
+		</values>
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 
@@ -163,7 +191,9 @@ this patches the exact numbers
 		<typeOf>RoomTempTracker</typeOf>
 		<name>DeepEqualizationTempChangePerInterval</name>
 		<type>float</type>
-		<value>120</value>
+		<values>
+			<li>120</li>
+		</values>
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 	
@@ -173,7 +203,9 @@ this patches the exact numbers
 		<typeOf>CaravanArrivalTimeEstimator</typeOf>
 		<name>EstimatedTicksToArriveToEvery</name>
 		<type>int</type>
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -182,7 +214,9 @@ this patches the exact numbers
 		<typeOf>HediffComp_SeverityModifierBase</typeOf>
 		<name>CompPostTickInterval</name>
 		<type>int</type>
-		<value>200</value>
+		<values>
+			<li>200</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -191,7 +225,9 @@ this patches the exact numbers
 		<typeOf>Hediff_Injury</typeOf>
 		<name>AgeTicksToStopBleeding</name>
 		<type>int</type>
-		<value>90000</value>
+		<values>
+			<li>90000</li>
+		</values>
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>	
 	
@@ -200,8 +236,7 @@ this patches the exact numbers
 		<defName>DrawHediffListingPatch</defName>
 		<typeOf>HealthCardUtility</typeOf>
 		<name>DrawHediffListing</name>
-		<type>float</type>
-		<isCall>true</isCall>
+		<type>call</type>
 		<callName>ToStringPercent</callName>
 	</AdvancedPatchDef>
 	
@@ -211,7 +246,9 @@ this patches the exact numbers
 		<typeOf>GenDate</typeOf>
 		<name>DaysPassedAt</name>
 		<type>float</type>
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -220,7 +257,9 @@ this patches the exact numbers
 		<typeOf>GenDate</typeOf>
 		<name>TwelfthsPassedAt</name>
 		<type>float</type>
-		<value>300000</value>
+		<values>
+			<li>300000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -229,7 +268,9 @@ this patches the exact numbers
 		<typeOf>GenDate</typeOf>
 		<name>YearsPassedAt</name>
 		<type>float</type>
-		<value>3600000</value>
+		<values>
+			<li>3600000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -238,7 +279,9 @@ this patches the exact numbers
 		<typeOf>MainTabWindow_History</typeOf>
 		<name>DoGraphPage</name>
 		<type>float</type>
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 	
@@ -248,7 +291,9 @@ this patches the exact numbers
 		<typeOf>WorldComponent_LocationGenerator</typeOf>
 		<name>GenerateLocationForLayer</name>
 		<type>float</type>
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -257,7 +302,9 @@ this patches the exact numbers
 		<typeOf>QuestGen</typeOf>
 		<name>InitializeQuestGen</name>
 		<type>float</type>
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -266,7 +313,9 @@ this patches the exact numbers
 		<typeOf>GenCelestial</typeOf>
 		<name>TicksAbsForSunPosInWorldSpace</name>
 		<type>float</type>
-		<value>2500</value>
+		<values>
+			<li>2500</li>
+		</values>
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
 
@@ -276,8 +325,10 @@ this patches the exact numbers
 		<typeOf>CompRottable</typeOf>
 		<name>CompInspectStringExtra</name>
 		<type>float</type>
-		<value>0.001</value>
-		<secondValue>0.999</secondValue>
+		<values>
+			<li>0.001</li>
+			<li>0.999</li>
+		</values>
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 	
@@ -287,7 +338,9 @@ this patches the exact numbers
 		<typeOf>HealthCardUtility</typeOf>
 		<name>DrawHediffListing</name>
 		<type>int</type>	
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -296,7 +349,9 @@ this patches the exact numbers
 		<typeOf>CompRefuelable</typeOf>
 		<name>CompInspectStringExtra</name>
 		<type>float</type>	
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -305,7 +360,9 @@ this patches the exact numbers
 		<typeOf>CompRefuelable</typeOf>
 		<name>ConsumptionRatePerTick</name>
 		<type>float</type>	
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
 	
@@ -315,7 +372,9 @@ this patches the exact numbers
 		<typeOf>GenTemperature</typeOf>
 		<name>OffsetFromSeasonCycle</name>
 		<type>float</type>	
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -324,7 +383,9 @@ this patches the exact numbers
 		<typeOf>GenTemperature</typeOf>
 		<name>MinTemperatureAtTile</name>
 		<type>int</type>	
-		<value>3600000</value>
+		<values>
+			<li>3600000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -333,7 +394,9 @@ this patches the exact numbers
 		<typeOf>GenTemperature</typeOf>
 		<name>MaxTemperatureAtTile</name>
 		<type>int</type>	
-		<value>3600000</value>
+		<values>
+			<li>3600000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -342,7 +405,9 @@ this patches the exact numbers
 		<typeOf>Inspiration</typeOf>
 		<name>AgeDays</name>
 		<type>float</type>	
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
 	
@@ -352,7 +417,9 @@ this patches the exact numbers
 		<typeOf>Inspiration</typeOf>
 		<name>InspectLine</name>
 		<type>float</type>	
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
 	
@@ -362,8 +429,10 @@ this patches the exact numbers
 		<typeOf>QuestNode_Root_WandererJoin_WalkIn</typeOf>
 		<name>SendLetter_NewTemp</name>
 		<type>int</type>	
-		<value>3600000</value>
-		<secondValue>60000</secondValue>
+		<values>
+			<li>3600000</li>
+			<li>60000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -372,45 +441,10 @@ this patches the exact numbers
 		<typeOf>QuestNode_Root_WorkSite</typeOf>
 		<name>RunInt</name>
 		<type>int</type>	
-		<value>1800000</value>
+		<values>
+			<li>1800000</li>
+		</values>
 	</AdvancedPatchDef>
-	
-<!-- think over if its needed
-	<AdvancedPatchDef>
-		<namespaceOf>Verse.AI</namespaceOf>
-		<defName>MentalStateTickPatch</defName>
-		<typeOf>MentalState</typeOf>
-		<name>MentalStateTick</name>
-		<type>int</type>
-		<value>30</value>
-	</AdvancedPatchDef>
-	
-	<AdvancedPatchDef>
-		<namespaceOf>Verse.AI</namespaceOf>
-		<defName>MentalStateTickMentalState_MurderousRagePatch</defName>
-		<typeOf>MentalState_MurderousRage</typeOf>
-		<name>MentalStateTick</name>
-		<type>int</type>
-		<value>120</value>
-	</AdvancedPatchDef>
-	
-	<AdvancedPatchDef>
-		<namespaceOf>Verse.AI</namespaceOf>
-		<defName>MentalStateTickMentalState_CorpseObsessionPatch</defName>
-		<typeOf>MentalState_CorpseObsession</typeOf>
-		<name>MentalStateTick</name>
-		<type>int</type>
-		<value>500</value>
-	</AdvancedPatchDef>
-
-	<AdvancedPatchDef>
-		<namespaceOf>Verse.AI</namespaceOf>
-		<defName>MentalStateTickMentalState_HumanityBreakPatch</defName>
-		<typeOf>MentalState_HumanityBreak</typeOf>
-		<name>MentalStateTick</name>
-		<type>int</type>
-		<value>30</value>
-	</AdvancedPatchDef> -->
 	
 	
 		<AdvancedPatchDef>

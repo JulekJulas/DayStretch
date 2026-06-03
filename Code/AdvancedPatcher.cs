@@ -22,7 +22,7 @@ public class AdvancedPatchDef : Def
     public string name; // method or property name
     public string type; // num OR result, delta, call
                         // optional
-    public double[] values; // must be filled in unless isCall is used
+    public List<double> values; // must be filled in unless isCall is used
     public bool isReverse; // by default the value is multiplied, if isReverse is true it is divided instead
     public bool isGetter; // by default methods are used, if isGetter is true it uses property getters instead
     public string callName; // the name of the method in call
