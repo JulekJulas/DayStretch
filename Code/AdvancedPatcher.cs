@@ -94,7 +94,7 @@ namespace DayStretch
         static void AdvancedDefPatcher(AdvancedPatchDef def)
         {
             string[] numericalTypes = new string[] { "int", "float", "long", "short", "double" };
-            string[] otherTypes = new string[] { "call", "result", "delta" };
+            string[] otherTypes = new string[] { "result", "delta" };
             bool isNumericalType = numericalTypes.Contains(def.type);
             bool isOtherType = otherTypes.Contains(def.type);
             if (def.namespaceOf == null) { Log.Error($"[DayStretch]-(AdvancedPatch) namespaceOf in {def.defName} is not filled in; skipping."); return; }
@@ -183,31 +183,12 @@ namespace DayStretch
             }
             else
             {
-            }
-
-        }
-        public static void DoCall(AdvancedPatchDef def)
-        {
-            Type type = GenTypes.GetTypeInAnyAssembly($"{def.namespaceOf}.{def.typeOf}");
-            var harmony = new Harmony("com.julekjulas.callpatch");
-            if (def.callName == null) { Log.Error($"[DayStretch]-(AdvancedPatch) callName in {def.defName} is not filled in despite using isCall; skipping."); return; }
-            calls.Add(def.namespaceOf + "." + def.typeOf + def.name + ":call", new string[] { def.callName, def.isReverse.ToString(), def.type });
-
-            foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
-            {
-                if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
-                if (!string.IsNullOrEmpty(def.name) && method.Name != def.name) continue;
-                try
+                switch (def.type)
                 {
-                    var transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileCall), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler);
-                    fullList += $"{def.typeOf}.{method.Name} ({def.type}), \n";
-                }
-                catch (Exception e)
-                {
-                    Log.Error($"[DayStretch]-(AdvancedPatch) Failed Patching {def.typeOf}. {e}");
-                    return;
+                    case "result": DoResult(def); break;
                 }
             }
+
         }
         public static void DoResult(AdvancedPatchDef def)
         {
@@ -367,45 +348,6 @@ namespace DayStretch
             }
         }
 
-        static IEnumerable<CodeInstruction> TranspileCall(IEnumerable<CodeInstruction> instructions, MethodBase type)
-        {
-            string typeOf = type.DeclaringType.ToString(); // old ahh code does it even work? i think so?
-            string name = type.Name.ToString(); 
-            string dictKey = typeOf + name + ":call";
-            calls.TryGetValue(dictKey, out string[] strings);
-            string callName = strings[0]; bool reverse = Convert.ToBoolean(strings[1]); string numType = strings[2];
-            MethodInfo targetMethod = null;
-
-
-            switch (numType)
-            {
-                case "int": targetMethod = AccessTools.Method(typeof(GenText), callName, new Type[] { typeof(int) }); break;
-                case "float": targetMethod = AccessTools.Method(typeof(GenText), callName, new Type[] { typeof(float) }); break;
-                case "long": targetMethod = AccessTools.Method(typeof(GenText), callName, new Type[] { typeof(long) }); break;
-                case "short": targetMethod = AccessTools.Method(typeof(GenText), callName, new Type[] { typeof(short) }); break;
-                case "double": targetMethod = AccessTools.Method(typeof(GenText), callName, new Type[] { typeof(double) }); break;
-            }
-            bool callPatched = false;
-            FieldInfo instanceField = AccessTools.Field(typeof(Settings), nameof(Settings.Instance));
-            FieldInfo timeMultiplierField = AccessTools.Field(typeof(DayStretch), nameof(DayStretch.TimeMultiplier));
-
-            foreach (var instr in instructions)
-            {
-                if (instr.Calls(targetMethod))
-                {
-                    yield return new CodeInstruction(OpCodes.Ldsfld, instanceField);
-                    yield return new CodeInstruction(OpCodes.Ldfld, timeMultiplierField);
-                    callPatched = true;
-                    if (reverse) yield return new CodeInstruction(OpCodes.Div);
-                    else yield return new CodeInstruction(OpCodes.Mul);
-                }
-                yield return instr;
-            }
-            if (callPatched == false)
-            {
-                wrongValues.Add(dictKey, new double[] { 1, 0, 0 }); // just a dummy value to show its not patched, yup thanks vs autocomplete
-            }
-        }
         static bool ReverseCheck(MethodBase type) // get the bool
         {
             string typeOf = type.DeclaringType.ToString();
