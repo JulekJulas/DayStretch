@@ -14,6 +14,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Verse;
 using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.Networking.UnityWebRequest;
 
 public class AdvancedPatchDef : Def
 {
@@ -64,6 +65,11 @@ namespace DayStretch
         public static string resLoggerList = "";
         static int resultsPatched;
 
+        static string delFullList = "Method Deltas Patched:\n";
+        static string delFullGetterList = "Getter Deltas Patched:\n";
+        public static string delLoggerList = "";
+        static int deltasPatched;
+
 
         static AdvancedPatcher()
         {
@@ -88,6 +94,7 @@ namespace DayStretch
 
                 loggerList += $"Advanced Patcher:\nNumber of variables patched: {numbersPatched}\n\n{fullList}\n\n{fullGetterList}";
                 resLoggerList += $"Result Patcher:\nNumber of results patched: {resultsPatched}\n\n{resFullList}\n\n{resFullGetterList}";
+                delLoggerList += $"Delta Patcher:\nNumber of deltas patched: {deltasPatched}\n\n{fullList}\n\n{fullGetterList}";
             }
         }
 
@@ -186,6 +193,8 @@ namespace DayStretch
                 switch (def.type)
                 {
                     case "result": DoResult(def); break;
+                    case "delta": DoDelta(def); break;
+                        // probably more to get added
                 }
             }
 
@@ -254,6 +263,74 @@ namespace DayStretch
                     catch (Exception e)
                     {
                         Log.Error($"[DayStretch]-(ResultPatch) {e} Result not found.");
+                    }
+                }
+            }
+        }
+        public static void DoDelta(AdvancedPatchDef def)
+        {
+            var harmony = new Harmony("com.julekjulas.deltapatch");
+            Type type = GenTypes.GetTypeInAnyAssembly($"{def.namespaceOf}.{def.typeOf}");
+            if (type == null)
+            {
+                Log.Error($"[DayStretch]-(DeltaPatch) Type '{def.typeOf}' not found in namespace '{def.namespaceOf}'; skipping.");
+                return;
+            }
+            if (def.isGetter)
+            {
+                foreach (var prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    if (!string.IsNullOrEmpty(def.name) && prop.Name != def.name) continue;
+
+                    var getter = prop.GetGetMethod(true);
+                    if (getter == null) continue;
+                    if (getter.GetParameters().Length != def.parametersLength) continue;
+                    if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
+
+                    try
+                    {
+                        if (def.isPrefix)
+                        {
+                            var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(DeltaPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, prefix: prefix);
+                        }
+                        else
+                        {
+                            var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(DeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: postfix);
+                        }
+                        delFullGetterList += $"{def.typeOf}.{prop.Name} \n";
+                        deltasPatched++;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[DayStretch]-(DeltaPatch) Failed patching getter {def.typeOf}.{prop.Name}: {e}");
+                    }
+                }
+                return;
+            }
+            else
+            {
+                foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+
+                    if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
+                    if (!string.IsNullOrEmpty(def.name) && method.Name != def.name) continue;
+                    if (method.GetParameters().Length != def.parametersLength) continue;
+                    try
+                    {
+                        if (def.isPrefix)
+                        {
+                            var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(DeltaPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, prefix: prefix);
+                        }
+                        else
+                        {
+                            var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(DeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: postfix);
+                        }
+                        delFullList += $"{def.typeOf}.{method.Name} \n";
+                        deltasPatched++;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[DayStretch]-(DeltaPatch) {e} Result not found.");
                     }
                 }
             }
@@ -370,6 +447,25 @@ namespace DayStretch
             if (currentReverse) __result = result / Settings.Instance.TimeMultiplier;
             else __result = result * Settings.Instance.TimeMultiplier;
             return false;
+        }
+
+        static void DeltaPostfix(ref object delta, MethodBase __originalMethod)
+        {
+            dynamic newDelta = delta;
+            bool currentReverse = ReverseCheck(__originalMethod);
+            if (currentReverse) delta = newDelta / Settings.Instance.TimeMultiplier;
+            else delta = newDelta * Settings.Instance.TimeMultiplier;
+        }
+
+
+
+
+        static void DeltaPrefix(ref object delta, MethodBase __originalMethod)
+        {
+            dynamic newDelta = delta;
+            bool currentReverse = ReverseCheck(__originalMethod);
+            if (currentReverse) delta = newDelta / Settings.Instance.TimeMultiplier;
+            else delta = newDelta * Settings.Instance.TimeMultiplier;
         }
     }
 }

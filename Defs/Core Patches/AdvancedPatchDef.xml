@@ -545,4 +545,13 @@ this patches the exact numbers
 	
 	
 	
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>RotTickIntervalPatch</defName>
+		<typeOf>CompRottable</typeOf>
+		<name>TickInterval</name>
+		<type>delta</type>
+	</AdvancedPatchDef>
+	
 </Defs> 

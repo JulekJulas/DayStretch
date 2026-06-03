@@ -24,7 +24,7 @@ public class ResultPatchDef : Def
     public int parametersLength;
 }
 
-namespace DayStretch
+namespace DayStretch //merged into AdvancedPatcher, keeping it still for reference
 {
    /* [StaticConstructorOnStartup]
     public static class ResultPatcher

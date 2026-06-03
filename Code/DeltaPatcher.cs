@@ -23,9 +23,9 @@ public class DeltaPatchDef : Def
     public bool isPrefix;
 }
 
-namespace DayStretch
+namespace DayStretch // same as result patcher merged into advanced patcher
 {
-    [StaticConstructorOnStartup]
+    /* [StaticConstructorOnStartup]
     public static class DeltaPatcher
     {
         static string fullList = "Method Deltas Patched:\n";
@@ -75,7 +75,7 @@ namespace DayStretch
             keyReverse.Add(isGetter ? (namespaceOf + "." + typeOf + "get_" + name) : (namespaceOf + "." + typeOf + name), reverse);
 
 
-
+            // da hell is this code above
 
 
 
@@ -244,5 +244,5 @@ namespace DayStretch
             if (currentReverse) delta = (short)(delta / Settings.Instance.TimeMultiplier);
             else delta = (short)(delta * Settings.Instance.TimeMultiplier);
         }
-    }
+    }*/
 }
