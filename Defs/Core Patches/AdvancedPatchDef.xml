@@ -439,7 +439,23 @@ this patches the exact numbers
 	</AdvancedPatchDef>
 	
 	
-		<AdvancedPatchDef>
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>Hediff_TickIntervalPatch</defName>
+		<typeOf>Hediff</typeOf>
+		<name>TickInterval</name>
+		<type>float</type>	
+		<values>
+			<li>60</li>
+			<li>60000</li>
+			<li>600</li>
+			<li>400</li>
+			<li>200</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	
+	<AdvancedPatchDef>
 		<namespaceOf>RimWorld</namespaceOf>
 		<defName>PlantGrowthPatch</defName>
 		<typeOf>Plant</typeOf>
