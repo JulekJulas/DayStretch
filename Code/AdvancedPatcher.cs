@@ -9,6 +9,7 @@ using System.Net;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Security.Cryptography;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Verse;
@@ -45,6 +46,7 @@ namespace DayStretch
         public static Dictionary<string, short[]> scaledShorts = new Dictionary<string, short[]>();
         public static Dictionary<string, double[]> scaledDoubles = new Dictionary<string, double[]>();
         public static Dictionary<string, string[]> calls = new Dictionary<string, string[]>();
+        public static Dictionary<string, bool> keyReverse = new Dictionary<string, bool>();
 
         public static Dictionary<string, double[]> wrongValues = new Dictionary<string, double[]>();
 
@@ -177,6 +179,12 @@ namespace DayStretch
             }
             else
             {
+                switch (def.type)
+                {
+                    case "result": DoResult(def); break;
+
+
+                }
                 if (def.type == "call") // since there is no value we have to do patch it now
                 {
                     if (def.callName == null) { Log.Error($"[DayStretch]-(AdvancedPatch) callName in {def.defName} is not filled in despite using isCall; skipping."); return; }
@@ -201,7 +209,70 @@ namespace DayStretch
             }
 
         }
+        public static void DoResult(AdvancedPatchDef def)
+        {
+            var harmony = new Harmony("com.julekjulas.resultpatch");
+            Type type = GenTypes.GetTypeInAnyAssembly($"{def.namespaceOf}.{def.typeOf}");
+            if (type == null)
+            {
+                Log.Error($"[DayStretch]-(ResultPatch) Type '{def.typeOf}' not found in namespace '{def.namespaceOf}'; skipping.");
+                return;
+            }
+            if (def.isGetter)
+            {
+                foreach (var prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    if (!string.IsNullOrEmpty(def.name) && prop.Name != def.name) continue;
 
+                    var getter = prop.GetGetMethod(true);
+                    if (getter == null) continue;
+                    if (getter.GetParameters().Length != def.parametersLength) continue;
+                    if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
+
+                    try
+                    {
+                        if (def.isPrefix)
+                        {
+                            var prefix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, prefix: prefix); break;
+                        }
+                        else
+                        {
+                            var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: postfix); break;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[DayStretch]-(ResultPatch) Failed patching getter {def.typeOf}.{prop.Name}: {e}");
+                    }// TODO do the logger bit
+                }
+                return;
+            }
+            else
+            {
+                foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+
+                    if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
+                    if (!string.IsNullOrEmpty(def.name) && method.Name != def.name) continue;
+                    if (method.GetParameters().Length != def.parametersLength) continue;
+                    try
+                    {
+                        if (def.isPrefix)
+                        {
+                            var prefix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, prefix: prefix); break;
+                        }
+                        else
+                        {
+                            var postfix = new HarmonyMethod(typeof(ResultPatcher).GetMethod(nameof(ResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: postfix); break;
+                        } // TODO do the logger bit
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[DayStretch]-(ResultPatch) {e} Result not found.");
+                    }
+                }
+            }
+        }
 
 
 
@@ -265,7 +336,7 @@ namespace DayStretch
             {
                 if ((instr.opcode == OpCodes.Ldc_I8) && instr.operand is long val)
                 {
-                    if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { if (reverse) { instr.operand = (long)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (long)(val * Settings.Instance.TimeMultiplier); } } else skipResults--; }
+                    if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { if (reverse) { instr.operand = (long)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (long)(val * Settings.Instance.TimeMultiplier); } } else skipResults--;      }
                 }
                 yield return instr;
             }
@@ -330,6 +401,29 @@ namespace DayStretch
             {
                 wrongValues.Add(dictKey, new double[] { 1, 0, 0 }); // just a dummy value to show its not patched, yup thanks vs autocomplete
             }
+        }
+        static bool ReverseCheck(MethodBase type) // get the bool
+        {
+            string typeOf = type.DeclaringType.ToString();
+            string name = type.Name.ToString();
+            string dictKey = typeOf + name;
+            keyReverse.TryGetValue(dictKey, out bool currentReverse);
+            return currentReverse;
+        }
+        static void ResultPostfix(ref object __result, MethodBase __originalMethod)
+        {
+            dynamic result = __result;
+            bool currentReverse = ReverseCheck(__originalMethod);
+            if (currentReverse) __result = result / Settings.Instance.TimeMultiplier;
+            else __result = result * Settings.Instance.TimeMultiplier;
+        }
+        static bool ResultPrefix(ref object __result, MethodBase __originalMethod)
+        {
+            dynamic result = __result;
+            bool currentReverse = ReverseCheck(__originalMethod);
+            if (currentReverse) __result = result / Settings.Instance.TimeMultiplier;
+            else __result = result * Settings.Instance.TimeMultiplier;
+            return false;
         }
     }
 }
