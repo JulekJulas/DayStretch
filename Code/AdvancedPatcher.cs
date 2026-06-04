@@ -94,7 +94,7 @@ namespace DayStretch
 
                 loggerList += $"Advanced Patcher:\nNumber of variables patched: {numbersPatched}\n\n{fullList}\n\n{fullGetterList}";
                 resLoggerList += $"Result Patcher:\nNumber of results patched: {resultsPatched}\n\n{resFullList}\n\n{resFullGetterList}";
-                delLoggerList += $"Delta Patcher:\nNumber of deltas patched: {deltasPatched}\n\n{fullList}\n\n{fullGetterList}";
+                delLoggerList += $"Delta Patcher:\nNumber of deltas patched: {deltasPatched}\n\n{delFullList}\n\n{delFullGetterList}";
             }
         }
 
