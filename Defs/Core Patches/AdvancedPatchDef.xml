@@ -1,18 +1,4 @@
 <Defs>
-<!-- template for patches 
-	<AdvancedPatchDef>
-		<defName>Here can be anything, not very important, follow with Patch like NeedsPatch</defName>
-		<typeOf>Class</typeOf>
-		<name>The bit of code you want to modify</name>
-		<type>type of the number, possible options: int, float, short, long, double</isInt>
-		<value>Necessary</value>
-		<secondValue>Optional, if not filled will be skipped</secondValue>
-		<thirdValue>Optional, if not filled will be skipped, mostly an option due to HealthTracker</thirdValue>
-		<isGetter>If the method is a getter, default: false</isGetter>
-		<isReverse>If you want to divide the values instead of multiplying default: false (multiply)</isReverse>
-	<AdvancedPatchDef>
-this patches the exact numbers
--->
 
 <!-- important one, all needs -->
 	<AdvancedPatchDef>	
@@ -555,6 +541,15 @@ this patches the exact numbers
 		<defName>PlantLifespanTicksPatch</defName>
 		<typeOf>PlantProperties</typeOf>
 		<name>LifespanTicks</name>
+		<type>result</type>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>CooldownTicksTotal_AbilityPatch</defName>
+		<typeOf>Ability</typeOf>
+		<name>CooldownTicksTotal</name>
 		<type>result</type>
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
