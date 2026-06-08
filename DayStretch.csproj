@@ -162,7 +162,7 @@
   <ItemGroup>
     <Compile Include="Code\AdvancedPatcher.cs" />
     <Compile Include="Code\Config.cs" />
-    <Compile Include="Code\DeltaPatcher.cs" />
+    <Compile Include="Debug\DeltaPatcher.cs" />
     <Compile Include="Code\GenDatePatcher.cs" />
     <Compile Include="Code\StatPart.cs" />
     <Compile Include="Code\Testing.cs" />
@@ -171,7 +171,7 @@
     <Compile Include="Debug\InstructionReader.cs" />
     <Compile Include="Code\NonAutomatablePatches.cs" />
     <Compile Include="Code\PatchAll.cs" />
-    <Compile Include="Code\ResultPatcher.cs" />
+    <Compile Include="Debug\ResultPatcher.cs" />
     <Compile Include="Debug\SaveValueStore.cs" />
     <Compile Include="Code\StringPatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

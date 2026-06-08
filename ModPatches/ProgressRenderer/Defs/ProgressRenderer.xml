@@ -5,7 +5,9 @@
 		<typeOf>MoreGenDate</typeOf>
 		<name>HoursPassedInteger</name>
 		<type>int</type>	
-		<value>2500</value>
+		<values>
+			<li>2500</li>
+		</values>
 	</AdvancedPatchDef>
 	
 </Defs>

@@ -5,7 +5,9 @@
 		<typeOf>CelestialPosition</typeOf>
 		<name>TicksPerDay</name>
 		<type>int</type>	
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
 	

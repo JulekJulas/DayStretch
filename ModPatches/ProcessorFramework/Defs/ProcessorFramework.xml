@@ -5,7 +5,9 @@
 		<typeOf>ActiveProcess</typeOf>
 		<name>ActiveProcessDays</name>
 		<type>float</type>
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
 	
@@ -15,7 +17,9 @@
 		<typeOf>ActiveProcess</typeOf>
 		<name>EstimatedTicksLeft</name>
 		<type>float</type>
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
 	
@@ -25,7 +29,9 @@
 		<typeOf>ActiveProcess</typeOf>
 		<name>DoTicks</name>
 		<type>float</type>
-		<value>2500</value>
+		<values>
+			<li>2500</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>	
@@ -34,7 +40,9 @@
 		<typeOf>ActiveProcess</typeOf>
 		<name>TimeForQualityLeft</name>
 		<type>float</type>
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
@@ -43,7 +51,9 @@
 		<typeOf>ActiveProcess</typeOf>
 		<name>ProcessTooltip</name>
 		<type>float</type>
-		<value>60000</value>
+		<values>
+			<li>60000</li>
+		</values>
 	</AdvancedPatchDef>	
 	
 
