@@ -218,7 +218,7 @@ namespace DayStretch
                     if (getter == null) continue;
                     if (getter.GetParameters().Length != def.parametersLength) continue;
                     if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
-
+                    keyReverse.Add(def.isGetter ? (def.namespaceOf + "." + def.typeOf + "get_" + def.name) : (def.namespaceOf + "." + def.typeOf + def.name), def.isReverse);
                     try
                     {
                         if (def.isPrefix) { var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, prefix: prefix); }  // stinky C# wont let me do def.isPrefix ?
@@ -241,6 +241,7 @@ namespace DayStretch
                     if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
                     if (!string.IsNullOrEmpty(def.name) && method.Name != def.name) continue;
                     if (method.GetParameters().Length != def.parametersLength) continue;
+                    keyReverse.Add(def.isGetter ? (def.namespaceOf + "." + def.typeOf + "get_" + def.name) : (def.namespaceOf + "." + def.typeOf + def.name), def.isReverse);
                     try
                     {
                         if (def.isPrefix) { var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, prefix: prefix); }  // stinky C# wont let me do def.isPrefix ?
@@ -274,17 +275,11 @@ namespace DayStretch
                     if (getter == null) continue;
                     if (getter.GetParameters().Length != def.parametersLength) continue;
                     if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
-
+                    keyReverse.Add(def.isGetter ? (def.namespaceOf + "." + def.typeOf + "get_" + def.name) : (def.namespaceOf + "." + def.typeOf + def.name), def.isReverse);
                     try
                     {
-                        if (def.isPrefix)
-                        {
-                            var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(DeltaPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, prefix: prefix);
-                        }
-                        else
-                        {
-                            var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(DeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: postfix);
-                        }
+                        if (def.isPrefix) { var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(DeltaPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, prefix: prefix); }
+                        else { var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(DeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: postfix); }
                         delFullGetterList += $"{def.typeOf}.{prop.Name} \n";
                         deltasPatched++;
                     }
@@ -303,16 +298,11 @@ namespace DayStretch
                     if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
                     if (!string.IsNullOrEmpty(def.name) && method.Name != def.name) continue;
                     if (method.GetParameters().Length != def.parametersLength) continue;
+                    keyReverse.Add(def.isGetter ? (def.namespaceOf + "." + def.typeOf + "get_" + def.name) : (def.namespaceOf + "." + def.typeOf + def.name), def.isReverse);
                     try
                     {
-                        if (def.isPrefix)
-                        {
-                            var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(DeltaPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, prefix: prefix);
-                        }
-                        else
-                        {
-                            var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(DeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: postfix);
-                        }
+                        if (def.isPrefix) { var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(DeltaPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, prefix: prefix); }
+                        else { var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(DeltaPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: postfix); }
                         delFullList += $"{def.typeOf}.{method.Name} \n";
                         deltasPatched++;
                     }
@@ -338,12 +328,12 @@ namespace DayStretch
             if (values[0] == 1) { reverse = true; }
             if (values[1] != 0) { customModifier = values[1]; customModifierFilled = true; } //TODO do customModifier, for now i cant be bothered
             int skipResults = (int)values[2];
-            values.RemoveRange(0, 3);
+            List<double> patchValues = values.Skip(3).ToList();
             foreach (var instr in instructions)
                 {
                     if ((instr.opcode == OpCodes.Ldc_I4 || instr.opcode == OpCodes.Ldc_I4_S) && instr.operand is int val)
                     { 
-                        if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = (int)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (int)(val * Settings.Instance.TimeMultiplier); } } else skipResults--; }
+                        if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = (int)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (int)(val * Settings.Instance.TimeMultiplier); } } else skipResults--; }
                     }
                     yield return instr;
                 }
@@ -359,12 +349,12 @@ namespace DayStretch
             if (values[0] == 1) { reverse = true; }
             if (values[1] != 0) { customModifier = values[1]; customModifierFilled = true; } //TODO do customModifier, for now i cant be bothered
             int skipResults = (int)values[2];
-            values.RemoveRange(0, 3);
+            List<double> patchValues = values.Skip(3).ToList();
             foreach (var instr in instructions)
             {
                 if ((instr.opcode == OpCodes.Ldc_R4) && instr.operand is float val)
                 {
-                    if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = val / Settings.Instance.TimeMultiplier; } else { instr.operand = val * Settings.Instance.TimeMultiplier; } } else skipResults--; }
+                    if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = val / Settings.Instance.TimeMultiplier; } else { instr.operand = val * Settings.Instance.TimeMultiplier; } } else skipResults--; }
                 }
                 yield return instr;
             }
@@ -381,12 +371,12 @@ namespace DayStretch
             if (values[0] == 1) { reverse = true; }
             if (values[1] != 0) { customModifier = values[1]; customModifierFilled = true; } //TODO do customModifier, for now i cant be bothered
             int skipResults = (int)values[2];
-            values.RemoveRange(0, 3);
+            List<double> patchValues = values.Skip(3).ToList();
             foreach (var instr in instructions)
             {
                 if ((instr.opcode == OpCodes.Ldc_I8) && instr.operand is long val)
                 {
-                    if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if(reverse) { instr.operand = (long)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (long)(val * Settings.Instance.TimeMultiplier); } } else skipResults--;      }
+                    if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if(reverse) { instr.operand = (long)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (long)(val * Settings.Instance.TimeMultiplier); } } else skipResults--;      }
                 }
                 yield return instr;
             }
@@ -402,12 +392,12 @@ namespace DayStretch
             if (values[0] == 1) { reverse = true; }
             if (values[1] != 0) { customModifier = values[1]; customModifierFilled = true; } //TODO do customModifier, for now i cant be bothered
             int skipResults = (int)values[2];
-            values.RemoveRange(0, 3);
+            List<double> patchValues = values.Skip(3).ToList();
             foreach (var instr in instructions)
             {
                 if ((instr.opcode == OpCodes.Ldc_R8) && instr.operand is double val)
                 {
-                    if (values.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = val / Settings.Instance.TimeMultiplier; } else { instr.operand = val * Settings.Instance.TimeMultiplier; } } else skipResults--; }
+                    if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = val / Settings.Instance.TimeMultiplier; } else { instr.operand = val * Settings.Instance.TimeMultiplier; } } else skipResults--; }
                 }
                 yield return instr;
             }
