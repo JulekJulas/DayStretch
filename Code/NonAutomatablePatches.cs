@@ -44,7 +44,7 @@ namespace DayStretch
     {
         public static bool Prefix(WeatherEventMaker __instance, Map map, float strength)
         {
-            if (Rand.Value < 1f / __instance.averageInterval * strength * Settings.Instance.TimeMultiplier)
+            if (Rand.Value < 1f / (__instance.averageInterval * strength) / Settings.Instance.TimeMultiplier)
             {
                 WeatherEvent newEvent = (WeatherEvent)Activator.CreateInstance(__instance.eventClass, new object[]
                 {

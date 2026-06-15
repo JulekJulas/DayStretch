@@ -16,7 +16,7 @@ namespace DayStretch
         public float FakeWorkMultiplier = 1f;
         public float WorkMultiplier = 1f;
         public bool ShouldWorkFollow = true;
-        public bool firstPopup = false;
+        public bool StopShowing = false;
 
         public override void ExposeData()
         {
@@ -25,6 +25,7 @@ namespace DayStretch
             Scribe_Values.Look(ref WorkMultiplier, "WorkRelated", 1f);
             Scribe_Values.Look(ref FakeWorkMultiplier, "FakeWorkRelated", 1f); // for the apply button
             Scribe_Values.Look(ref ShouldWorkFollow, "ShouldWorkFollow", true);
+            Scribe_Values.Look(ref StopShowing, "StopShowing", false);
             base.ExposeData();
         }
     }
@@ -39,7 +40,6 @@ namespace DayStretch
         }
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            settings.firstPopup = false;
             Listing_Standard listingStandard = new Listing_Standard();
             listingStandard.Begin(inRect);
             listingStandard.Label("Day length multiplier: " + settings.FakeTimeMultiplier.ToString("0.0"));
@@ -75,6 +75,7 @@ namespace DayStretch
 
 
             }
+            listingStandard.CheckboxLabeled("Should the popup telling you that the save time multiplier is mismatched stop appearing ", ref settings.StopShowing);
             listingStandard.End();
             base.DoSettingsWindowContents(inRect);
         }

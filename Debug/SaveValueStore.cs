@@ -59,6 +59,7 @@ namespace DayStretch
                         "Yes".Translate(), () =>
                         {
                             Find.WindowStack.Add(new Dialog_MessageBox("You have been warned."));
+                            savedTimeMultiplier = Settings.Instance.TimeMultiplier;
                         },
                             "No".Translate(), () =>
                             {
