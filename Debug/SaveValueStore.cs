@@ -34,7 +34,7 @@ namespace DayStretch
     public override void LoadedGame()
         {
             base.LoadedGame();
-            if (savedTimeMultiplier != Settings.Instance.TimeMultiplier)
+            if (savedTimeMultiplier != Settings.Instance.TimeMultiplier && stopShowing == false)
             {
                 string text = $"The saved time multiplier for this save is {savedTimeMultiplier}.\n" +
                               $"Your current multiplier is {Settings.Instance.TimeMultiplier}.\n" +
