@@ -2,8 +2,8 @@
 	<InstructionReadDef>
 		<namespaceOf>RimWorld</namespaceOf>
 		<defName>NeedsCardUtilityCheck</defName>
-		<typeOf>NeedsCardUtility</typeOf>
-		<name>DrawThoughtGroup</name>
+		<typeOf>Pawn_NeedsTracker</typeOf>
+		<name>NeedsTrackerTickInterval</name>
 	</InstructionReadDef>
 	 
 	

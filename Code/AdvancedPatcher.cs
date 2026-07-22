@@ -123,7 +123,7 @@ namespace DayStretch
                 string fullDictionaryEntry = $"{def.namespaceOf}.{def.typeOf}";
                 if (def.isGetter) fullDictionaryEntry += "get_";
                 fullDictionaryEntry += $"{def.name}:{def.type}";
-                double reverse = def.isReverse ? -1 : 1;
+                double reverse = def.isReverse ? 1 : -1;
                 List<double> curValues = new List<double> { reverse, def.customModifier, def.skipResults };
                 foreach (double val in def.values) { curValues.Add(val); }
                 targetNumbers.Add(fullDictionaryEntry, curValues);
@@ -178,7 +178,7 @@ namespace DayStretch
                                 default: return;
                             }
                             harmony.Patch(method, transpiler: transpiler);
-                            fullList += $"{def.typeOf}.{method.Name} ({def.type}), \n";
+
                         }
                         catch (Exception e)
                         {
@@ -330,13 +330,14 @@ namespace DayStretch
             int skipResults = (int)values[2];
             List<double> patchValues = values.Skip(3).ToList();
             foreach (var instr in instructions)
+            {
+                if ((instr.opcode == OpCodes.Ldc_I4 || instr.opcode == OpCodes.Ldc_I4_S) && instr.operand is int val)
                 {
-                    if ((instr.opcode == OpCodes.Ldc_I4 || instr.opcode == OpCodes.Ldc_I4_S) && instr.operand is int val)
-                    { 
-                        if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = (int)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (int)(val * Settings.Instance.TimeMultiplier); } } else skipResults--; }
-                    }
-                    yield return instr;
+                    if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = (int)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (int)(val * Settings.Instance.TimeMultiplier); } } else skipResults--; }
                 }
+                yield return instr;
+            }
+
         }
         static IEnumerable<CodeInstruction> TranspileFloatVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
         {

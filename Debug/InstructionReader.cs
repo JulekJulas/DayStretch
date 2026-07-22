@@ -81,6 +81,9 @@ namespace DayStretch
             foreach (var instr in instructions)
             {
                 fullList += instr.ToString() + "\n";
+                if ((instr.opcode == OpCodes.Ldc_I4 || instr.opcode == OpCodes.Ldc_I4_S) && instr.operand is int val)
+                {
+                }
                 yield return instr;
             }
             fullList += "\n\n\n\n\n\n";
