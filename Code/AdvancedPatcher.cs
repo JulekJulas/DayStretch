@@ -123,7 +123,8 @@ namespace DayStretch
                 string fullDictionaryEntry = $"{def.namespaceOf}.{def.typeOf}";
                 if (def.isGetter) fullDictionaryEntry += "get_";
                 fullDictionaryEntry += $"{def.name}:{def.type}";
-                double reverse = def.isReverse ? 1 : -1;
+                double reverse = 0;
+                if (def.isReverse == true) { reverse = 1; }// the reason this is like this is cuz it was really broken before and i dont know why
                 List<double> curValues = new List<double> { reverse, def.customModifier, def.skipResults };
                 foreach (double val in def.values) { curValues.Add(val); }
                 targetNumbers.Add(fullDictionaryEntry, curValues);
@@ -142,7 +143,7 @@ namespace DayStretch
                             switch (def.type)
                             { // why didnt i do object stuff? well i dont wanna
                                 // seriously just sending more data by actually just naming them different things is just more convenient leave me alone
-                                case "int": transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); break;
+                                case "int": transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); break; 
                                 case "float": transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileFloatVariables), BindingFlags.Static | BindingFlags.NonPublic)); break;
                                 case "long": transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileLongVariables), BindingFlags.Static | BindingFlags.NonPublic)); break;
                                 case "short": transpiler = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(TranspileIntVariables), BindingFlags.Static | BindingFlags.NonPublic)); break;
@@ -178,6 +179,8 @@ namespace DayStretch
                                 default: return;
                             }
                             harmony.Patch(method, transpiler: transpiler);
+                            fullGetterList += $"{def.typeOf}.{method.Name} ({def.type}), \n";
+
 
                         }
                         catch (Exception e)
@@ -213,7 +216,6 @@ namespace DayStretch
                 foreach (var prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
                 {
                     if (!string.IsNullOrEmpty(def.name) && prop.Name != def.name) continue;
-
                     var getter = prop.GetGetMethod(true);
                     if (getter == null) continue;
                     if (getter.GetParameters().Length != def.parametersLength) continue;
@@ -225,6 +227,7 @@ namespace DayStretch
                         else { var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: postfix); } // 𝓪𝓮𝓼𝓽𝓱𝓮𝓽𝓲𝓬𝓼
                         resFullGetterList += $"{def.typeOf}.{prop.Name} \n";
                         resultsPatched++;
+                      
                     }
                     catch (Exception e)
                     {
@@ -329,11 +332,23 @@ namespace DayStretch
             if (values[1] != 0) { customModifier = values[1]; customModifierFilled = true; } //TODO do customModifier, for now i cant be bothered
             int skipResults = (int)values[2];
             List<double> patchValues = values.Skip(3).ToList();
+            int minimumAmountOfPatches = patchValues.Count;
             foreach (var instr in instructions)
             {
                 if ((instr.opcode == OpCodes.Ldc_I4 || instr.opcode == OpCodes.Ldc_I4_S) && instr.operand is int val)
                 {
-                    if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = (int)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (int)(val * Settings.Instance.TimeMultiplier); } } else skipResults--; }
+                    if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001)) 
+                    { 
+                        if (skipResults == 0) 
+                        {   
+                            numbersPatched++; 
+                            minimumAmountOfPatches--;
+                            if (reverse) { instr.operand = (int)(val / Settings.Instance.TimeMultiplier); }
+                            else { instr.operand = (int)(val * Settings.Instance.TimeMultiplier); }
+                        }
+                        else skipResults--;
+                    }
+                    //if (minimumAmountOfPatches > 0) Log.Error($"[DayStretch]-(AdvancedPatch) one or more values were unable to be located at {dictKey} {minimumAmountOfPatches}");
                 }
                 yield return instr;
             }
@@ -351,11 +366,24 @@ namespace DayStretch
             if (values[1] != 0) { customModifier = values[1]; customModifierFilled = true; } //TODO do customModifier, for now i cant be bothered
             int skipResults = (int)values[2];
             List<double> patchValues = values.Skip(3).ToList();
+            int minimumAmountOfPatches = patchValues.Count;
+            
             foreach (var instr in instructions)
             {
                 if ((instr.opcode == OpCodes.Ldc_R4) && instr.operand is float val)
                 {
-                    if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = val / Settings.Instance.TimeMultiplier; } else { instr.operand = val * Settings.Instance.TimeMultiplier; } } else skipResults--; }
+                    if (patchValues.Any(x => Math.Abs(x - val) <= 0.01))
+                    {
+                        if (skipResults == 0)
+                        {
+                            numbersPatched++;
+                            minimumAmountOfPatches--;
+                            if (reverse) { instr.operand = (val / Settings.Instance.TimeMultiplier); }
+                            else { instr.operand = (val * Settings.Instance.TimeMultiplier); }
+                        }
+                        else skipResults--;
+                    }
+                    //if (minimumAmountOfPatches > 0) Log.Error($"[DayStretch]-(AdvancedPatch) one or more values were unable to be located at {dictKey} {minimumAmountOfPatches}");
                 }
                 yield return instr;
             }
@@ -373,11 +401,23 @@ namespace DayStretch
             if (values[1] != 0) { customModifier = values[1]; customModifierFilled = true; } //TODO do customModifier, for now i cant be bothered
             int skipResults = (int)values[2];
             List<double> patchValues = values.Skip(3).ToList();
+            int minimumAmountOfPatches = patchValues.Count;
             foreach (var instr in instructions)
             {
                 if ((instr.opcode == OpCodes.Ldc_I8) && instr.operand is long val)
                 {
-                    if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if(reverse) { instr.operand = (long)(val / Settings.Instance.TimeMultiplier); } else { instr.operand = (long)(val * Settings.Instance.TimeMultiplier); } } else skipResults--;      }
+                    if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001))
+                    {
+                        if (skipResults == 0)
+                        {
+                            numbersPatched++;
+                            minimumAmountOfPatches--;
+                            if (reverse) { instr.operand = (long)(val / Settings.Instance.TimeMultiplier); }
+                            else { instr.operand = (long)(val * Settings.Instance.TimeMultiplier); }
+                        }
+                        else skipResults--;
+                    }
+                    //if (minimumAmountOfPatches > 0) Log.Error($"[DayStretch]-(AdvancedPatch) one or more values were unable to be located at {dictKey} {minimumAmountOfPatches}");
                 }
                 yield return instr;
             }
@@ -394,11 +434,23 @@ namespace DayStretch
             if (values[1] != 0) { customModifier = values[1]; customModifierFilled = true; } //TODO do customModifier, for now i cant be bothered
             int skipResults = (int)values[2];
             List<double> patchValues = values.Skip(3).ToList();
+            int minimumAmountOfPatches = patchValues.Count;
             foreach (var instr in instructions)
             {
                 if ((instr.opcode == OpCodes.Ldc_R8) && instr.operand is double val)
                 {
-                    if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001)) { if (skipResults == 0) { numbersPatched++; if (reverse) { instr.operand = val / Settings.Instance.TimeMultiplier; } else { instr.operand = val * Settings.Instance.TimeMultiplier; } } else skipResults--; }
+                    if (patchValues.Any(x => Math.Abs(x - val) <= 0.0001))
+                    {
+                        if (skipResults == 0)
+                        {
+                            numbersPatched++;
+                            minimumAmountOfPatches--;
+                            if (reverse) { instr.operand = (val / Settings.Instance.TimeMultiplier); }
+                            else { instr.operand = (val * Settings.Instance.TimeMultiplier); }
+                        }
+                        else skipResults--;
+                    }
+                    //if (minimumAmountOfPatches > 0) Log.Error($"[DayStretch]-(AdvancedPatch) one or more values were unable to be located at {dictKey} {minimumAmountOfPatches}");
                 }
                 yield return instr;
             }

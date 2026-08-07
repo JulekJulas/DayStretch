@@ -1,0 +1,12 @@
+<Defs>
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>GetCycleSpeedFactorForPawnPatch</defName>
+		<typeOf>CompBiosculpterPod</typeOf>
+		<name>GetCycleSpeedFactorForPawn</name>
+		<type>Result</type>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+</Defs>

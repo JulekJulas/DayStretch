@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Security.Cryptography;
 using UnityEngine;
 using Verse;
 
@@ -16,6 +17,7 @@ public class InstructionReadDef : Def
     public string namespaceOf;
     public string typeOf;
     public string name;
+    public bool isGetter;
 }
 
 
@@ -32,11 +34,12 @@ namespace DayStretch
         public static int amountofWrongValues = 0;
         static string fullList = "[DayStretch]-(InstructionReader)\nInstructions:\n";
 
+
         static InstructionReader()
         {
             foreach (InstructionReadDef def in DefDatabase<InstructionReadDef>.AllDefsListForReading)
             {
-                InstructionDefReader(def.defName, def.namespaceOf, def.typeOf, def.name);
+                InstructionDefReader(def.defName, def.namespaceOf, def.typeOf, def.name, def.isGetter);
             }
             // makes so the log only shows the amount of numbers patched exactly one time
             if (!logShown)
@@ -47,7 +50,7 @@ namespace DayStretch
             }
         }
 
-        static void InstructionDefReader(string defName, string namespaceOf, string typeOf, string name)
+        static void InstructionDefReader(string defName, string namespaceOf, string typeOf, string name, bool isGetter)
         {
             // really compact checks for null values
             if (namespaceOf == null) { Log.Error($"[DayStretch]-(InstructionReader) namespaceOf in {defName} is not filled in; skipping."); return; }
@@ -58,23 +61,29 @@ namespace DayStretch
 
             Type type = GenTypes.GetTypeInAnyAssembly($"{namespaceOf}.{typeOf}");
 
-
-
-            if (type == null)
-            {
-                Log.Error($"[DayStretch]-(InstructionReader) Type '{typeOf}' not found in namespace '{namespaceOf}'; skipping.");
-                return;
-            }
-
             var harmony = new Harmony("com.julekjulas.instructionreader");
-            foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+
+            if (isGetter)
             {
-                if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
-                if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
-                var transpiler = new HarmonyMethod(typeof(InstructionReader).GetMethod(nameof(ReadInstructions), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler);
+                foreach (var prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    if (!string.IsNullOrEmpty(name) && prop.Name != name) continue;
+                    var getter = prop.GetGetMethod(true);
+                    if (getter == null) continue;
+                    if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
+                    var transpiler = new HarmonyMethod(typeof(InstructionReader).GetMethod(nameof(ReadInstructions), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, transpiler: transpiler);
+                }
+            }
+            else
+            {
+                foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
+                    if (!string.IsNullOrEmpty(name) && method.Name != name) continue;
+                    var transpiler = new HarmonyMethod(typeof(InstructionReader).GetMethod(nameof(ReadInstructions), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, transpiler: transpiler);
+                }
             }
         }
-
         static IEnumerable<CodeInstruction> ReadInstructions(IEnumerable<CodeInstruction> instructions, MethodBase type)
         {
             fullList += $"Current Method: {type.DeclaringType}.{type.Name}\n";
@@ -90,3 +99,4 @@ namespace DayStretch
         }
     }
 }
+   
