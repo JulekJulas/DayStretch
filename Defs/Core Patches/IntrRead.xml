@@ -1,9 +1,9 @@
 <Defs>
 	<InstructionReadDef>
 		<namespaceOf>RimWorld</namespaceOf>
-		<defName>CompRottable_TickIntervalaPatch</defName>
-		<typeOf>CompRottable</typeOf>
-		<name>TickInterval</name>
+		<defName>DoGraphPagePatch</defName>
+		<typeOf>MainTabWindow_History</typeOf>
+		<name>DoGraphPage</name>
 	</InstructionReadDef>
 	 
 	

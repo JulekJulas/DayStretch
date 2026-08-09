@@ -251,17 +251,7 @@
 		</values>
 	</AdvancedPatchDef>
 	
-	<AdvancedPatchDef>
-		<namespaceOf>RimWorld</namespaceOf>
-		<defName>DoGraphPagePatch</defName>
-		<typeOf>MainTabWindow_History</typeOf>
-		<name>DoGraphPage</name>
-		<type>float</type>
-		<values>
-			<li>60000</li>
-		</values>
-		<isReverse>true</isReverse>
-	</AdvancedPatchDef>
+
 	
 	<AdvancedPatchDef>
 		<namespaceOf>RimWorld.Planet</namespaceOf>
@@ -462,6 +452,51 @@
 		</values>
 	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>GetMaxDayPatch</defName>
+		<typeOf>HistoryAutoRecorderGroup</typeOf>
+		<name>GetMaxDay</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DrawGraphPatch</defName>
+		<typeOf>HistoryAutoRecorderGroup</typeOf>
+		<name>DrawGraph</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>PreOpenPatch</defName>
+		<typeOf>MainTabWindow_History</typeOf>
+		<name>PreOpen</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DoGraphPagePatch</defName>
+		<typeOf>MainTabWindow_History</typeOf>
+		<name>DoGraphPage</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	
 	
 	<!-- might as well try this -->
 	
@@ -538,15 +573,6 @@
 		<type>result</type>
 		<isGetter>true</isGetter>
 		<isReverse>true</isReverse>
-	</AdvancedPatchDef>
-
-	
-	<AdvancedPatchDef>
-		<namespaceOf>RimWorld</namespaceOf>
-		<defName>GetMaxDayPatch</defName>
-		<typeOf>HistoryAutoRecorderGroup</typeOf>
-		<name>GetMaxDay</name>
-		<type>result</type>
 	</AdvancedPatchDef>
 
 	
