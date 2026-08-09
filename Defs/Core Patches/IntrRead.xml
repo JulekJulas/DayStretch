@@ -1,10 +1,9 @@
 <Defs>
 	<InstructionReadDef>
 		<namespaceOf>RimWorld</namespaceOf>
-		<defName>fuckyou</defName>
-		<typeOf>GenCelestial</typeOf>
-		<name>TicksAbsForSunPosInWorldSpace</name>
-		<isGetter>true</isGetter>
+		<defName>CompRottable_TickIntervalaPatch</defName>
+		<typeOf>CompRottable</typeOf>
+		<name>TickInterval</name>
 	</InstructionReadDef>
 	 
 	

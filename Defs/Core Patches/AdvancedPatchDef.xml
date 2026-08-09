@@ -440,6 +440,62 @@
 		</values>
 	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>Hediff_Pregnant_TickIntervalPatch</defName>
+		<typeOf>Hediff_Pregnant</typeOf>
+		<name>TickInterval</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>CompRottable_TickIntervalPatch</defName>
+		<typeOf>CompRottable</typeOf>
+		<name>TickInterval</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	
+	<!-- might as well try this -->
+	
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>ToStringTicksToPeriodGenDateFLOATPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>ToStringTicksToPeriod</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+			<li>60</li>
+			<li>2500</li>
+			<li>3600000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>ToStringTicksToPeriodGenDateINTPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>ToStringTicksToPeriod</name>
+		<type>int</type>	
+		<values>
+			<li>60000</li>
+			<li>2500</li>
+			<li>3600000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	
+	
+	
 	
 	<AdvancedPatchDef>
 		<namespaceOf>RimWorld</namespaceOf>
@@ -557,12 +613,12 @@
 	
 	
 	
-	<AdvancedPatchDef>
+	<!-- <AdvancedPatchDef>
 		<namespaceOf>RimWorld</namespaceOf>
 		<defName>RotTickIntervalPatch</defName>
 		<typeOf>CompRottable</typeOf>
 		<name>TickInterval</name>
 		<type>delta</type>
-	</AdvancedPatchDef>
+	</AdvancedPatchDef> saved for if the float version doesnt work-->
 	
 </Defs> 

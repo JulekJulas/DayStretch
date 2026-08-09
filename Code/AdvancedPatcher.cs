@@ -196,9 +196,9 @@ namespace DayStretch
                 switch (def.type)
                 {
                     case "result": DoResult(def); break;
-                    case "delta": DoDelta(def); break;
+                    case "delta": DoDelta(def); break; // used as a last resort, laggy if overused
                         // probably more to get added
-                }
+                } // TODO redo string patcher here
             }
 
         }
@@ -220,11 +220,19 @@ namespace DayStretch
                     if (getter == null) continue;
                     if (getter.GetParameters().Length != def.parametersLength) continue;
                     if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
-                    keyReverse.Add(def.isGetter ? (def.namespaceOf + "." + def.typeOf + "get_" + def.name) : (def.namespaceOf + "." + def.typeOf + def.name), def.isReverse);
                     try
                     {
-                        if (def.isPrefix) { var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, prefix: prefix); }  // stinky C# wont let me do def.isPrefix ?
-                        else { var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: postfix); } // 𝓪𝓮𝓼𝓽𝓱𝓮𝓽𝓲𝓬𝓼
+                        if (def.isReverse)
+                        {
+                            if (def.isPrefix) { var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ReverseResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, prefix: prefix); }
+                            else { var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ReverseResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: postfix); }
+                        }
+                        else
+                        {
+                            if (def.isPrefix) { var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, prefix: prefix); }
+                            else { var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, postfix: postfix); }
+                        }
+
                         resFullGetterList += $"{def.typeOf}.{prop.Name} \n";
                         resultsPatched++;
                       
@@ -466,55 +474,54 @@ namespace DayStretch
         }
         static void ResultPrefix(ref object __result, MethodBase __originalMethod)
         {
-            if (ReverseCheck(__originalMethod)) // yeah so i tried a dynamic and rimworld exploded as expected so this gotta do
+            switch (__result)
             {
-                switch (__result)
-                {
-                    case int valInt: __result = (int)(valInt / Settings.Instance.TimeMultiplier); break;
-                    case float valFloat: __result = (float)(valFloat / Settings.Instance.TimeMultiplier); break;
-                    case long valLong: __result = (long)(valLong / Settings.Instance.TimeMultiplier); break;
-                    case short valShort: __result = (short)(valShort / Settings.Instance.TimeMultiplier); break;
-                    case double valDouble: __result = (double)(valDouble / Settings.Instance.TimeMultiplier); break;
-                }
-            }
-            else
-            {
-                 switch (__result)
-                 {
-                     case int valInt: __result = (int)(valInt * Settings.Instance.TimeMultiplier); break;
-                     case float valFloat: __result = (float)(valFloat * Settings.Instance.TimeMultiplier); break;
-                     case long valLong: __result = (long)(valLong * Settings.Instance.TimeMultiplier); break;
-                     case short valShort: __result = (short)(valShort * Settings.Instance.TimeMultiplier); break;
-                     case double valDouble: __result = (double)(valDouble * Settings.Instance.TimeMultiplier); break;
-                 }
+                case int valInt: __result = (int)(valInt * Settings.Instance.TimeMultiplier); break;
+                case float valFloat: __result = (float)(valFloat * Settings.Instance.TimeMultiplier); break;
+                case long valLong: __result = (long)(valLong * Settings.Instance.TimeMultiplier); break;
+                case short valShort: __result = (short)(valShort * Settings.Instance.TimeMultiplier); break;
+                case double valDouble: __result = (double)(valDouble * Settings.Instance.TimeMultiplier); break;
             }
         }
 
-        static void ResultPostfix(ref object __result, MethodBase __originalMethod) // i love copy pasting code :3 still cmon, better than the old one innit
+        static void ReverseResultPrefix(ref object __result, MethodBase __originalMethod)
         {
-            if (ReverseCheck(__originalMethod)) // yeah so i tried a dynamic and rimworld exploded as expected so this gotta do
+            switch (__result)
             {
-                switch (__result)
-                {
-                    case int valInt: __result = (int)(valInt / Settings.Instance.TimeMultiplier); break;
-                    case float valFloat: __result = (float)(valFloat / Settings.Instance.TimeMultiplier); break;
-                    case long valLong: __result = (long)(valLong / Settings.Instance.TimeMultiplier); break;
-                    case short valShort: __result = (short)(valShort / Settings.Instance.TimeMultiplier); break;
-                    case double valDouble: __result = (double)(valDouble / Settings.Instance.TimeMultiplier); break;
-                }
-            }
-            else
-            {
-                switch (__result)
-                {
-                    case int valInt: __result = (int)(valInt * Settings.Instance.TimeMultiplier); break;
-                    case float valFloat: __result = (float)(valFloat * Settings.Instance.TimeMultiplier); break;
-                    case long valLong: __result = (long)(valLong * Settings.Instance.TimeMultiplier); break;
-                    case short valShort: __result = (short)(valShort * Settings.Instance.TimeMultiplier); break;
-                    case double valDouble: __result = (double)(valDouble * Settings.Instance.TimeMultiplier); break;
-                }
+                case int valInt: __result = (int)(valInt / Settings.Instance.TimeMultiplier); break;
+                case float valFloat: __result = (float)(valFloat / Settings.Instance.TimeMultiplier); break;
+                case long valLong: __result = (long)(valLong / Settings.Instance.TimeMultiplier); break;
+                case short valShort: __result = (short)(valShort / Settings.Instance.TimeMultiplier); break;
+                case double valDouble: __result = (double)(valDouble / Settings.Instance.TimeMultiplier); break;
             }
         }
+
+
+        static void ResultPostfix(ref object __result, MethodBase __originalMethod)
+        {
+            switch (__result)
+            {
+                case int valInt: __result = (int)(valInt * Settings.Instance.TimeMultiplier); break;
+                case float valFloat: __result = (float)(valFloat * Settings.Instance.TimeMultiplier); break;
+                case long valLong: __result = (long)(valLong * Settings.Instance.TimeMultiplier); break;
+                case short valShort: __result = (short)(valShort * Settings.Instance.TimeMultiplier); break;
+                case double valDouble: __result = (double)(valDouble * Settings.Instance.TimeMultiplier); break;
+            }
+                
+        }
+
+        static void ReverseResultPostfix(ref object __result, MethodBase __originalMethod)
+        {
+            switch (__result)
+            {
+                case int valInt: __result = (int)(valInt / Settings.Instance.TimeMultiplier); break;
+                case float valFloat: __result = (float)(valFloat / Settings.Instance.TimeMultiplier); break;
+                case long valLong: __result = (long)(valLong / Settings.Instance.TimeMultiplier); break;
+                case short valShort: __result = (short)(valShort / Settings.Instance.TimeMultiplier); break;
+                case double valDouble: __result = (double)(valDouble / Settings.Instance.TimeMultiplier); break;
+            }
+        }
+
 
         static void DeltaPostfix(ref object delta, MethodBase __originalMethod)
         {

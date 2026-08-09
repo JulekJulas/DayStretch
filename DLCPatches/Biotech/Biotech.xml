@@ -1,0 +1,27 @@
+<Defs>
+
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>HediffComp_PregnantHumanINTPatch</defName>
+		<typeOf>HediffComp_PregnantHuman</typeOf>
+		<name>CompPostTickInterval</name>
+		<type>int</type>
+		<values>
+			<li>60</li>
+			<li>48000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>HediffComp_PregnantHumanFLOATPatch</defName>
+		<typeOf>HediffComp_PregnantHuman</typeOf>
+		<name>CompPostTickInterval</name>
+		<type>float</type>
+		<values>
+			<li>60</li>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+</Defs>
