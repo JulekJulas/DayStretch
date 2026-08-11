@@ -620,22 +620,12 @@
 	
 	<AdvancedPatchDef>
 		<namespaceOf>RimWorld</namespaceOf>
-		<defName>PlantLifespanTicksPatch</defName>
-		<typeOf>PlantProperties</typeOf>
-		<name>LifespanTicks</name>
-		<type>result</type>
-		<isGetter>true</isGetter>
-	</AdvancedPatchDef>
-	
-	<AdvancedPatchDef>
-		<namespaceOf>RimWorld</namespaceOf>
 		<defName>CooldownTicksTotal_AbilityPatch</defName>
 		<typeOf>Ability</typeOf>
 		<name>CooldownTicksTotal</name>
 		<type>result</type>
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
-	
 	
 	
 	

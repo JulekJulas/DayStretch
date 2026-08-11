@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -157,14 +158,54 @@ namespace DayStretch
             }
         }
 
+        [HarmonyPatch(typeof(Plant), nameof(Plant.CurrentDyingDamagePerTick), MethodType.Getter)]
+        public static class CurrentDyingDamagePerTickPlant
+        {
+            public static bool Prefix(Plant __instance, ref float __result, ref int ___unlitTicks, ref int ___ageInt, ref FloatRange ___DyingDamagePerTickBecauseExposedToLight, ref FloatRange ___PollutionDamagePerTickRange)
+            {
+                if (!__instance.Spawned)
+                {
+                    __result = 0f;
+                    return false;
+                }
+                float num = 0f;
+                if (__instance.def.plant.LimitedLifespan && ___ageInt > (__instance.def.plant.LifespanTicks * Settings.Instance.TimeMultiplier))
+                {
+                    num = Mathf.Max(num, 0.005f);
+                }
+                if (!__instance.def.plant.diesToLight && __instance.def.plant.dieIfNoSunlight && ___unlitTicks > (450000 * Settings.Instance.TimeMultiplier))
+                {
+                    num = Mathf.Max(num, 0.005f);
+                }
+                if (__instance.DyingBecauseExposedToLight)
+                {
+                    float lerpPct = __instance.Map.glowGrid.GroundGlowAt(__instance.Position, true, false);
+                    num = Mathf.Max(num, ___DyingDamagePerTickBecauseExposedToLight.LerpThroughRange(lerpPct));
+                }
+                if (__instance.DyingBecauseExposedToVacuum)
+                {
+                    num = Mathf.Max(num, 1f * __instance.Position.GetVacuum(__instance.Map));
+                }
+                if (__instance.DyingFromPollution || __instance.DyingFromNoPollution)
+                {
+                    num = Mathf.Max(num, ___PollutionDamagePerTickRange.RandomInRangeSeeded(__instance.Position.GetHashCode()));
+                }
+                if (__instance.DyingBecauseOfTerrainTags)
+                {
+                    num = Mathf.Max(num, 0.005f);
+                }
+                __result = num;
+                return false;
+            }
+
+        }
 
 
 
 
 
 
-
-     }
+    }
 }
 
 
