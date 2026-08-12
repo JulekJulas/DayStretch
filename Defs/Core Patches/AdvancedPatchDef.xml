@@ -528,7 +528,16 @@
 		</values>
 	</AdvancedPatchDef>
 	
-	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>TicksUntilDeathDueToBloodLossPatch</defName>
+		<typeOf>HealthUtility</typeOf>
+		<name>TicksUntilDeathDueToBloodLoss</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
 	
 	
 	

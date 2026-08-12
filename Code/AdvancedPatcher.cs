@@ -255,8 +255,16 @@ namespace DayStretch
                     keyReverse.Add(def.isGetter ? (def.namespaceOf + "." + def.typeOf + "get_" + def.name) : (def.namespaceOf + "." + def.typeOf + def.name), def.isReverse);
                     try
                     {
-                        if (def.isPrefix) { var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, prefix: prefix); }  // stinky C# wont let me do def.isPrefix ?
-                        else { var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: postfix); } // 𝓪𝓮𝓼𝓽𝓱𝓮𝓽𝓲𝓬𝓼
+                        if (def.isReverse)
+                        {
+                            if (def.isPrefix) { var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ReverseResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, prefix: prefix); }
+                            else { var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ReverseResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: postfix); }
+                        }
+                        else
+                        { 
+                            if (def.isPrefix) { var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, prefix: prefix); }
+                            else { var postfix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ResultPostfix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, postfix: postfix); }
+                        }
                         resFullList += $"{def.typeOf}.{method.Name} \n";
                         resultsPatched++;
                     }

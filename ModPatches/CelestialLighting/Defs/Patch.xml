@@ -1,0 +1,91 @@
+<Defs>
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_VanillaHalfDayForMapPatch</defName>
+		<typeOf>SunClock</typeOf>
+		<name>VanillaHalfDayForMap</name>
+		<type>int</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_MeasureVanillaHalfDayPatch</defName>
+		<typeOf>SunClock</typeOf>
+		<name>MeasureVanillaHalfDay</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_SynodicPeriodTicksPatch</defName>
+		<typeOf>GameComponent_MoonPhase</typeOf>
+		<name>SynodicPeriodTicks</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_NodalPeriodTicksPatch</defName>
+		<typeOf>GameComponent_MoonPhase</typeOf>
+		<name>NodalPeriodTicks</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_OrbitalDayOfYearPatch</defName>
+		<typeOf>EclipseIntegration</typeOf>
+		<name>OrbitalDayOfYear</name>
+		<type>double</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_IsWithinRefireCooldownPatch</defName>
+		<typeOf>GameComponent_NaturalEclipse</typeOf>
+		<name>IsWithinRefireCooldown</name>
+		<type>int</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_MeasureVanillaHalfDayWeirdPatch</defName>
+		<typeOf>SunClock</typeOf>
+		<name>&lt;MeasureVanillaHalfDay&gt;g__GlowAt|5_0</name> <!-- will this work?????????? we'll find out TODAY ON DAYBUSTERS -->
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_SampleIndexPatch</defName>
+		<typeOf>LatticeDriftNoise</typeOf>
+		<name>SampleIndex</name>
+		<type>int</type>
+		<values>
+			<li>2500</li> <!-- not 100% sure if its needed -->
+		</values>
+	</AdvancedPatchDef>	
+</Defs>

@@ -158,6 +158,9 @@ namespace DayStretch
             }
         }
 
+
+
+
         [HarmonyPatch(typeof(Plant), nameof(Plant.CurrentDyingDamagePerTick), MethodType.Getter)]
         public static class CurrentDyingDamagePerTickPlant
         {
