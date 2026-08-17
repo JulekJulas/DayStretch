@@ -7,6 +7,7 @@
 		<li IfModActive="syrchalis.processor.framework">ModPatches/ProcessorFramework</li>
 		<li IfModActive="neptimus7.progressrenderer">ModPatches/ProgressRenderer</li>
 		<li IfModActive="joof.celestiallighting">ModPatches/CelestialLighting</li>
+		<li IfModActive="tsa.worlddominationexperimental">ModPatches/WorldDomination2</li>
 		<li IfModActive="Ludeon.Ideology">DLCPatches/Ideology</li>
 		<li IfModActive="Ludeon.Biotech">DLCPatches/Biotech</li>
 	</v1.6>

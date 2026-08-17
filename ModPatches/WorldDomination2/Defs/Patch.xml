@@ -1,0 +1,48 @@
+<Defs>
+	<AdvancedPatchDef>
+		<namespaceOf>TSA_WorldDomination</namespaceOf>
+		<defName>TSA_WorldDomination_WorldComponentTickPatch</defName>
+		<typeOf>WorldComponent_SpreadManager</typeOf>
+		<name>WorldComponentTick</name>
+		<type>int</type>	
+		<values>
+			<li>60000</li>
+			<li>2500</li>
+			<li>15000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>TSA_WorldDomination</namespaceOf>
+		<defName>TSA_WorldDomination_TickIntervalPatch</defName>
+		<typeOf>WorldObject_Traveler</typeOf>
+		<name>TickInterval</name>
+		<type>float</type>	
+		<values>
+			<li>2500</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>TSA_WorldDomination</namespaceOf>
+		<defName>TSA_WorldDomination_AttemptGrowPatch</defName>
+		<typeOf>WorldActions_GrowthExpand</typeOf>
+		<name>AttemptGrow</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>TSA_WorldDomination</namespaceOf>
+		<defName>TSA_WorldDomination_FinalizeRaidPatch</defName>
+		<typeOf>WorldActions_Raid</typeOf>
+		<name>FinalizeRaid</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+</Defs>

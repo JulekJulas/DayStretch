@@ -29,6 +29,8 @@ namespace DayStretch
                     fullList += StringPatcher.loggerList;
                     fullList += "\n\n\n";
                     fullList += VariablePatcher.loggerList;
+                    fullList += "\n\n\n";
+                    fullList += AdvancedPatcher.parLoggerList;
                     Log.Message(fullList);
                 }
             });

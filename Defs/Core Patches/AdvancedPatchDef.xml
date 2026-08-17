@@ -540,6 +540,39 @@
 	</AdvancedPatchDef>
 	
 	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>EqualizeTemperaturesThroughBuildingPatch</defName>
+		<typeOf>GenTemperature</typeOf>
+		<name>EqualizeTemperaturesThroughBuilding</name>
+		<type>parameter</type>	
+		<values>
+			<li>-2</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf> <!-- do i need this? im gonna add it for now -->
+		<defName>ControlTemperatureTempChangePatch</defName>
+		<typeOf>GenTemperature</typeOf>
+		<name>ControlTemperatureTempChange</name>
+		<type>parameter</type>	
+		<values>
+			<li>-3</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>PushHeatPatch</defName>
+		<typeOf>Room</typeOf>
+		<name>PushHeat</name>
+		<type>parameter</type>	
+		<values>
+			<li>-1</li>
+		</values>
+	</AdvancedPatchDef>
+	
 	
 	<AdvancedPatchDef>
 		<namespaceOf>RimWorld</namespaceOf>

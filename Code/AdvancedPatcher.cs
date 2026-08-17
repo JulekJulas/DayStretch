@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Security.Cryptography;
@@ -41,17 +42,14 @@ namespace DayStretch
     {
 
         static bool logShown = false;
-        public static Dictionary<string, int[]> scaledInts = new Dictionary<string, int[]>();
-        public static Dictionary<string, float[]> scaledFloats = new Dictionary<string, float[]>();
-        public static Dictionary<string, long[]> scaledLongs = new Dictionary<string, long[]>();
-        public static Dictionary<string, short[]> scaledShorts = new Dictionary<string, short[]>();
-        public static Dictionary<string, double[]> scaledDoubles = new Dictionary<string, double[]>();
         public static Dictionary<string, string[]> calls = new Dictionary<string, string[]>();
         public static Dictionary<string, bool> keyReverse = new Dictionary<string, bool>();
 
         public static Dictionary<string, double[]> wrongValues = new Dictionary<string, double[]>();
 
         public static Dictionary<string, List<double>> targetNumbers = new Dictionary<string, List<double>>();
+        public static Dictionary<string, List<int>> targetParameters = new Dictionary<string, List<int>>();
+
 
         public static int amountofWrongValues = 0;
 
@@ -69,6 +67,11 @@ namespace DayStretch
         static string delFullGetterList = "Getter Deltas Patched:\n";
         public static string delLoggerList = "";
         static int deltasPatched;
+
+        static string parFullList = "Method Parameters Patched:\n";
+        static string parFullGetterList = "Getter Parameters Patched:\n";
+        public static string parLoggerList = "";
+        static int paramsPatched;
 
 
         static AdvancedPatcher()
@@ -95,13 +98,14 @@ namespace DayStretch
                 loggerList += $"Advanced Patcher:\nNumber of variables patched: {numbersPatched}\n\n{fullList}\n\n{fullGetterList}";
                 resLoggerList += $"Result Patcher:\nNumber of results patched: {resultsPatched}\n\n{resFullList}\n\n{resFullGetterList}";
                 delLoggerList += $"Delta Patcher:\nNumber of deltas patched: {deltasPatched}\n\n{delFullList}\n\n{delFullGetterList}";
+                parLoggerList += $"Parameter Patcher:\nNumber of parameters patched: {paramsPatched}\n\n{parFullList}\n\n{parFullGetterList}";
             }
         }
 
         static void AdvancedDefPatcher(AdvancedPatchDef def)
         {
             string[] numericalTypes = new string[] { "int", "float", "long", "short", "double" };
-            string[] otherTypes = new string[] { "result", "delta" };
+            string[] otherTypes = new string[] { "result", "delta", "parameter" };
             bool isNumericalType = numericalTypes.Contains(def.type);
             bool isOtherType = otherTypes.Contains(def.type);
             if (def.namespaceOf == null) { Log.Error($"[DayStretch]-(AdvancedPatch) namespaceOf in {def.defName} is not filled in; skipping."); return; }
@@ -179,7 +183,7 @@ namespace DayStretch
                                 default: return;
                             }
                             harmony.Patch(method, transpiler: transpiler);
-                            fullGetterList += $"{def.typeOf}.{method.Name} ({def.type}), \n";
+                            fullList += $"{def.typeOf}.{method.Name} ({def.type}), \n";
 
 
                         }
@@ -197,6 +201,9 @@ namespace DayStretch
                 {
                     case "result": DoResult(def); break;
                     case "delta": DoDelta(def); break; // used as a last resort, laggy if overused
+                    case "parameter": DoParameters(def); break;
+
+
                         // probably more to get added
                 } // TODO redo string patcher here
             }
@@ -218,7 +225,7 @@ namespace DayStretch
                     if (!string.IsNullOrEmpty(def.name) && prop.Name != def.name) continue;
                     var getter = prop.GetGetMethod(true);
                     if (getter == null) continue;
-                    if (getter.GetParameters().Length != def.parametersLength) continue;
+                    if (getter.GetParameters().Length != def.parametersLength && def.parametersLength != 0) continue;
                     if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
                     try
                     {
@@ -251,7 +258,7 @@ namespace DayStretch
 
                     if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
                     if (!string.IsNullOrEmpty(def.name) && method.Name != def.name) continue;
-                    if (method.GetParameters().Length != def.parametersLength) continue;
+                    if (method.GetParameters().Length != def.parametersLength && def.parametersLength != 0) continue;
                     keyReverse.Add(def.isGetter ? (def.namespaceOf + "." + def.typeOf + "get_" + def.name) : (def.namespaceOf + "." + def.typeOf + def.name), def.isReverse);
                     try
                     {
@@ -292,7 +299,7 @@ namespace DayStretch
 
                     var getter = prop.GetGetMethod(true);
                     if (getter == null) continue;
-                    if (getter.GetParameters().Length != def.parametersLength) continue;
+                    if (getter.GetParameters().Length != def.parametersLength && def.parametersLength != 0) continue;
                     if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
                     keyReverse.Add(def.isGetter ? (def.namespaceOf + "." + def.typeOf + "get_" + def.name) : (def.namespaceOf + "." + def.typeOf + def.name), def.isReverse);
                     try
@@ -316,7 +323,7 @@ namespace DayStretch
 
                     if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
                     if (!string.IsNullOrEmpty(def.name) && method.Name != def.name) continue;
-                    if (method.GetParameters().Length != def.parametersLength) continue;
+                    if (method.GetParameters().Length != def.parametersLength && def.parametersLength != 0) continue;
                     keyReverse.Add(def.isGetter ? (def.namespaceOf + "." + def.typeOf + "get_" + def.name) : (def.namespaceOf + "." + def.typeOf + def.name), def.isReverse);
                     try
                     {
@@ -333,7 +340,63 @@ namespace DayStretch
             }
         }
 
-
+        public static void DoParameters(AdvancedPatchDef def)
+        {
+            var harmony = new Harmony("com.julekjulas.parameterpatch");
+            Type type = GenTypes.GetTypeInAnyAssembly($"{def.namespaceOf}.{def.typeOf}");
+            if (type == null)
+            {
+                Log.Error($"[DayStretch]-(ParameterPatch) Type '{def.typeOf}' not found in namespace '{def.namespaceOf}'; skipping.");
+                return;
+            }
+            string fullDictionaryEntry = $"{def.namespaceOf}.{def.typeOf}";
+            if (def.isGetter) fullDictionaryEntry += "get_";
+            fullDictionaryEntry += $"{def.name}";
+            List<int> curParameters = new List<int> {};
+            foreach (double val in def.values) { int newVal = (int)val; curParameters.Add(newVal); }
+            targetParameters.Add(fullDictionaryEntry, curParameters);
+            if (def.isGetter)
+            {
+                foreach (var prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    if (!string.IsNullOrEmpty(def.name) && prop.Name != def.name) continue;
+                    var getter = prop.GetGetMethod(true);
+                    if (getter == null) continue;
+                    if (getter.GetParameters().Length != def.parametersLength && def.parametersLength != 0) continue;
+                    if (getter.IsAbstract || getter.IsGenericMethodDefinition) continue;
+                    try
+                    {
+                        var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ParamPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(getter, prefix: prefix);
+                        parFullGetterList += $"{def.typeOf}.{prop.Name} \n";
+                        paramsPatched++;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[DayStretch]-(ParameterPatch) Failed patching getter {def.typeOf}.{prop.Name}: {e}");
+                    }
+                }
+                return;
+            }
+            else
+            {
+                foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    if (method.IsAbstract || method.IsGenericMethodDefinition) continue;
+                    if (!string.IsNullOrEmpty(def.name) && method.Name != def.name) continue;
+                    if (method.GetParameters().Length != def.parametersLength && def.parametersLength != 0) continue;
+                    try
+                    {
+                        var prefix = new HarmonyMethod(typeof(AdvancedPatcher).GetMethod(nameof(ParamPrefix), BindingFlags.Static | BindingFlags.NonPublic)); harmony.Patch(method, prefix: prefix);
+                        parFullList += $"{def.typeOf}.{method.Name} \n";
+                        paramsPatched++;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[DayStretch]-(ParameterPatch) {e} Parameter not found.");
+                    }
+                }
+            }
+        }
 
 
         static IEnumerable<CodeInstruction> TranspileIntVariables(IEnumerable<CodeInstruction> instructions, MethodBase type)
@@ -471,6 +534,54 @@ namespace DayStretch
                 yield return instr;
             }
         }
+
+        static void ParamPrefix(MethodBase __originalMethod, object[] __args)
+        {
+            var reverseDictionary = new Dictionary<int, bool>();
+            string typeOf = __originalMethod.DeclaringType.ToString();
+            string name = __originalMethod.Name.ToString();
+            string dictKey = typeOf + name;
+            targetParameters.TryGetValue(dictKey, out List<int> paramVal);
+            List<int> readyParams = new List<int> {};
+            int curParam = 0;
+            foreach (int param in paramVal) // 0, -1, -4
+            {
+                if (param < 0) { curParam = (param * -1) - 1; reverseDictionary.Add(curParam, true); readyParams.Add(curParam); }
+                else { curParam = param - 1; reverseDictionary.Add(curParam, false); readyParams.Add(curParam); }
+            }
+            int curArgNum = 0;
+            bool currentReverse = false;
+            foreach (object arg in __args)
+            {
+                reverseDictionary.TryGetValue(curArgNum, out currentReverse);
+                if (readyParams.Contains(curArgNum) == false) { curArgNum++; continue; }
+                if (currentReverse)
+                {
+                    switch (arg)
+                    {
+                        case int argInt: __args[curArgNum] = (int)(argInt / Settings.Instance.TimeMultiplier); break;
+                        case float argFloat: __args[curArgNum] = (float)(argFloat / Settings.Instance.TimeMultiplier); break;
+                        case long argLong: __args[curArgNum] = (long)(argLong / Settings.Instance.TimeMultiplier); break;
+                        case short argShort: __args[curArgNum] = (short)(argShort / Settings.Instance.TimeMultiplier); break;
+                        case double argDouble: __args[curArgNum] = (double)(argDouble / Settings.Instance.TimeMultiplier); break;
+                    }
+                }
+                else
+                {
+                    switch (arg)
+                    {
+                        case int argInt: __args[curArgNum] = (int)(argInt * Settings.Instance.TimeMultiplier); break;
+                        case float argFloat: __args[curArgNum] = (float)(argFloat * Settings.Instance.TimeMultiplier); break;
+                        case long argLong: __args[curArgNum] = (long)(argLong * Settings.Instance.TimeMultiplier); break;
+                        case short argShort: __args[curArgNum] = (short)(argShort * Settings.Instance.TimeMultiplier); break;
+                        case double argDouble: __args[curArgNum] = (double)(argDouble * Settings.Instance.TimeMultiplier); break;
+                    }
+                }
+                curArgNum++;
+            }
+        }
+
+
 
         static bool ReverseCheck(MethodBase type) // get the bool
         {
