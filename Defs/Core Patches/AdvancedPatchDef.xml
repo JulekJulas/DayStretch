@@ -539,6 +539,30 @@
 		</values>
 	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>TendTicksFullPatch</defName>
+		<typeOf>HediffCompProperties_TendDuration</typeOf>
+		<name>TendTicksFull</name>
+		<type>float</type>	
+		<values>
+			<li>2500</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>TendTicksBasePatch</defName>
+		<typeOf>HediffCompProperties_TendDuration</typeOf>
+		<name>TendTicksBase</name>
+		<type>float</type>	
+		<values>
+			<li>2500</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
 	
 	<AdvancedPatchDef>
 		<namespaceOf>Verse</namespaceOf>
