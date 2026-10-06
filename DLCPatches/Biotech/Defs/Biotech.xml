@@ -24,4 +24,13 @@
 		</values>
 	</AdvancedPatchDef>
 
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>GrowthPointsFactorPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>GrowthPointsFactor</name>
+		<isGetter>true</isGetter>
+		<type>result</type>
+	</AdvancedPatchDef>
+
 </Defs>

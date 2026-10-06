@@ -1,0 +1,12 @@
+<Defs>
+	<AdvancedPatchDef>
+		<namespaceOf>LastVisited</namespaceOf>
+		<defName>LastVisitedPostfixPatch</defName>
+		<typeOf>Patch_GetInspectString</typeOf>
+		<name>Postfix</name>
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+</Defs>

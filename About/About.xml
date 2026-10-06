@@ -16,6 +16,9 @@
 			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
 		</li>
 	</modDependencies>
+	<loadBefore>
+		<li>zal.lastvisited</li>
+	</loadBefore>
 	<incompatibleWith>
 		<li>sjaandi.realtiltmod</li>
 	</incompatibleWith>

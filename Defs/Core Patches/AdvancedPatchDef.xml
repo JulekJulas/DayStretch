@@ -563,6 +563,18 @@
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
 	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>TendTicksOverlapPatch</defName>
+		<typeOf>HediffCompProperties_TendDuration</typeOf>
+		<name>TendTicksOverlap</name>
+		<type>float</type>	
+		<values>
+			<li>2500</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
 	
 	<AdvancedPatchDef>
 		<namespaceOf>Verse</namespaceOf>
@@ -598,6 +610,7 @@
 	</AdvancedPatchDef>
 	
 	
+	
 	<AdvancedPatchDef>
 		<namespaceOf>RimWorld</namespaceOf>
 		<defName>PlantGrowthPatch</defName>
@@ -628,6 +641,8 @@
 		<type>result</type>
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
+
+
 
 	 
 	
@@ -691,6 +706,14 @@
 		<name>CooldownTicksTotal</name>
 		<type>result</type>
 		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>RoundToTicksRoughPatch</defName>
+		<typeOf>MathEvaluatorCustomFunctions</typeOf>
+		<name>RoundToTicksRough</name>
+		<type>result</type>
 	</AdvancedPatchDef>
 	
 	
