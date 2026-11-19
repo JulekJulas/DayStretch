@@ -29,16 +29,7 @@ namespace DayStretch
 
 
 
-    [HarmonyPatch(typeof(GameCondition))]
-    [HarmonyPatch("get_Expired")]
-    public static class GameConditionPatch
-    {
-        public static bool Prefix(GameCondition __instance, ref bool __result)
-        {
-            __result = !__instance.Permanent && Find.TickManager.TicksGame > __instance.startTick + (__instance.Duration * Settings.Instance.TimeMultiplier);
-            return false;
-        }
-    }
+
 
     [HarmonyPatch(typeof(WeatherEventMaker))]
     [HarmonyPatch("WeatherEventMakerTick")]
