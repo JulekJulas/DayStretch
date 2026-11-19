@@ -87,5 +87,61 @@
 		<values>
 			<li>2500</li> <!-- not 100% sure if its needed -->
 		</values>
-	</AdvancedPatchDef>	
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_SamplePhaseINTPatch</defName>
+		<typeOf>LatticeDriftNoise</typeOf>
+		<name>SamplePhase</name>
+		<type>int</type>
+		<values>
+			<li>2500</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_SamplePhaseFLOATPatch</defName>
+		<typeOf>LatticeDriftNoise</typeOf>
+		<name>SamplePhase</name>
+		<type>float</type>
+		<values>
+			<li>2500</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_RampForPatch</defName>
+		<typeOf>AuroraConditions</typeOf>
+		<name>RampFor</name>
+		<type>float</type>
+		<values>
+			<li>2500</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_NaturalEclipseTickPatch</defName>
+		<typeOf>GameComponent_NaturalEclipse</typeOf>
+		<name>GameComponentTick</name>
+		<type>int</type>
+		<values>
+			<li>500</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>CelestialLighting</namespaceOf>
+		<defName>CelestialLighting_SkyFalloffRedrawTickPatch</defName>
+		<typeOf>GameComponent_SkyFalloffRedraw</typeOf>
+		<name>GameComponentTick</name>
+		<type>int</type>
+		<values>
+			<li>250</li>
+		</values>
+	</AdvancedPatchDef>
+
 </Defs>
