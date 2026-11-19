@@ -1,0 +1,141 @@
+<Patch>
+	<Operation Class="PatchOperationReplace">
+		<xpath>*/StatDef[defName="WorkSpeedGlobal"]/minValue</xpath>
+		<value>
+			<minValue>0.01</minValue>
+		</value>
+	</Operation>
+
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>*/StatDef[defName="WorkSpeedGlobal"]/parts</xpath>
+		<value>
+			<li Class="DayStretch.StatPart_WorkDayStretchMultiplier" />
+		</value>
+	</Operation>
+	
+	<Operation Class="PatchOperationAdd">
+		<xpath>*/StatDef[defName="DeteriorationRate"]/parts</xpath>
+		<value>
+			<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationSequence">
+		<success>Always</success>
+		<operations>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="GlobalLearningFactor"]</xpath>
+				<value><parts /></value>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="GlobalLearningFactor"]/parts</xpath>
+				<value>
+					<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+				</value>
+			</li>
+		</operations>
+	</Operation>
+
+	<Operation Class="PatchOperationSequence">
+		<success>Always</success>
+		<operations>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="EatingSpeed"]</xpath>
+				<value><parts /></value>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="EatingSpeed"]/parts</xpath>
+				<value>
+					<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+				</value>
+			</li>
+		</operations>
+	</Operation>
+
+	<Operation Class="PatchOperationSequence">
+		<success>Always</success>
+		<operations>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="InjuryHealingFactor"]</xpath>
+				<value><parts /></value>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="InjuryHealingFactor"]/parts</xpath>
+				<value>
+					<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+				</value>
+			</li>
+		</operations>
+	</Operation>
+
+	<Operation Class="PatchOperationSequence">
+		<success>Always</success>
+		<operations>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="FilthRate"]</xpath>
+				<value><parts /></value>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="FilthRate"]/parts</xpath>
+				<value>
+					<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+				</value>
+			</li>
+		</operations>
+	</Operation>
+	
+	<Operation Class="PatchOperationSequence">
+		<success>Always</success>
+		<operations>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="MeleeCooldownFactor"]</xpath>
+				<value><parts /></value>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="MeleeCooldownFactor"]/parts</xpath>
+				<value>
+					<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+				</value>
+			</li>
+		</operations>
+	</Operation>
+	
+	<Operation Class="PatchOperationSequence">
+		<success>Always</success>
+		<operations>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="RangedCooldownFactor"]</xpath>
+				<value><parts /></value>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="RangedCooldownFactor"]/parts</xpath>
+				<value>
+					<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+				</value>
+			</li>
+		</operations>
+	</Operation>
+	
+	<Operation Class="PatchOperationSequence">
+		<success>Always</success>
+		<operations>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="AimingDelayFactor"]</xpath>
+				<value><parts /></value>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>*/StatDef[defName="AimingDelayFactor"]/parts</xpath>
+				<value>
+					<li Class="DayStretch.StatPart_DayStretchMultiplier" />
+				</value>
+			</li>
+		</operations>
+	</Operation>
+	
+	
+
+
+
+
+</Patch>

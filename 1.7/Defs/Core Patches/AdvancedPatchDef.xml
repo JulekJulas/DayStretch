@@ -1,0 +1,742 @@
+<Defs>
+
+<!-- important one, all needs -->
+	<AdvancedPatchDef>	
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>AllNeedsPatch</defName>
+		<typeOf>Pawn_NeedsTracker</typeOf>
+		<name>NeedsTrackerTickInterval</name>
+		<type>int</type>
+		<values>
+			<li>150</li>
+		</values>
+	</AdvancedPatchDef>
+	
+
+	<AdvancedPatchDef>	
+		<namespaceOf>Verse</namespaceOf>
+		<defName>HealthPatchThree</defName>
+		<typeOf>ImmunityRecord</typeOf>
+		<name>ImmunityChangePerTick</name>
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>	
+		<namespaceOf>Verse</namespaceOf>
+		<defName>HealthPatchFour</defName>
+		<typeOf>Pawn_HealthTracker</typeOf>
+		<name>HealthTickInterval</name>
+		<type>float</type>
+		<values>
+			<li>60</li>
+		</values>
+	</AdvancedPatchDef>
+
+
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>InfectionPatch</defName>
+		<typeOf>Pawn_InfectionVectorTracker</typeOf>
+		<name>InfectionTickInterval</name>
+		<type>int</type>
+		<values>
+			<li>600</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>HyperthermiaPatch</defName>
+		<typeOf>HediffGiver_Heat</typeOf>
+		<name>OnIntervalPassed</name>
+		<type>float</type>
+		<values>
+			<li>0.000375</li>
+			<li>0.027</li>
+		</values>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>HypothermiaPatch</defName>
+		<typeOf>HediffGiver_Hypothermia</typeOf>
+		<name>OnIntervalPassed</name>
+		<type>float</type>
+		<values>
+			<li>0.00075</li>
+			<li>0.027</li>
+		</values>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+	
+
+
+	
+
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>BossCooldownPatch</defName>
+		<typeOf>BossgroupWorker</typeOf>
+		<name>CanResolve</name>
+		<type>int</type>
+		<values>
+			<li>120000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>AgeTickIntervalPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>AgeTickInterval</name>
+		<type>int</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>CheckReachNaturalGoodwillPatch</defName>
+		<typeOf>Faction</typeOf>
+		<name>CheckReachNaturalGoodwill</name>
+		<type>int</type>
+		<values>
+			<li>3000000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>TicksToSecondsPatch</defName>
+		<typeOf>GenTicks</typeOf>
+		<name>TicksToSeconds</name>
+		<type>float</type>
+		<values>
+			<li>60</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>SecondsToTicksPatch</defName>
+		<typeOf>GenTicks</typeOf>
+		<name>SecondsToTicks</name>
+		<type>float</type>
+		<values>
+			<li>60</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>WallEqualizationTempChangePerIntervalPatch</defName>
+		<typeOf>RoomTempTracker</typeOf>
+		<name>WallEqualizationTempChangePerInterval</name>
+		<type>float</type>
+		<values>
+			<li>120</li>
+		</values>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>ThinRoofEqualizationTempChangePerIntervalPatch</defName>
+		<typeOf>RoomTempTracker</typeOf>
+		<name>ThinRoofEqualizationTempChangePerInterval</name>
+		<type>float</type>
+		<values>
+			<li>120</li>
+		</values>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>NoRoofEqualizationTempChangePerIntervalPatch</defName>
+		<typeOf>RoomTempTracker</typeOf>
+		<name>NoRoofEqualizationTempChangePerInterval</name>
+		<type>float</type>
+		<values>
+			<li>120</li>
+		</values>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>DeepEqualizationTempChangePerIntervalPatch</defName>
+		<typeOf>RoomTempTracker</typeOf>
+		<name>DeepEqualizationTempChangePerInterval</name>
+		<type>float</type>
+		<values>
+			<li>120</li>
+		</values>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld.Planet</namespaceOf>
+		<defName>EstimatedTicksToArriveToEveryPatch</defName>
+		<typeOf>CaravanArrivalTimeEstimator</typeOf>
+		<name>EstimatedTicksToArriveToEvery</name>
+		<type>int</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>SeverityPatch</defName>
+		<typeOf>HediffComp_SeverityModifierBase</typeOf>
+		<name>CompPostTickInterval</name>
+		<type>int</type>
+		<values>
+			<li>200</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>AgeTicksToStopBleedingPatch</defName>
+		<typeOf>Hediff_Injury</typeOf>
+		<name>AgeTicksToStopBleeding</name>
+		<type>int</type>
+		<values>
+			<li>90000</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>	
+	
+	
+	<AdvancedPatchDef> <!-- if someone can tell me why these didnt get patched during the main patcher i would be greatful-->
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DaysPassedAtPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>DaysPassedAt</name>
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>TwelfthsPassedAtPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>TwelfthsPassedAt</name>
+		<type>float</type>
+		<values>
+			<li>300000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>YearsPassedAtPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>YearsPassedAt</name>
+		<type>float</type>
+		<values>
+			<li>3600000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld.Planet</namespaceOf>
+		<defName>GenerateLocationForLayerPatch</defName>
+		<typeOf>WorldComponent_LocationGenerator</typeOf>
+		<name>GenerateLocationForLayer</name>
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld.QuestGen</namespaceOf>
+		<defName>InitializeQuestGenPatch</defName>
+		<typeOf>QuestGen</typeOf>
+		<name>InitializeQuestGen</name>
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>TicksAbsForSunPosInWorldSpacePatch</defName>
+		<typeOf>GenCelestial</typeOf>
+		<name>TicksAbsForSunPosInWorldSpace</name>
+		<type>float</type>
+		<values>
+			<li>2500</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>CompInspectStringExtraPatch</defName>
+		<typeOf>CompRottable</typeOf>
+		<name>CompInspectStringExtra</name>
+		<type>float</type>
+		<values>
+			<li>0.001</li>
+			<li>0.999</li>
+		</values>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DrawHediffListingHealthPatch</defName>
+		<typeOf>HealthCardUtility</typeOf>
+		<name>DrawHediffListing</name>
+		<type>int</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>CompInspectStringExtraRefuelPatch</defName>
+		<typeOf>CompRefuelable</typeOf>
+		<name>CompInspectStringExtra</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>ConsumptionRatePerTickPatch</defName>
+		<typeOf>CompRefuelable</typeOf>
+		<name>ConsumptionRatePerTick</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>OffsetFromSeasonCyclePatch</defName>
+		<typeOf>GenTemperature</typeOf>
+		<name>OffsetFromSeasonCycle</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>MinTemperatureAtTilePatch</defName>
+		<typeOf>GenTemperature</typeOf>
+		<name>MinTemperatureAtTile</name>
+		<type>int</type>	
+		<values>
+			<li>3600000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>MaxTemperatureAtTilePatch</defName>
+		<typeOf>GenTemperature</typeOf>
+		<name>MaxTemperatureAtTile</name>
+		<type>int</type>	
+		<values>
+			<li>3600000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>Inspiration_AgeDaysPatch</defName>
+		<typeOf>Inspiration</typeOf>
+		<name>AgeDays</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>Inspiration_InspectLinePatch</defName>
+		<typeOf>Inspiration</typeOf>
+		<name>InspectLine</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld.QuestGen</namespaceOf>
+		<defName>SendLetter_NewTempPatch</defName>
+		<typeOf>QuestNode_Root_WandererJoin_WalkIn</typeOf>
+		<name>SendLetter_NewTemp</name>
+		<type>int</type>	
+		<values>
+			<li>3600000</li>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld.QuestGen</namespaceOf>
+		<defName>QuestNode_Root_WorkSiteRunIntPatch</defName>
+		<typeOf>QuestNode_Root_WorkSite</typeOf>
+		<name>RunInt</name>
+		<type>int</type>	
+		<values>
+			<li>1800000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>Hediff_TickIntervalPatch</defName>
+		<typeOf>Hediff</typeOf>
+		<name>TickInterval</name>
+		<type>float</type>	
+		<values>
+			<li>60</li>
+			<li>60000</li>
+			<li>600</li>
+			<li>400</li>
+			<li>200</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>Hediff_Pregnant_TickIntervalPatch</defName>
+		<typeOf>Hediff_Pregnant</typeOf>
+		<name>TickInterval</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>CompRottable_TickIntervalPatch</defName>
+		<typeOf>CompRottable</typeOf>
+		<name>TickInterval</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>GetMaxDayPatch</defName>
+		<typeOf>HistoryAutoRecorderGroup</typeOf>
+		<name>GetMaxDay</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DrawGraphPatch</defName>
+		<typeOf>HistoryAutoRecorderGroup</typeOf>
+		<name>DrawGraph</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>PreOpenPatch</defName>
+		<typeOf>MainTabWindow_History</typeOf>
+		<name>PreOpen</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DoGraphPagePatch</defName>
+		<typeOf>MainTabWindow_History</typeOf>
+		<name>DoGraphPage</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	
+	
+	<!-- might as well try this -->
+	
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>ToStringTicksToPeriodGenDateFLOATPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>ToStringTicksToPeriod</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+			<li>60</li>
+			<li>2500</li>
+			<li>3600000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>ToStringTicksToPeriodGenDateINTPatch</defName>
+		<typeOf>GenDate</typeOf>
+		<name>ToStringTicksToPeriod</name>
+		<type>int</type>	
+		<values>
+			<li>60000</li>
+			<li>2500</li>
+			<li>3600000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>TicksUntilDeathDueToBloodLossPatch</defName>
+		<typeOf>HealthUtility</typeOf>
+		<name>TicksUntilDeathDueToBloodLoss</name>
+		<type>float</type>	
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>TendTicksFullPatch</defName>
+		<typeOf>HediffCompProperties_TendDuration</typeOf>
+		<name>TendTicksFull</name>
+		<type>float</type>	
+		<values>
+			<li>2500</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>TendTicksBasePatch</defName>
+		<typeOf>HediffCompProperties_TendDuration</typeOf>
+		<name>TendTicksBase</name>
+		<type>float</type>	
+		<values>
+			<li>2500</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>TendTicksOverlapPatch</defName>
+		<typeOf>HediffCompProperties_TendDuration</typeOf>
+		<name>TendTicksOverlap</name>
+		<type>float</type>	
+		<values>
+			<li>2500</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>PlantLifespanTicksPatch</defName>
+		<typeOf>PlantProperties</typeOf>
+		<name>LifespanTicks</name>
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+		<isGetter>true</isGetter>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+	
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>EqualizeTemperaturesThroughBuildingPatch</defName>
+		<typeOf>GenTemperature</typeOf>
+		<name>EqualizeTemperaturesThroughBuilding</name>
+		<type>parameter</type>	
+		<values>
+			<li>-2</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf> <!-- do i need this? im gonna add it for now -->
+		<defName>ControlTemperatureTempChangePatch</defName>
+		<typeOf>GenTemperature</typeOf>
+		<name>ControlTemperatureTempChange</name>
+		<type>parameter</type>	
+		<values>
+			<li>-3</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>PushHeatPatch</defName>
+		<typeOf>Room</typeOf>
+		<name>PushHeat</name>
+		<type>parameter</type>	
+		<values>
+			<li>-1</li>
+		</values>
+	</AdvancedPatchDef>
+	
+	
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>PlantGrowthPatch</defName>
+		<typeOf>Plant</typeOf>
+		<name>GrowthPerTick</name>
+		<type>result</type>
+		<isReverse>true</isReverse>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>PlantDeathPatch</defName>
+		<typeOf>Plant</typeOf>
+		<name>CurrentDyingDamagePerTick</name>
+		<type>result</type>
+		<isReverse>true</isReverse>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>FireSpreadPatch</defName>
+		<typeOf>Fire</typeOf>
+		<name>SpreadInterval</name>
+		<type>result</type>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+
+
+
+	 
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>BirthDayOfSeasonZeroBasedPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>BirthDayOfSeasonZeroBased</name>
+		<type>result</type>
+		<isGetter>true</isGetter>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>CalculateBleedRatePatch</defName>
+		<typeOf>HediffSet</typeOf>
+		<name>CalculateBleedRate</name>
+		<type>result</type>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld.Planet</namespaceOf>
+		<defName>CostToMovePatch</defName>
+		<typeOf>Caravan_PathFollower</typeOf>
+		<name>CostToMove</name>
+		<type>result</type>
+		<parametersLength>8</parametersLength>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>AdultAgingMultiplierPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>AdultAgingMultiplier</name>
+		<type>result</type>
+		<isGetter>true</isGetter>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>ChildAgingMultiplierPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>ChildAgingMultiplier</name>
+		<type>result</type>
+		<isGetter>true</isGetter>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>CooldownTicksTotal_AbilityPatch</defName>
+		<typeOf>Ability</typeOf>
+		<name>CooldownTicksTotal</name>
+		<type>result</type>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>RoundToTicksRoughPatch</defName>
+		<typeOf>MathEvaluatorCustomFunctions</typeOf>
+		<name>RoundToTicksRough</name>
+		<type>result</type>
+	</AdvancedPatchDef>
+	
+	
+	
+	<!-- <AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>RotTickIntervalPatch</defName>
+		<typeOf>CompRottable</typeOf>
+		<name>TickInterval</name>
+		<type>delta</type>
+	</AdvancedPatchDef> saved for if the float version doesnt work-->
+	
+</Defs> 

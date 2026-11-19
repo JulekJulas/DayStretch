@@ -1,0 +1,13 @@
+<Defs>
+	<AdvancedPatchDef>
+		<namespaceOf>ProgressRenderer</namespaceOf>
+		<defName>ProgressRenderer_HoursPassedIntegerPatch</defName>
+		<typeOf>MoreGenDate</typeOf>
+		<name>HoursPassedInteger</name>
+		<type>int</type>	
+		<values>
+			<li>2500</li>
+		</values>
+	</AdvancedPatchDef>
+	
+</Defs>

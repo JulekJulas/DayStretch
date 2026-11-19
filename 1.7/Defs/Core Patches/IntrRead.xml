@@ -1,0 +1,13 @@
+<Defs>
+	<InstructionReadDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DoGraphPagePatch</defName>
+		<typeOf>MainTabWindow_History</typeOf>
+		<name>DoGraphPage</name>
+	</InstructionReadDef>
+	 
+	
+	
+	
+	
+</Defs>	

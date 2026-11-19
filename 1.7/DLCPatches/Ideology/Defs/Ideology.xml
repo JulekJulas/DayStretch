@@ -1,0 +1,32 @@
+<Defs>
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>GetCycleSpeedFactorForPawnPatch</defName>
+		<typeOf>CompBiosculpterPod</typeOf>
+		<name>GetCycleSpeedFactorForPawn</name>
+		<type>Result</type>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>DurationTicksPatch</defName>
+		<typeOf>LordJob_Joinable_Gathering</typeOf>
+		<name>DurationTicks</name>
+		<type>Result</type>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
+	
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>OccursOnTickPatch</defName>
+		<typeOf>RitualObligationTrigger_Date</typeOf>
+		<name>OccursOnTick</name>
+		<type>int</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+	
+</Defs>

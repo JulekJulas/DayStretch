@@ -1,15 +1,27 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <loadFolders>
 	<v1.6>
-		<li>/</li>
-		<li IfModActive="CETeam.CombatExtended">ModPatches/CE</li>
-		<li IfModActive="koth.realisticplanets2">ModPatches/realisticplanets</li>
-		<li IfModActive="syrchalis.processor.framework">ModPatches/ProcessorFramework</li>
-		<li IfModActive="neptimus7.progressrenderer">ModPatches/ProgressRenderer</li>
-		<li IfModActive="joof.celestiallighting">ModPatches/CelestialLighting</li>
-		<li IfModActive="tsa.worlddominationexperimental">ModPatches/WorldDomination2</li>
-		<li IfModActive="zal.lastvisited">ModPatches/LastVisited</li>
-		<li IfModActive="Ludeon.Ideology">DLCPatches/Ideology</li>
-		<li IfModActive="Ludeon.Biotech">DLCPatches/Biotech</li>
+		<li>1.6</li>
+		<li IfModActive="CETeam.CombatExtended">1.6/ModPatches/CE</li>
+		<li IfModActive="koth.realisticplanets2">1.6/ModPatches/realisticplanets</li>
+		<li IfModActive="syrchalis.processor.framework">1.6/ModPatches/ProcessorFramework</li>
+		<li IfModActive="neptimus7.progressrenderer">1.6/ModPatches/ProgressRenderer</li>
+		<li IfModActive="joof.celestiallighting">1.6/ModPatches/CelestialLighting</li>
+		<li IfModActive="tsa.worlddominationexperimental">1.6/ModPatches/WorldDomination2</li>
+		<li IfModActive="zal.lastvisited">1.6/ModPatches/LastVisited</li>
+		<li IfModActive="Ludeon.Ideology">1.6/DLCPatches/Ideology</li>
+		<li IfModActive="Ludeon.Biotech">1.6/DLCPatches/Biotech</li>
 	</v1.6>
+	<v1.7>
+		<li>1.7</li>
+		<li IfModActive="CETeam.CombatExtended">1.7/ModPatches/CE</li>
+		<li IfModActive="koth.realisticplanets2">1.7/ModPatches/realisticplanets</li>
+		<li IfModActive="syrchalis.processor.framework">1.7/ModPatches/ProcessorFramework</li>
+		<li IfModActive="neptimus7.progressrenderer">1.7/ModPatches/ProgressRenderer</li>
+		<li IfModActive="joof.celestiallighting">1.7/ModPatches/CelestialLighting</li>
+		<li IfModActive="tsa.worlddominationexperimental">1.7/ModPatches/WorldDomination2</li>
+		<li IfModActive="zal.lastvisited">1.7/ModPatches/LastVisited</li>
+		<li IfModActive="Ludeon.Ideology">1.7/DLCPatches/Ideology</li>
+		<li IfModActive="Ludeon.Biotech">1.7/DLCPatches/Biotech</li>
+	</v1.7>
 </loadFolders>

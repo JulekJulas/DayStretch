@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -16,7 +15,6 @@ using Verse;
 using Verse.AI;
 using Verse.Noise;
 using Verse.Sound;
-using static System.Collections.Specialized.BitVector32;
 using static UnityEngine.GraphicsBuffer;
 
 namespace DayStretch
@@ -172,7 +170,7 @@ namespace DayStretch
                     return false;
                 }
                 float num = 0f;
-                if (__instance.def.plant.LimitedLifespan && ___ageInt > (__instance.def.plant.LifespanTicks * Settings.Instance.TimeMultiplier))
+                if (__instance.def.plant.LimitedLifespan && ___ageInt > __instance.def.plant.LifespanTicks)
                 {
                     num = Mathf.Max(num, 0.005f);
                 }
