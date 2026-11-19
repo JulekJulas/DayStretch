@@ -23,17 +23,7 @@
 			<li>60000</li>
 		</values>
 	</AdvancedPatchDef>
-	
-	<AdvancedPatchDef>	
-		<namespaceOf>Verse</namespaceOf>
-		<defName>HealthPatchFour</defName>
-		<typeOf>Pawn_HealthTracker</typeOf>
-		<name>HealthTickInterval</name>
-		<type>float</type>
-		<values>
-			<li>60</li>
-		</values>
-	</AdvancedPatchDef>
+
 
 
 
@@ -610,8 +600,65 @@
 		</values>
 		<isGetter>true</isGetter>
 	</AdvancedPatchDef>
-	
-	
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>CompEggLayerCompTickPatch</defName>
+		<typeOf>CompEggLayer</typeOf>
+		<name>CompTick</name>
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>CompHatcherCompTickPatch</defName>
+		<typeOf>CompHatcher</typeOf>
+		<name>CompTick</name>
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>CompHasGatherableBodyResourceCompTickPatch</defName>
+		<typeOf>CompHasGatherableBodyResource</typeOf>
+		<name>CompTick</name>
+		<type>int</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>MeditationUtilityPsyfocusGainPerTickPatch</defName>
+		<typeOf>MeditationUtility</typeOf>
+		<name>PsyfocusGainPerTick</name>
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>GeneResourceDrainUtilityTickResourceDrainIntervalPatch</defName>
+		<typeOf>GeneResourceDrainUtility</typeOf>
+		<name>TickResourceDrainInterval</name>
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+
+
+
 	<AdvancedPatchDef>
 		<namespaceOf>Verse</namespaceOf>
 		<defName>EqualizeTemperaturesThroughBuildingPatch</defName>
@@ -644,8 +691,17 @@
 			<li>-1</li>
 		</values>
 	</AdvancedPatchDef>
-	
-	
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>MakeConditionDurationPatch</defName>
+		<typeOf>GameConditionMaker</typeOf>
+		<name>MakeCondition</name>
+		<type>parameter</type>
+		<values>
+			<li>2</li>
+		</values>
+	</AdvancedPatchDef>
 	
 	<AdvancedPatchDef>
 		<namespaceOf>RimWorld</namespaceOf>
