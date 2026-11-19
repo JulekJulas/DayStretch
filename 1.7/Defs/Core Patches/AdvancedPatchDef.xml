@@ -48,7 +48,7 @@
 			<li>600</li>
 		</values>
 	</AdvancedPatchDef>
-	
+
 	<AdvancedPatchDef>
 		<namespaceOf>Verse</namespaceOf>
 		<defName>HyperthermiaPatch</defName>
@@ -58,10 +58,11 @@
 		<values>
 			<li>0.000375</li>
 			<li>0.027</li>
+			<li>0.015</li>
 		</values>
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
-	
+
 	<AdvancedPatchDef>
 		<namespaceOf>Verse</namespaceOf>
 		<defName>HypothermiaPatch</defName>
@@ -71,11 +72,21 @@
 		<values>
 			<li>0.00075</li>
 			<li>0.027</li>
+			<li>0.015</li>
 		</values>
 		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
-	
 
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>HyperthermiaBurnPatch</defName>
+		<typeOf>HediffGiver_Heat</typeOf>
+		<name>OnIntervalPassed</name>
+		<type>int</type>
+		<values>
+			<li>420</li>
+		</values>
+	</AdvancedPatchDef>
 
 	
 
@@ -215,7 +226,19 @@
 			<li>90000</li>
 		</values>
 		<isGetter>true</isGetter>
-	</AdvancedPatchDef>	
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>AgeTicksToStopBleedingFLOATPatch</defName>
+		<typeOf>Hediff_Injury</typeOf>
+		<name>AgeTicksToStopBleeding</name>
+		<type>float</type>
+		<values>
+			<li>90000</li>
+		</values>
+		<isGetter>true</isGetter>
+	</AdvancedPatchDef>
 	
 	
 	<AdvancedPatchDef> <!-- if someone can tell me why these didnt get patched during the main patcher i would be greatful-->
@@ -429,15 +452,16 @@
 			<li>200</li>
 		</values>
 	</AdvancedPatchDef>
-	
+
 	<AdvancedPatchDef>
 		<namespaceOf>Verse</namespaceOf>
 		<defName>Hediff_Pregnant_TickIntervalPatch</defName>
 		<typeOf>Hediff_Pregnant</typeOf>
 		<name>TickInterval</name>
-		<type>float</type>	
+		<type>float</type>
 		<values>
 			<li>60000</li>
+			<li>1000</li>
 		</values>
 	</AdvancedPatchDef>
 	
@@ -585,7 +609,6 @@
 			<li>60000</li>
 		</values>
 		<isGetter>true</isGetter>
-		<isReverse>true</isReverse>
 	</AdvancedPatchDef>
 	
 	
