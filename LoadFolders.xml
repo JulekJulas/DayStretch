@@ -21,7 +21,5 @@
 		<li IfModActive="joof.celestiallighting">1.7/ModPatches/CelestialLighting</li>
 		<li IfModActive="tsa.worlddominationexperimental">1.7/ModPatches/WorldDomination2</li>
 		<li IfModActive="zal.lastvisited">1.7/ModPatches/LastVisited</li>
-		<li IfModActive="Ludeon.Ideology">1.7/DLCPatches/Ideology</li>
-		<li IfModActive="Ludeon.Biotech">1.7/DLCPatches/Biotech</li>
 	</v1.7>
 </loadFolders>

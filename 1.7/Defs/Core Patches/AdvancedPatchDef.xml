@@ -807,8 +807,59 @@
 		<name>RoundToTicksRough</name>
 		<type>result</type>
 	</AdvancedPatchDef>
-	
-	
+
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>HediffComp_PregnantHumanINTPatch</defName>
+		<typeOf>HediffComp_PregnantHuman</typeOf>
+		<name>CompPostTickInterval</name>
+		<type>int</type>
+		<values>
+			<li>48000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>HediffComp_PregnantHumanFLOATPatch</defName>
+		<typeOf>HediffComp_PregnantHuman</typeOf>
+		<name>CompPostTickInterval</name>
+		<type>float</type>
+		<values>
+			<li>60</li>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>Verse</namespaceOf>
+		<defName>GrowthPointsFactorPatch</defName>
+		<typeOf>Pawn_AgeTracker</typeOf>
+		<name>GrowthPointsFactor</name>
+		<isGetter>true</isGetter>
+		<type>result</type>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>GetCycleSpeedFactorForPawnPatch</defName>
+		<typeOf>CompBiosculpterPod</typeOf>
+		<name>GetCycleSpeedFactorForPawn</name>
+		<type>result</type>
+		<isReverse>true</isReverse>
+	</AdvancedPatchDef>
+
+
+	<AdvancedPatchDef>
+		<namespaceOf>RimWorld</namespaceOf>
+		<defName>OccursOnTickPatch</defName>
+		<typeOf>RitualObligationTrigger_Date</typeOf>
+		<name>OccursOnTick</name>
+		<type>int</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
 	
 	<!-- <AdvancedPatchDef>
 		<namespaceOf>RimWorld</namespaceOf>

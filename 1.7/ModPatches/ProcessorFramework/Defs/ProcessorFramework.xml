@@ -13,35 +13,12 @@
 	
 	<AdvancedPatchDef>	
 		<namespaceOf>ProcessorFramework</namespaceOf>
-		<defName>ProcessorFramework_EstimatedTicksLeftPatch</defName>
-		<typeOf>ActiveProcess</typeOf>
-		<name>EstimatedTicksLeft</name>
-		<type>float</type>
-		<values>
-			<li>60000</li>
-		</values>
-		<isGetter>true</isGetter>
-	</AdvancedPatchDef>
-	
-	<AdvancedPatchDef>	
-		<namespaceOf>ProcessorFramework</namespaceOf>
 		<defName>ProcessorFramework_DoTicksPatch</defName>
 		<typeOf>ActiveProcess</typeOf>
 		<name>DoTicks</name>
 		<type>float</type>
 		<values>
 			<li>2500</li>
-		</values>
-	</AdvancedPatchDef>
-	
-	<AdvancedPatchDef>	
-		<namespaceOf>ProcessorFramework</namespaceOf>
-		<defName>ProcessorFramework_TimeForQualityLeftPatch</defName>
-		<typeOf>ActiveProcess</typeOf>
-		<name>TimeForQualityLeft</name>
-		<type>float</type>
-		<values>
-			<li>60000</li>
 		</values>
 	</AdvancedPatchDef>
 	
@@ -54,8 +31,50 @@
 		<values>
 			<li>60000</li>
 		</values>
-	</AdvancedPatchDef>	
-	
+	</AdvancedPatchDef>
 
+	<AdvancedPatchDef>
+		<namespaceOf>ProcessorFramework</namespaceOf>
+		<defName>ProcessorFramework_EstimatedTicksForDaysPatch</defName>
+		<typeOf>ActiveProcess</typeOf>
+		<name>EstimatedTicksForDays</name>
+		<type>double</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>ProcessorFramework</namespaceOf>
+		<defName>ProcessorFramework_ConsumeFuelPatch</defName>
+		<typeOf>CompProcessor</typeOf>
+		<name>ConsumeFuel</name>
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>ProcessorFramework</namespaceOf>
+		<defName>ProcessorFramework_FinishProcessPatch</defName>
+		<typeOf>ProcessorFramework_Utility</typeOf>
+		<name>FinishProcess</name>
+		<type>float</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
+
+	<AdvancedPatchDef>
+		<namespaceOf>ProcessorFramework</namespaceOf>
+		<defName>ProcessorFramework_ProgressOneDayPatch</defName>
+		<typeOf>ProcessorFramework_Utility</typeOf>
+		<name>ProgressOneDay</name>
+		<type>int</type>
+		<values>
+			<li>60000</li>
+		</values>
+	</AdvancedPatchDef>
 	
 </Defs> 
